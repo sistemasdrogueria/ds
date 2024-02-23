@@ -1,0 +1,45 @@
+@media print {
+  #sidebar {
+	  display:none;
+	  visibility :inherit;
+  }
+   #header
+   {
+	  display:none;
+	  visibility :inherit;
+  }
+   
+   #secondary_bar 
+   {
+	  display:none;
+	  visibility :inherit;
+   }
+   
+  
+    #buttonprint
+   {
+	  display:none;
+	  visibility :inherit;
+   }
+   #titulo_header
+     {
+	  display:none;
+	  visibility :inherit;
+   }
+    section#secondary_bar
+    {
+	  display:none;
+	  visibility :inherit;
+   }
+   
+   .tabs_involved
+   {
+	    display:none;
+	  visibility :inherit;
+   }
+    .volveratras
+   {
+	    display:none;
+	  visibility :inherit;
+   }
+}

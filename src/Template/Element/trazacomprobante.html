@@ -1,0 +1,24 @@
+<div class="comprobantes view large-10 medium-9 columns">
+    <h2><?= h($comprobante->id) ?></h2>
+    <div class="row">
+        <div class="large-5 columns strings">
+            <h6 class="subheader"><?= __('Comprobantes Tipo') ?></h6>
+            <p><?= $comprobante->has('comprobantes_tipo') ? $comprobante->comprobantes_tipo->nombre : '' ?></p>
+        </div>
+        <div class="large-2 columns numbers end">
+		<div class="large-2 columns dates end">
+            <h6 class="subheader"><?= __('Fecha') ?></h6>
+            <p><?php echo date_format($comprobante['Fecha'],'d-m-Y H:i:s');?></p>
+        </div>        
+		<h6 class="subheader"><?= __('Nota') ?></h6>
+            <p><?= $this->Number->format($comprobante->nota) ?></p>
+            <h6 class="subheader"><?= __('Seccion') ?></h6>
+            <p><?= $this->Number->format($comprobante->seccion) ?></p>
+            <h6 class="subheader"><?= __('Numero') ?></h6>
+            <p><?= $this->Number->format($comprobante->numero) ?></p>
+            <h6 class="subheader"><?= __('Importe') ?></h6>
+            <p><?= $this->Number->format($comprobante->importe) ?></p>
+        </div>
+
+    </div>
+</div>

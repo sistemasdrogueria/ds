@@ -1,0 +1,53 @@
+#success_message{ display: none;}
+.container{ 
+background-color: #FFFFFF;
+}
+#contact_form{ 
+background-color: #FFFFFF;
+    background-image: linear-gradient(to bottom,#ffffff 0,#ffffff 100%);
+}
+
+.index_titulo{
+	
+	font-size: 150%;
+	padding: 2px;
+	font-weight: bold;
+	
+}
+.index_ap{
+	
+	
+}
+.index_ap_nombre{
+	float:left;
+	padding: 2px;
+}
+.index_dip{
+	background-color: #98BA55;
+	float:left;
+	font-size: 70%;
+	margin-left: 10px;
+	padding: 0px 4px 0px 4px;
+	color: #FFFFFF;
+	margin-top:1px;
+}
+
+
+.view_titulo{
+	font-weight: bold;
+	font-size: 120%;
+}
+
+.view_descripcion{
+	border: 2px solid #f1f1f1;
+	padding: 10px;
+	margin-bottom:10px;
+}
+.view_detalle{
+	border: 2px solid #f1f1f1;
+	padding: 10px;
+}
+.view_texto{
+	font-size: 110%;
+	
+}

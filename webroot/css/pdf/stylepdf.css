@@ -1,0 +1,113 @@
+.cabecera{
+	float:left;
+	width: 100%;
+	padding-bottom:10px;
+}
+
+.contacto{
+	float:left;
+	/*height: 50%;*/
+    width: 50%;
+}
+
+.anexo{
+	float:left;
+	width: 50%;
+	text-align: center;
+}
+
+
+
+h1 {
+    font-size: 16px;
+    /*color: #888888;*/
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    text-decoration: underline;
+    /*margin: 0 0 60px 0;*/
+}
+hr{
+	
+	width:100%;
+	
+}
+	
+.comprobantes_datos{
+	width:100%;
+	/*padding-top:10px;*/
+	padding-bottom:10px;
+}
+
+.datos_left{
+	float:left;
+	/*height: 50%;*/
+    width: 50%;
+}
+.datos_right{
+	float:left;
+	/*height: 50%;*/
+    width: 50%;
+}
+
+
+.comprobantes_result{
+	
+	width:100%;
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.colcenter{
+  text-align: center;
+  
+}
+
+td, th {
+    padding: 0;
+	    display: table-cell;
+    vertical-align: inherit;
+}
+
+
+ 
+.tablasearch{
+	width:100%;
+}
+.tablasearch td{
+     
+}
+
+.tablasearch th{
+ border: 1px solid #fff;
+ text-align: center;
+ background: #ebebeb;
+}
+
+.tablasearch tr:nth-child(even) {background: #ebebeb; color: #000 }
+.tablasearch tr:nth-child(odd) {background: #FFF}
+
+.tablasearch tr{
+   height:25px;
+   margin-top:3px 
+}
+
+.labeldatos{
+	width : 105px;
+	height: 30px;
+	float:left;
+	font-size: 13px;
+	vertical-align: text-bottom;
+}
+.resuldatos{
+	width : 150px;
+	float:left;
+	height: 30px;
+}
+.resuldatos2{
+	width : 300px;
+	float:left;
+}
+.linea{
+	width : 100%;
+	float:left;
+}

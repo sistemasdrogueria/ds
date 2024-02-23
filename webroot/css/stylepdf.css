@@ -1,0 +1,37 @@
+.cabecera{float:left;width:100%;padding-bottom:10px}
+.contacto{float:left;width:50%}
+.logo {float:left;width:44% ; margin-top: 5px;}
+.remito{float:left;width:12%; text-align: center; margin-top: -20px;}
+.remito_letra{ font-size: 28px; font-weight: bold; padding: 5px; border: 3px #ebebeb solid; width: 50px; text-align: center; margin: 0 auto; }
+.remito_codigo { margin-top: 3px;}
+
+.remito_numero_fecha {float:left;width:44%; margin-top: -15px;}
+.remito_palabra{ font-size: 28px; font-weight: bold;text-align: center;    letter-spacing: 2px;}
+.remito_numero {float: left; font-size: 20px; text-align: center; font-weight: bold; width:99%; margin-top: 5px;}
+#remito_numero_n{ display:inline-block;}
+#remito_numero {display:inline-block;  margin-left: 20px;}
+
+.remito_fecha {float: left; font-size: 16px; margin-top: 5px;text-align: center; width:99%} 
+#remito_fecha_f { display:inline-block; }
+#remito_fecha {display:inline-block; margin-left: 20px;}
+
+.anexo{float:left;width:50%;text-align:center}
+.datos_impositivo {	float: left;    width: 45%;    text-align: center;    font-size: 13px;    padding-left: 5%; margin-top: 15px;}
+.datos_empresa { line-height: 18px;float:left;/*width:50% ;*/     margin-top: -18px;     width: 48%;    margin-left: 16px; }
+h1{font-size:16px;font-family:'Open Sans',sans-serif;font-weight:400;text-decoration:underline}
+hr{width:100%}
+.comprobantes_datos{width:100%;padding-bottom:10px}
+.datos_left{float:left;width:50%}
+.datos_right{float:left;width:50%}
+.comprobantes_result{width:100%;padding-top:10px;padding-bottom:10px}
+.colcenter{text-align:center}
+td,th{padding:0;display:table-cell;vertical-align:inherit}
+.tablasearch{width:100%}
+.tablasearch th{border:1px solid #fff;text-align:center;background:#ebebeb}
+.tablasearch tr:nth-child(even){background:#ebebeb;color:#000}
+.tablasearch tr:nth-child(odd){background:#FFF}
+.tablasearch tr{height:25px;margin-top:3px}
+.labeldatos{width:105px;height:30px;float:left;font-size:13px;vertical-align:text-bottom}
+.resuldatos{width:150px;float:left;height:30px}
+.resuldatos2{width:300px;float:left}
+.linea{width:100%;float:left}

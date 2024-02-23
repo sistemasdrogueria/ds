@@ -1,0 +1,749 @@
+<?php
+namespace App\Controller;
+
+use Cake\ORM\Query;
+use App\Controller\AppController;
+use Cake\Log\Log;
+use App\Model\Entity\Pedido;
+use Cake\Database\Connection;
+use Cake\Datasource\ConnectionManager;
+use Cake\I18n\Time;
+
+/**
+ * Pedidos Controller
+ *
+ * @property \App\Model\Table\PedidosTable $Pedidos
+ */
+class PedidosController extends AppController
+{
+	public function isAuthorized()
+    {
+		if (in_array($this->request->action, ['index','edit', 'delete','add','confirmarpedido','search','import','index_admin','view_admin','index_admin_search'])) {
+       
+            if($this->request->session()->read('Auth.User.role')=='admin') 
+            {				
+                return true;			
+            }			
+            else 
+            {	
+                if($this->request->session()->read('Auth.User.role')=='client') 
+                {				
+                    return true;			
+                }	
+                else
+                {
+					if($this->request->session()->read('Auth.User.role')=='provider') 
+					{				
+						return true;			
+					}
+					else
+					{
+						$this->Flash->error(__('No tiene permisos para ingresar'),['key' => 'changepass']);
+						return false;	
+					}	
+                }	
+            }		
+            }		
+			else 
+			{			    		
+				if (in_array($this->request->action, ['index','carritoadd','confirmarpedido']))
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+					$this->Flash->error(__('No tiene permisos para ingresar'),['key' => 'changepass']);
+				}
+			}	
+		return parent::isAuthorized($user);
+    }
+    /**
+     * Index method
+     *
+     * @return void
+     */
+    public function index()
+    {
+		$this->layout = 'store';
+        $this->paginate = [
+			'limit' => 11,
+            'contain' => ['Clientes']
+        ];
+		$fecha = Time::now();
+		$fech = $fecha->i18nFormat('yyyy-MM-dd');
+		$fecha->modify('+1 days');
+		$fech2= $fecha->i18nFormat('yyyy-MM-dd');
+				
+		//echo $fecha->format('Y-m-d') . "\n";
+		
+		$pedidos = $this->Pedidos->find('all')
+								->where(['Pedidos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')])
+								->andWhere(['Pedidos.creado BETWEEN :start AND :end'])
+								->bind(':start', $fech, 'date')
+								->bind(':end',   $fech2, 'date');
+								/*->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"])
+								->group('Pedidos.id');*/
+								
+		//debug( date('Y-m-d', strtotime('+1 day')));
+		$this->loadModel('Estados');
+		$estados=$this->Estados->find('all');
+		$this->set('estados', $estados->toArray());
+		//debug($this->paginate($pedidos));
+        $this->set('pedidos', $this->paginate($pedidos));
+        $this->set('_serialize', ['pedidos']);
+		$this->loadModel('Carritos');
+		$carritocon = $this->Carritos->find('all')	
+					->where(['Carritos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')])
+					->order(['Carritos.id' => 'DESC']);
+		$this->loadModel('ClientesCreditos');
+		$clientecreditos = $this->ClientesCreditos->find('all')	
+					->where(['cliente_id' => $this->request->session()->read('Auth.User.cliente_id')]);
+		$clientecredito = $clientecreditos->first();
+		$this->set('creditodisponible',$clientecredito['credito_maximo']-$clientecredito['credito_consumo']);
+	
+	
+		$totalcarrito=0;
+		$totalitems=0;
+		$totalunidades=0;
+		foreach ($carritocon as $carrito): 
+			$totalitems+=1;
+			$totalcarrito= $totalcarrito + $carrito['cantidad']*round(h($carrito['precio_publico'])*0.807, 3);
+			$totalunidades= $totalunidades + $carrito['cantidad'] ;
+		endforeach; 
+		$this->set('totalitems',$totalitems);
+		$this->set('totalcarrito',$totalcarrito);
+		$this->set('totalunidades',$totalunidades);
+		//$this->set('Carritos', $carritocon->toArray());
+		
+    }
+
+	public function search()
+    {
+		$this->layout = 'store';
+		if ($this->request->is('post'))
+		{	
+	
+			if ($this->request->data['fechadesde']!= null)
+			{
+				$fechadesde = $this->request->data['fechadesde'];
+			}	
+			else
+			{
+				$fechadesde=0;
+			}
+			if ($this->request->data['fechahasta']!= null)
+			{
+				$fechahasta = $this->request->data['fechahasta'];
+			}	
+			else
+			{
+				$fechahasta =0;
+			}
+			if ($this->request->data['terminobuscar']!= null)
+			{
+				$termsearchp = '%'.$this->request->data['terminobuscar'].'%';
+			}	
+			else
+			{
+				$termsearchp ="";
+			}	
+			$this->request->session()->write('termsearchp',$termsearchp);
+			$this->request->session()->write('fechadesde',$fechadesde);	
+			$this->request->session()->write('fechahasta',$fechahasta);
+		}
+		else 
+		{
+			$fechahasta = $this->request->session()->read('fechahasta');
+		    $fechadesde = $this->request->session()->read('fechadesde');
+			$termsearchp = $this->request->session()->read('termsearchp');
+		}
+		
+        $this->paginate = [		
+		'limit' => 11,
+		];
+		
+		if ($fechahasta!=0)
+		{
+			//$fechahasta2 = Time::now();
+			$fechahasta2 = Time::createFromFormat(
+			'd/m/Y',
+			$fechahasta,
+			'America/Argentina/Buenos_Aires');
+			$fechahasta2->modify('+1 days');
+			$fechahasta2->i18nFormat('yyyy-MM-dd');
+			
+		}
+		else
+		{
+			$fechahasta2 = Time::now();
+			$fechahasta2-> modify('+1 days');
+			//$fechahasta2 = $fechahasta2->i18nFormat('yyyy-MM-dd');
+		}
+		if ($fechadesde!=0)
+		{
+			//$fechadesde2 = Time::now();
+			$fechadesde2 = Time::createFromFormat(
+				'd/m/Y',
+			$fechadesde,
+			'America/Argentina/Buenos_Aires');
+			$fechadesde2->i18nFormat('yyyy-MM-dd');
+		}
+		else
+		{
+			$fechadesde2 = Time::now();
+			if ($fechahasta!=0)
+				$fechadesde2->setDate($fechadesde2->year, $fechahasta2->month, 1);
+			else
+				$fechadesde2->setDate($fechadesde2->year, $fechadesde2->month, 1);
+			$fechadesde2->i18nFormat('yyyy-MM-dd');
+		}
+
+
+	  	if ($termsearchp!="")
+		{
+			if (($fechadesde !=0) && ($fechahasta !=0))
+			{
+				$pedidosA = $this->Pedidos->find('all')
+				->select(['id', 
+				'creado', 
+				'cliente_id', 
+				'sucursal_id', 
+				'tipo_fact', 
+				'forma_envio', 
+				'estado_id'])
+				->hydrate(false)
+				->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'left',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'left',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				])
+				->where(['Pedidos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')])
+				->where(['a.descripcion_pag LIKE'=>$termsearchp])
+				->orWhere(['a.troquel LIKE'=>$termsearchp])
+				->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"])
+				->group('Pedidos.id');
+	
+			}
+			else
+			{
+				if (($fechadesde !=0) || ($fechahasta !=0))
+				{
+				 $pedidosA = $this->Pedidos->find('all')
+				->select(['id', 
+				'creado', 
+				'cliente_id', 
+				'sucursal_id', 
+				'tipo_fact', 
+				'forma_envio', 
+				'estado_id'])
+				->hydrate(false)
+				->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'INNER',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'INNER',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				])
+				->where(['Pedidos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')])
+				->where(['a.descripcion_pag LIKE'=>$termsearchp])
+				->orWhere(['a.troquel LIKE'=>$termsearchp])
+				->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechadesde2->i18nFormat('yyyy-MM-dd')."'"])
+				->group('Pedidos.id');
+				
+				}
+				else
+				{
+					 $pedidosA = $this->Pedidos->find('all')
+					->select(['id', 
+					'creado', 
+					'cliente_id', 
+					'sucursal_id', 
+					'tipo_fact', 
+					'forma_envio', 
+					'estado_id'])
+					->hydrate(false)
+					->join([
+						'pe' => [
+							'table' => 'pedidos_items',
+							'type' => 'INNER',
+							'conditions' => 'pe.pedido_id = Pedidos.id',
+						],
+						'a' => [
+							'table' => 'articulos',
+							'type' => 'INNER',
+							'conditions' => 'a.id = pe.articulo_id',
+						]
+					])
+					->where(['Pedidos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')])
+					->where(['a.descripcion_pag LIKE'=>$termsearchp])
+					->orWhere(['a.troquel LIKE'=>$termsearchp])
+					->group('Pedidos.id');
+				}	
+			}
+		}
+        else
+		{
+			if (($fechadesde !=0) || ($fechahasta !=0))
+			{
+				$pedidosA = $this->Pedidos->find('all')
+				->select(['id', 
+					'creado', 
+					'cliente_id', 
+					'sucursal_id', 
+					'tipo_fact', 
+					'forma_envio', 
+					'estado_id'])
+				->hydrate(false)
+				->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'INNER',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'INNER',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				])
+				->where(['Pedidos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')])
+				->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"])
+				->group('Pedidos.id');
+			}
+			else
+					{
+						$pedidosA=null;
+						$this->redirect($this->referer());
+					}
+				
+					
+		}
+		if ($pedidosA!=null)
+		{
+			$pedidos = $this->paginate($pedidosA);
+		}
+		else
+			$pedidos = null;
+		//debug($pedidos);
+		$this->set('pedidos',$pedidos);
+		$this->loadModel('Estados');
+		$estados=$this->Estados->find('all');
+		$this->set('estados', $estados->toArray());
+		
+		$this->loadModel('Carritos');
+		$carritocon = $this->Carritos->find('all')	
+					->where(['Carritos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')])
+					->order(['Carritos.id' => 'DESC']);
+		$totalcarrito=0;
+		$totalitems=0;
+		$totalunidades=0;
+		$this->loadModel('ClientesCreditos');
+		$clientecreditos = $this->ClientesCreditos->find('all')	
+					->where(['cliente_id' => $this->request->session()->read('Auth.User.cliente_id')]);
+		$clientecredito = $clientecreditos->first();
+		$this->set('creditodisponible',$clientecredito['credito_maximo']-$clientecredito['credito_consumo']);
+	
+		foreach ($carritocon as $carrito): 
+			$totalitems+=1;
+			$totalcarrito= $totalcarrito + $carrito['cantidad']*round(h($carrito['precio_publico'])*0.807, 3);
+			$totalunidades= $totalunidades + $carrito['cantidad'] ;
+		endforeach; 
+		$this->set('totalitems',$totalitems);
+		$this->set('totalcarrito',$totalcarrito);
+		$this->set('totalunidades',$totalunidades);
+    }
+
+    /**
+     * View method
+     *
+     * @param string|null $id Pedido id.
+     * @return void
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function view($id = null)
+    {
+		$this->layout = 'store';
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => ['Clientes']
+        ]);
+        $this->set('pedido', $pedido);
+        $this->set('_serialize', ['pedido']);
+    }
+
+    /**
+     * Add method
+     *
+     * @return void Redirects on successful add, renders view otherwise.
+     */
+    public function add()
+    {
+		$this->layout = 'store';
+		$this->loadModel('Carritos');
+		$carritocon = $this->Carritos->find('all')	
+					->where(['Carritos.cliente_id' => $this->request->session()->read('Auth.User.cliente_id')]);
+		
+		if ($carritocon->count()>0)
+		{
+			//ConnectionManager::config('default', $config);
+			$conn = ConnectionManager::get('default');
+			
+			$cliente_id=$this->request->session()->read('Auth.User.cliente_id');
+			$envio = $this->request->data['enviodomicilio'];
+			$fecha = date('Y-m-d H:i:s');}
+			$comentario = $this->request->data['observacioens'];
+			$conn->query('CALL ConfirmarPedido('.$cliente_id.','.$envio.','.$envio.',"'.$fecha.'");');
+			 
+			$this->Flash->warning(__('Se envio correctamente el pedido, Gracias por Elegirnos!'),['key' => 'changepass']);
+			 
+			return $this->redirect(['controller'=>'Carritos','action' => 'search']);
+		}
+		else
+		{
+			$this->Flash->error(__('No tiene productos en el Carritos'),['key' => 'changepass']);
+			$this->redirect($this->referer());
+		}
+    }
+
+    /**
+     * Edit method
+     *
+     * @param string|null $id Pedido id.
+     * @return void Redirects on successful edit, renders view otherwise.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function edit($id = null)
+    {
+		$this->layout = 'store';
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $pedido = $this->Pedidos->patchEntity($pedido, $this->request->data);
+            if ($this->Pedidos->save($pedido)) {
+                $this->Flash->success('Se guardo los cambios.',['key' => 'changepass']);
+                return $this->redirect(['action' => 'index']);
+            } else {
+                $this->Flash->error('No Se guardo los cambios,intente de nuevo',['key' => 'changepass']);
+            }
+        }
+        $clientes = $this->Pedidos->Clientes->find('list', ['limit' => 200]);
+        $sucursals = $this->Pedidos->Sucursals->find('list', ['limit' => 200]);
+        $this->set(compact('pedido', 'clientes', 'sucursals'));
+        $this->set('_serialize', ['pedido']);
+    }
+
+    /**
+     * Delete method
+     *
+     * @param string|null $id Pedido id.
+     * @return void Redirects to index.
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function delete($id = null)
+    {
+		$this->layout = 'store';
+        $this->request->allowMethod(['post', 'delete']);
+        $pedido = $this->Pedidos->get($id);
+        if ($this->Pedidos->delete($pedido)) {
+            $this->Flash->success('Se eliminio correctamente.',['key' => 'changepass']);
+        } else {
+            $this->Flash->error('No se puedo eliminar, intente nuevamente',['key' => 'changepass']);
+        }
+        return $this->redirect(['action' => 'index']);
+    }
+	
+	public function import()
+	{
+		$this->layout = 'store';
+	}
+	
+	public function index_admin_search()
+    {
+		$this->layout = 'admin';
+		if ($this->request->is('post'))
+		{	
+	
+			if ($this->request->data['fechadesde']!= null)
+			{
+				$fechadesde = $this->request->data['fechadesde'];
+			}	
+			else
+			{
+				$fechadesde=0;
+			}
+			if ($this->request->data['fechahasta']!= null)
+			{
+				$fechahasta = $this->request->data['fechahasta'];
+			}	
+			else
+			{
+				$fechahasta =0;
+			}
+			if ($this->request->data['terminobuscar']!= null)
+			{
+				$termsearchp = '%'.$this->request->data['terminobuscar'].'%';
+			}	
+			else
+			{
+				$termsearchp ="";
+			}	
+			$this->request->session()->write('termsearchp',$termsearchp);
+			$this->request->session()->write('fechadesde',$fechadesde);	
+			$this->request->session()->write('fechahasta',$fechahasta);
+		}
+		else 
+		{
+			$fechahasta = $this->request->session()->read('fechahasta');
+		    $fechadesde = $this->request->session()->read('fechadesde');
+			$termsearchp = $this->request->session()->read('termsearchp');
+		}
+		
+        $this->paginate = [		
+		'limit' => 11,
+		];
+		
+		if ($fechahasta!=0)
+		{
+			//$fechahasta2 = Time::now();
+			$fechahasta2 = Time::createFromFormat(
+			'd/m/Y',
+			$fechahasta,
+			'America/Argentina/Buenos_Aires');
+			$fechahasta2->modify('+1 days');
+			$fechahasta2->i18nFormat('yyyy-MM-dd');
+			
+		}
+		else
+		{
+			$fechahasta2 = Time::now();
+			$fechahasta2-> modify('+1 days');
+			//$fechahasta2 = $fechahasta2->i18nFormat('yyyy-MM-dd');
+		}
+		if ($fechadesde!=0)
+		{
+			//$fechadesde2 = Time::now();
+			$fechadesde2 = Time::createFromFormat(
+				'd/m/Y',
+			$fechadesde,
+			'America/Argentina/Buenos_Aires');
+			$fechadesde2->i18nFormat('yyyy-MM-dd');
+		}
+		else
+		{
+			$fechadesde2 = Time::now();
+			if ($fechahasta!=0)
+				$fechadesde2->setDate($fechadesde2->year, $fechahasta2->month, 1);
+			else
+				$fechadesde2->setDate($fechadesde2->year, $fechadesde2->month, 1);
+			$fechadesde2->i18nFormat('yyyy-MM-dd');
+		}
+
+
+	  	if ($termsearchp!="")
+		{
+			if (($fechadesde !=0) && ($fechahasta !=0))
+			{
+				$pedidosA = $this->Pedidos->find('all')
+				->select(['id', 
+				'creado', 
+				'cliente_id', 
+				'sucursal_id', 
+				'tipo_fact', 
+				'forma_envio', 
+				'estado_id'])
+				->hydrate(false)
+				->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'left',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'left',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				])
+				
+				->where(['a.descripcion_pag LIKE'=>$termsearchp])
+				->orWhere(['a.troquel LIKE'=>$termsearchp])
+				->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"])
+				->group('Pedidos.id');
+	
+			}
+			else
+			{
+				if (($fechadesde !=0) || ($fechahasta !=0))
+				{
+				 $pedidosA = $this->Pedidos->find('all')
+				->select(['id', 
+				'creado', 
+				'cliente_id', 
+				'sucursal_id', 
+				'tipo_fact', 
+				'forma_envio', 
+				'estado_id'])
+				->hydrate(false)
+				->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'INNER',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'INNER',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				])
+			
+				->where(['a.descripcion_pag LIKE'=>$termsearchp])
+				->orWhere(['a.troquel LIKE'=>$termsearchp])
+				->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechadesde2->i18nFormat('yyyy-MM-dd')."'"])
+				->group('Pedidos.id');
+				
+				}
+				else
+				{
+					 $pedidosA = $this->Pedidos->find('all')
+					->select(['id', 
+					'creado', 
+					'cliente_id', 
+					'sucursal_id', 
+					'tipo_fact', 
+					'forma_envio', 
+					'estado_id'])
+					->hydrate(false)
+					->join([
+						'pe' => [
+							'table' => 'pedidos_items',
+							'type' => 'INNER',
+							'conditions' => 'pe.pedido_id = Pedidos.id',
+						],
+						'a' => [
+							'table' => 'articulos',
+							'type' => 'INNER',
+							'conditions' => 'a.id = pe.articulo_id',
+						]
+					])
+					
+					->where(['a.descripcion_pag LIKE'=>$termsearchp])
+					->orWhere(['a.troquel LIKE'=>$termsearchp])
+					->group('Pedidos.id');
+				}	
+			}
+		}
+        else
+		{
+			if (($fechadesde !=0) || ($fechahasta !=0))
+			{
+				$pedidosA = $this->Pedidos->find('all')
+				->select(['id', 
+					'creado', 
+					'cliente_id', 
+					'sucursal_id', 
+					'tipo_fact', 
+					'forma_envio', 
+					'estado_id'])
+				->hydrate(false)
+				->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'INNER',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'INNER',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				])
+				
+				->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"])
+				->group('Pedidos.id');
+			}
+			else
+					{
+						$pedidosA=null;
+						$this->redirect($this->referer());
+					}
+				
+					
+		}
+		if ($pedidosA!=null)
+		{
+			$pedidos = $this->paginate($pedidosA);
+		}
+		else
+			$pedidos = null;
+		//debug($pedidos);
+		$this->set('pedidos',$pedidos);
+    }
+
+   
+	
+	public function index_admin()
+    {
+		$this->layout = 'admin';
+        $this->paginate = [
+            'contain' => ['Clientes']
+        ];
+        $this->set('pedidos', $this->paginate($this->Pedidos));
+        $this->set('_serialize', ['pedidos']);
+		$this->set('titulo','Lista de pedidos');
+    }
+
+	
+	
+		public function index_admin_search2()
+    {
+		$this->layout = 'admin';
+        $this->paginate = [
+            'contain' => ['Clientes']
+        ];
+        $this->set('pedidos', $this->paginate($this->Pedidos));
+        $this->set('_serialize', ['pedidos']);
+		$this->set('titulo','Lista de pedidos');
+    }
+	
+    /**
+     * View method
+     *
+     * @param string|null $id Pedido id.
+     * @return void
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function view_admin($id = null)
+    {
+		$this->layout = 'admin';
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => ['Clientes']
+        ]);
+		$this->loadModel('PedidosItems');
+		
+        $this->set('pedido', $pedido);
+        $this->set('_serialize', ['pedido']);
+		
+		$this->set('titulo','Vista del Pedidos');
+		$this->paginate = [
+            'contain' => ['Pedidos', 'Articulos', 'Combos']
+        ];
+        $this->set('pedidosItems', $this->paginate($this->PedidosItems->find()->where(['pedido_id'=>$id])));
+        $this->set('_serialize', ['pedidosItems']);
+		
+		
+    }
+}

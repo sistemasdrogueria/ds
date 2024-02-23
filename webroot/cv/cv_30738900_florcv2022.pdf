@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es-AR">
+<head>
+    <title>Alta de curr&#237;culum - Computrabajo Argentina</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="meta_ctp" content="5" />
+    <meta name="meta_cts" content="D99453E87927E7C37517F155D77BACC7" />
+<link id='lnkCss' type='text/css' rel='stylesheet' href='/c/css/pcan.css?v=3.49'>    
+    <meta name="description" content="Crea y agreg&#225; tu CV gratuitamente a nuestra base de datos y date a conocer a las mejores empresas de Argentina. !No esperes y encuentra tu nuevo empleo ahora!" />
+    <meta name="title" content="Crea tu CV | Alta candidatos | Trabajo Argentina" />
+        <link rel="canonical" href="http://candidato.ar.computrabajo.com/acceso/" />
+
+    <link rel='shortcut icon' type='image/x-icon' href='/c/img/logos/favicon_ct.svg' />
+    
+    
+    
+</head>
+
+<body class="land_register">
+    <script>if ("" != document.referrer && !document.referrer.includes("ar.computrabajo.com")) { var date = new Date; date.setTime(date.getTime() + 864e5); var expires = "; expires=" + date.toUTCString(); document.cookie = "extrfr=" + document.referrer + expires + "; path=/;domain=ar.computrabajo.com" }</script>
+
+    
+    
+
+
+<div class="bg_img" style="background: url(/c/img/shapes-login.svg), url(/c/img/bg_login_small.jpg);">
+            <section class="ad_companies ocultar_mvl">
+            <h3 class="fs16">Empresas que est&#225;n contratando en Computrabajo</h3>
+            <div style="margin:0 auto;">
+                <div id='dfplogosc'></div>
+            </div>
+        </section>
+</div>
+
+<style type="text/css">
+    .gtmlogosimg {
+        border: 0;
+        vertical-align: middle;
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto 10px;
+    }
+
+    .gtmlogossect {
+        margin: 10px auto;
+        position: relative;
+        height: 90px;
+    }
+
+    .gtmlogosul {
+        width: 20000em;
+        list-style: none;
+        position: relative;
+        margin: 0;
+        padding: 0;
+        font-family: Roboto,Helvetica,Arial,sans-serif;
+    }
+
+    .gtmlogosa {
+        font-size: 14px;
+        background: transparent;
+        text-decoration: none;
+        color: #1e82c4;
+        cursor: pointer;
+    }
+
+    .gtmlogosli {
+        width: 140px;
+        float: left;
+        border: 0;
+        text-align: center;
+    }
+</style>
+
+<section class="box">
+    <div class="small js_login_container">
+        <form id="loginForm" method="post">
+    <input name="__RequestVerificationToken" type="hidden" value="d55eklhuIokUYKmRDhk3WOdLCbVehiH1dqw-TF3uIa5ZmSPm72uCalatijNsMNVR-56w-8bTXBclCbVH2eNjYzA_iw41" />
+    <input id="LoginModel_Name" name="LoginModel.Name" type="hidden" value="" />
+    <input id="LoginModel_PhotoPath" name="LoginModel.PhotoPath" type="hidden" value="" />
+    <input data-val="true" data-val-number="The field Gender must be a number." id="LoginModel_Gender" name="LoginModel.Gender" type="hidden" value="0" />
+    <a href="https://ar.computrabajo.com">
+        <img src="/c/img/logos/logoct.svg" srcset="/c/img/logos/logoct.svg" alt="Computrabajo Argentina" width="200" class="mb30" />
+    </a>
+    
+<div id="registerContainer" class="login-container">
+        <h1>
+            Tu pr&#243;ximo trabajo est&#225; aqu&#237;
+        </h1>
+        <p class="fc_gray mb30 fs16">Ingresa y post&#250;late a miles de empleos</p>
+
+    <div class="button_container">
+            <a href="/Google/RedirectToGoogle" rel="nofollow" class="b_google" title="Contin&#250;a con Google">Contin&#250;a con Google</a>
+            <a id="btnFacebookLog" login-facebook-popup href="/FacebookAccess?activeForm=2&oi=&refUrl=78D6EAB4E746090EF7C1A201F4F361A1F034EB25B0ED8F05A876AF797F1F2BB011B8C84D73E7B7C9DC927637C52D3A3D859FBE99E748F01238442CF34429C0753817A10B84465FC020C073D06283F45C37C2E3D06F7A09AA&na=" title="Contin&#250;a con Facebook" class="b_facebook w_100 mt15" rel="nofollow">
+            Contin&#250;a con Facebook
+        </a>
+</div>
+
+
+    <p class="line_sides full mt15 mb15">
+        <span>o</span>
+    </p>
+    <div class="pAll0">
+        <p for="AccessModel_Email" class="tl mb10 fs16" id="lblSubmitEmail">Contin&#250;a con tu correo</p>
+        <input autocomplete="off" class="it-email rounded cm-12" data-val="true" data-val-email="Formato de e-mail incorrecto" data-val-emailmaxlength="Máximo es de 50 caracteres" data-val-requiredliteral="Obligatorio" id="LoginModel_Email" name="LoginModel.Email" type="email" value="" />
+        <span class="field-validation-valid" data-valmsg-for="LoginModel.Email" data-valmsg-replace="true"></span>
+    </div>
+    <a id="continueWithMailButton" class="b_primary_inv new rounded w_100 mt15 fw_b open-pswrd-container" btn-submit>Continuar</a>
+</div>
+    <div id="divUserLogin" class="pswrd-container">
+
+    <div id="loginContainer">
+        <input class="ActiveForm" data-val="true" data-val-number="The field ActiveForm must be a number." id="ActiveFormLogin" name="ActiveForm" type="hidden" value="2" />
+        <input data-val="true" data-val-number="The field IsResponsive must be a number." id="isRespLogin" name="IsResponsive" type="hidden" value="2" />
+        
+<div class="user_avatar mb15 pos_rel">
+    <a id="returnRegisterButton" href="#" class="icon i_back pos_ab left0"></a>
+    <div no-photo-container class="">
+        <div><span class="icon i_man"></span></div>
+    </div>
+    <div photo-container class="tc avatar_img_container hide">
+        <img id="photo" photo height="74" width="74" alt="image" >
+    </div>
+</div>
+<p user-name-text class="fs20 mb30"></p>
+
+    </div>
+    <label class="mb5 d_block fs16 tl" for="LoginModel_Password">Introduce tu contrase&#241;a</label>
+    <input autocomplete="off" class="cm-12 rounded" data-val="true" data-val-requiredliteral="Obligatorio" id="LoginModel_Password" name="LoginModel.Password" type="password" />
+    <span class="field-validation-valid" data-valmsg-for="LoginModel.Password" data-valmsg-replace="true"></span>
+
+    <a id="showRememberPasswordButton" class="mt10 w_100 d_inlineblock tl open-recover-container">&#191;No record&#225;s tu contrase&#241;a?</a>
+    <button type="submit" id="btnSubmitPass" class="b_primary new rounded w_100 mt15" btn-submit>Iniciar sesi&#243;n</button>
+</div>
+</form>
+<div id="rememberPasswordContainer" class="recover-container">
+    <div id="rememberPasswordPhotoContainer" class="hide">
+        
+<div class="user_avatar mb15 pos_rel">
+    <a id="returnLoginButton" href="#" class="icon i_back pos_ab left0"></a>
+    <div no-photo-container class="">
+        <div><span class="icon i_man"></span></div>
+    </div>
+    <div photo-container class="tc avatar_img_container hide">
+        <img id="photo" photo height="74" width="74" alt="image" >
+    </div>
+</div>
+<p user-name-text class="fs20 mb30"></p>
+
+    </div>
+    <form method="post">
+        <input name="__RequestVerificationToken" type="hidden" value="tYbpitf231pg8lecmZleQQU4bHZPFvHBGPexqNEgoIRni-SCYVHzRo8i8L_iRRFDfLOdR0w37iMnejU0sgJdQbkb-Bw1" />
+        <input id="RememberPasswordModel_Name" name="RememberPasswordModel.Name" type="hidden" value="" />
+        <input id="RememberPasswordModel_PhotoPath" name="RememberPasswordModel.PhotoPath" type="hidden" value="" />
+        <input data-val="true" data-val-number="The field Gender must be a number." id="RememberPasswordModel_Gender" name="RememberPasswordModel.Gender" type="hidden" value="0" />
+        <input class="ActiveForm" data-val="true" data-val-number="The field ActiveForm must be a number." id="ActiveFormRememberPassword" name="ActiveForm" type="hidden" value="2" />
+            <div class="field_input fs16">
+                <input autocomplete="off" class="cm-12 rounded" data-val="true" data-val-email="Formato incorrecto" data-val-emailmaxlength="El tamaño máximo es de 50 caracteres" data-val-emailnoexists="Email no registrado" data-val-requiredliteral="Obligatorio" id="RememberPasswordModel_Email" name="RememberPasswordModel.Email" placeholder="Correo electrónico*" type="email" value="" />
+                <span class="field-validation-valid" data-valmsg-for="RememberPasswordModel.Email" data-valmsg-replace="true"></span>
+            </div>
+            <input id="sbRemember" type="submit" name="submit" value="Recuperar contrase&#241;a" class="b_primary new rounded w_100 mt15" btn-submit>
+            <a id="showLoginFormButton" href="#" class="b_primary_inv new rounded w_100 mt15">Volver a intentar el acceso</a>
+    </form>
+</div>
+
+    <div>
+        <div id="g_id_onload" data-client_id="518909976216-pv3h4gv2oqkcqksu8refq7fj7ba0b7qr.apps.googleusercontent.com" data-login_uri="https://candidato.ar.computrabajo.com/Google/OneTapLogin"
+             data-rfr="http://candidato.ar.computrabajo.com/access?rfl=78D6EAB4E746090EF7C1A201F4F361A1F034EB25B0ED8F05A876AF797F1F2BB011B8C84D73E7B7C9DC927637C52D3A3D859FBE99E748F01238442CF34429C0753817A10B84465FC020C073D06283F45C37C2E3D06F7A09AA" data-cancel_on_tap_outside="false" data-state_cookie_domain="ar.computrabajo.com">
+        </div>
+        <script>
+        var modal = document.getElementById("g_id_onload");
+        var c = getCookieLogout();
+        if (c) {
+            modal.setAttribute("data-auto_select", "false");
+        }
+        else {
+            modal.setAttribute("data-auto_select", "true");
+        }
+
+        function getCookieLogout() {
+            return document.cookie.split(';').some(c => {
+                return c.trim().startsWith('lout' + '=');
+            });
+        }
+        </script>
+        <script src="https://accounts.google.com/gsi/client" async defer></script>
+    </div>
+
+    </div>
+    <footer id="secfooter">
+        <div>
+            
+<div class="android_app" id="it-app-google">
+    <a href="https://play.google.com/store/apps/details?id=com.redarbor.computrabajo&hl=es&referrer=cts%3D3%26ctp%3D5%26ctz%3D1" target="_blank" rel="noopener noreferrer nofollow">
+        <img id="android" class="lazy" data-original="/c/img/es-419_generic_rgb_wo_45.svg" alt="Disponible en Google Play" />
+    </a>
+</div>
+
+            
+    <div class="ios_app" id="it-app-itunes">
+        <a href="https://itunes.apple.com/es/app/computrabajo-ofertas-empleo/id1093787284?mt=8" target="_blank" rel="noopener noreferrer nofollow">
+            <img id="ios" alt="Consíguela en AppStore" class="lazy" data-original="/c/img/ios_app.svg" />
+        </a>
+    </div>
+
+
+
+
+            
+    <div class="android_app huawei_app" id="divHuaweiApp">
+        <a href="https://appgallery.huawei.com/#/app/C102560361" target="_blank" rel="noopener noreferrer nofollow">
+            <img class="lazy" data-original="/c/img/huawei_app.svg" alt="Disponible en Huawei AppGallery" style="height:40px;">
+        </a>
+    </div>
+
+        </div>
+        <p>
+            Copyright 2022 DGNET LTD.
+        </p>
+        <a class="buildLink" data-path="/contacto/">Contacto de candidato</a><span> / </span><a class="buildLink" data-path="/ayuda/">Ayuda de candidato</a>
+    </footer>
+
+</section>
+
+
+    
+    <script src="/bundles/site?v=nidHYmLzj7VWobNCdfZbrjSHfR6zTkspLJVXeVRDUCk1"></script>
+
+    <script src="/bundles/jqueryValidate?v=HkLJ6kZYk4f_53nsygzakdLlNrUJJink425RPy_hR2A1"></script>
+
+    
+
+    <script>
+        $(document).ready(function () {
+            var accesoCandidate = window.location.pathname;
+            if (accesoCandidate === '/Acceso/' && $(window).width() <= 768) {
+                $('.icon.mvlicon').addClass('ocultar');
+            }
+        });
+
+        $(window).resize(function () {
+            var accesoCandidate = window.location.pathname;
+            if (accesoCandidate === '/Acceso/' && $(window).width() <= 768) {
+                $('.icon.mvlicon').addClass('ocultar');
+            }
+
+
+            if ($(window).width() <= 768 && $('#m_mbl').hasClass('menu_visible')) {
+                $('#m_mbl').show();
+            } else if ($(window).width() > 768) {
+                $('#m_mbl').show();
+                $('#m_mbl').removeClass('menu_visible');
+                $('#js-navabierto').hide();
+            }
+            else {
+                $('#m_mbl').hide();
+            }
+        });
+
+        $(":input").on("blur", function (e) {
+            this.value = this.value.trim();
+        });
+
+        function CheckAdVisibility(sectionId, isGrandparentContained) {
+            setTimeout(function () {
+                var section = $("#" + sectionId);
+                var sectionVisible = section.css("display") != 'none';
+                var sectionEmpty = section.is(":empty");
+                var sectionContainer = section.parent();
+                if (isGrandparentContained) { sectionContainer = sectionContainer.parent(); }
+
+                if (sectionContainer.css("display") == 'none') {
+                    if (sectionVisible && !sectionEmpty) { sectionContainer.show(); }
+                }
+            }, 15000);
+        }
+    </script>
+
+    
+    <script type='text/javascript' src='/c/js/validation-rules.js?v=3.49'></script>
+    <script type='text/javascript' src='/c/js/jquery.mailcheck.min.js?v=3.49'></script>
+    
+    <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                var f = d.getElementsByTagName(s)[0], j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true;
+                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+                })(window, document, 'script', 'dataLayer', 'GTM-TSTJH3Z');
+    </script>
+    <noscript>
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSTJH3Z" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+<script>
+
+    const $emailInput = $("#LoginModel_Email");
+    const $passwordInput = $("#LoginModel_Password");
+
+    const $divLogin = $("#divUserLogin");
+    const $divRegister = $("#registerContainer");
+    const $divRememberPassword = $("#rememberPasswordContainer");
+
+    const $effectClasses = "rightIn rightOut leftIn leftOut";
+    const $effLeftIn = "leftIn";
+    const $effLeftOut = "leftOut";
+    const $effRightIn = "rightIn";
+    const $effRightOut = "rightOut";
+
+    let emailSubmit = false;
+
+    $(document).ready(function () {
+        if (window.location.hash && window.location.hash == '#_=_') {
+            window.location.hash = '';
+        }
+
+
+        $emailInput.rules("remove", "emailexists");
+
+        CancelTabButtonOnKeyDown();
+
+        $("input").bind('keypress', function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                switch (this.id) {
+                    case "LoginModel_Email":
+                        $("#continueWithMailButton").click();
+                        break;
+                    case "LoginModel_Password":
+                        $("#btnSubmitPass").click();
+                        break;
+                    case "RememberPasswordModel_Email":
+                        $("#sbRemember").click();
+                        break;
+                }
+            }
+        });
+
+        $("#continueWithMailButton").on("click", function () {
+            emailSubmit = true;
+            const valid = ValidateEmailInput();
+            if (valid) {
+                GetUserRegistered($emailInput.val());
+            }
+        });
+
+        $("#continueWithMailButton").on("change", function () {
+            if (emailSubmit) {
+                ValidateEmailInput();
+            }
+        });
+
+        $("#rememberPasswordContinueButton").on("click", function () {
+            $("#LoginModel_Password").removeClass("hide");
+            $('#rememberPasswordPhotoContainer').toggleClass('hide');
+            ShowRememberPasswordToLoginAnimation();
+        });
+
+        $("#showRememberPasswordButton").on("click", function () {
+            $('#rememberPasswordPhotoContainer').toggleClass('hide');
+            ShowLoginToRememberPasswordAnimation();
+        });
+
+        $("#showLoginFormButton").on("click", function () {
+            $('#rememberPasswordPhotoContainer').toggleClass('hide');
+            ShowRememberPasswordToLoginAnimation();
+        });
+
+        $("#returnRegisterButton").on("click", function () {
+            ShowLoginToRegisterAnimation();
+            ResetPhotoAndName();
+        });
+
+        $("#returnLoginButton").on("click", function () {
+            $('#rememberPasswordPhotoContainer').toggleClass('hide');
+            ShowRememberPasswordToLoginAnimation();
+        });
+    });
+
+    function ValidateEmailInput() {
+        return $emailInput.valid();
+    }
+
+    function ValidatePasswordInput() {
+        return $passwordInput.valid();
+    }
+
+    function GetUserRegistered(email) {
+            const welcomeMaleLit = 'Bienvenido de nuevo';
+            const welcomeFemaleLit = 'Bienvenida de nuevo';
+            $.ajax({
+                url: '/ajax/getuserregistered',
+                type: 'GET',
+                dataType: 'json',
+                data: { 'email': email },
+                beforeSend: function () {
+                    $("#continueWithMailButton").addClass("disabled");
+                },
+                success: function (data) {
+                    if (data.Name) {
+                        //Login
+                        if (data.Photo) {
+                            $('[photo]').attr('src', 'https://ii.ct-stc.com/5/' + data.Photo);
+                            $('[photo-container]').removeClass("hide");
+                            $('[no-photo-container]').addClass("hide");
+                        }
+                        $('[user-name-text]').text((data.Gender === 1 ? welcomeMaleLit : welcomeFemaleLit) + ' ' + data.Name);
+                        $("#AccessModel_Email").val(email);
+                        ShowRegisterToLoginAnimation();
+                        $("#LoginModel_Name").val(data.Name);
+                        $("#LoginModel_PhotoPath").val(data.Photo);
+                        $("#LoginModel_Gender").val(data.Gender);
+                        $("#RememberPasswordModel_Email").val(email);
+                        $("#RememberPasswordModel_Name").val(data.Name);
+                        $("#RememberPasswordModel_PhotoPath").val(data.Photo);
+                        $("#RememberPasswordModel_Gender").val(data.Gender);
+                    } else {
+                        if (data.idstatus == 5) {
+                            //Enviar a la home
+                            location.href = data.url;
+                        }
+                        else {
+                            //Registro
+                            location.href = `/Step1?m=` + data.email + ``;
+                        }
+                    }
+                },
+                error: function (ex) {
+                    console.error(ex.statusText);
+                },
+                complete: function () {
+                    $("#continueWithMailButton").removeClass("disabled");
+                }
+            });
+    }
+        var typoDTO = {
+            "message": "¿Querías decir"
+    };
+
+    document.querySelectorAll("[login-google-popup]").forEach(function (element) {
+        element.addEventListener("click", function () {
+		var coo = getCookie('uca');
+            if (!coo) {
+                var deviceIphone = "iphone",
+                    deviceIpad = "ipad",
+                    deviceIpod = "ipod",
+                    uagent = navigator.userAgent.toLowerCase(),
+                    isApple = uagent.search(deviceIphone) > -1 || uagent.search(deviceIpod) > -1 || uagent.search(deviceIpad) > -1;
+                if (isApple) {
+                    window.location.assign("/Google/RedirectToGoogle");
+                } else {
+                    window.popupGoogle = window.open('/Google/RedirectToGoogle?fpp=true', 'popupGoogle', 'width=600,height=600,scrollbars=no,resizable=no');
+                    checkLoginGoogle = setInterval(checkPopUpGoogle, 1000);
+                }
+            } else {
+                window.location.reload();
+            }
+        });
+    });
+
+    function checkPopUpGoogle() {
+        if (window.getCookie('uca') != "" || window.getCookie('gulr') != "") {
+            clearInterval(checkLoginGoogle);
+
+            if (window.getCookie('gulr') != "") {
+                let urlRedirect = window.getCookie('gulr');
+                if (urlRedirect) {
+                    setCookie('gulr', '', -1);
+                    window.location.href = urlRedirect;
+                }
+            } else {
+                window.location.reload();
+            }
+        }
+    }
+
+    function ShowRegisterToLoginAnimation() {
+        ReplaceShowClass($divLogin, $effLeftIn);
+        ReplaceShowClass($divRegister, $effRightOut);
+    }
+
+    function ShowLoginToRegisterAnimation() {
+        ReplaceShowClass($divRegister, $effRightIn);
+        ReplaceShowClass($divLogin, $effLeftOut);
+    }
+
+    function ShowRememberPasswordToLoginAnimation() {
+        ReplaceShowClass($divRememberPassword, $effLeftOut);
+        ReplaceShowClass($divLogin, $effLeftIn);
+    }
+
+    function ShowLoginToRememberPasswordAnimation() {
+        ReplaceShowClass($divRememberPassword, $effLeftIn);
+        ReplaceShowClass($divLogin, $effRightOut);
+    }
+
+    function ShowRegisterToRememberPasswordAnimation() {
+        $('#rememberPasswordPhotoContainer').removeClass('hide');
+        ReplaceShowClass($divRememberPassword, $effLeftIn);
+        ReplaceShowClass($divRegister, $effRightOut);
+        ReplaceShowClass($divLogin, $effRightOut);
+    }
+
+    function ReplaceShowClass($elem, newClass) {
+        $elem.removeClass($effectClasses);
+        $elem.addClass(newClass);
+    }
+
+    function ResetPhotoAndName() {
+        $('[photo]').attr('src', '');
+        $('[photo-container]').addClass("hide");
+        $('[no-photo-container]').removeClass("hide");
+        $('[user-name-text]').text('');
+    }
+
+    function CancelTabButtonOnKeyDown() {
+        document.onkeydown = function (t) {
+            if (t.which === 9) {
+                return false;
+            }
+        }
+    }
+</script>
+
+
+    <script>
+		var cookieConsent = getCookie("ct_consent");
+		if (!cookieConsent) {
+			window.addEventListener("load", function () {
+				$.ajax({
+                    url: "https://geolocation-db.com/jsonp/",
+					jsonpCallback: "callback",
+					dataType: "jsonp",
+					success: function (location) {
+						SetCookieConsent(location);
+							
+							setCookie("ct_consent", "1", 365);
+							
+					},
+					error: function (jqXHR, textStatus, errorThrow) {
+						throw Error("Error getting user location information. ErrorText:" + errorThrow);
+					}
+				});
+			});
+			function SetCookieConsent(location) {
+				var cookieOptions = {
+					"palette": {
+						"popup": {
+							"background": "#237afc"
+						},
+						"button": {
+							"background": "#fff",
+							"text": "#237afc"
+						}
+					},
+					"revokeBtn": "<div style='display:none;'><div class='cc-revoke {{classes}}'></div></div>",
+					"cookie": {
+						"domain": "ar.computrabajo.com"
+					},
+					"theme": "classic",
+					"content": {
+						"message": "Utilizamos cookies propias necesarias para el funcionamiento correcto y personalización del sitio web. También utilizamos cookies de terceros para fines analíticos y mostrarte publicidad relacionada según tus preferencias. Para más información sobre las cookies y configurar tus preferencias, consulta nuestra ",
+						"dismiss": "Acepto",
+						"link": "Política de Cookies",
+						"href": "https://ar.computrabajo.com/privacidad/#cookies"
+					},
+					"law": {
+						"countryCode": location.country_code
+					},
+					"dismissOnTimeout": true
+				}
+					
+					window.cookieconsent.initialise(cookieOptions);
+					
+			};
+		}
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";domain=ar.computrabajo.com" + ";path=/";
+    }
+		function getCookie(cname) {
+			var name = cname + "=";
+			var ca = document.cookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
+				}
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
+				}
+			}
+			return "";
+		}
+</script>
+
+    
+ <script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=true;a.defer=true;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-2335793-3', 'auto');
+ga('set', 'anonymizeIp', true);
+ga('send', 'pageview', {'dimension1':'Privada - Acceso'});
+</script>
+    
+    
+    
+    
+<mon name="8473B2EC4866954E9FB9B40B89D128FF"></mon>
+
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+/vendor/*
+/config/app.php
+/tmp/*
+/logs/*
+/webroot/img/*
+/webroot/temp/*
+/webroot/file/*
+/webroot/descargas/*

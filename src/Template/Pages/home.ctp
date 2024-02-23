@@ -1,0 +1,1 @@
+<?php echo $this->element('page_index_noticias'); ?>

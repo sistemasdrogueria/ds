@@ -1,0 +1,158 @@
+* {
+	padding:0;
+	margin:0;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+ 
+body {background:#FEFEFE;}
+ 
+.menu_bar {
+	display:block;
+}
+ 
+header {
+	width: 100%;
+}
+ 
+header nav {
+
+}
+ 
+header nav ul {
+	list-style:none;
+}
+ 
+header nav ul li {
+	display:inline-block;
+	position: relative;
+	list-style-type: none;
+    font-size: 12px;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+ 
+header nav ul li:hover {
+	background:#8FA800;
+}
+ 
+header nav ul li a {
+	color:#2A80B9;
+	display:block;
+	text-decoration:none;
+	
+	margin: 0px;
+    padding: 0px;
+    border: 0px;
+}
+ 
+header nav ul li a span {
+	
+}
+ 
+header nav ul li:hover .children {
+	display:block;
+}
+ 
+header nav ul li .children {
+	display: none;
+	background:#2A80B9;
+	position: absolute;
+	width: 100%;
+	z-index:900;
+	margin: 0px;
+    padding: 0px;
+    border: 0px;
+	list-style:none;
+}
+ 
+header nav ul li .children li {
+	display:block;
+	overflow: hidden;
+	list-style:none;
+}
+
+header nav ul li .children li a {
+	display: block;
+	list-style:none;
+}
+ 
+header nav ul li .children li a span {
+	float: right;
+	position: relative;
+
+}
+ 
+header nav ul li .caret {
+	position: relative;
+
+
+}
+ 
+
+
+@media screen and (max-width: 800px) {
+	body {
+		
+	}
+ 
+	.menu_bar {
+		display:block;
+		width:100%;
+		position: fixed;
+		top:0;
+		background:#E6344A;
+	}
+ 
+	.menu_bar .bt-menu {
+		display: block;
+		padding: 20px;
+		color: #2A80B9;
+		overflow: hidden;
+		font-size: 25px;
+		font-weight: bold;
+		text-decoration: none;
+	}
+ 
+	.menu_bar span {
+		float: right;
+		font-size: 40px;
+	}
+ 
+	header nav {
+		width: 80%;
+		height: calc(100% - 80px);
+		position: fixed;
+		right:100%;
+		margin: 0;
+		overflow: scroll;
+	}
+ 
+	header nav ul li {
+		display: block;
+		border-bottom:1px solid rgba(255,255,255,.5);
+	}
+ 
+	header nav ul li a {
+		display: block;
+	}
+ 
+	header nav ul li:hover .children {
+		display: none;
+	}
+ 
+	header nav ul li .children {
+		width: 100%;
+		position: relative;
+	}
+ 
+	header nav ul li .children li a {
+		margin-left:20px;
+	}
+ 
+	header nav ul li .caret {
+		float: right;
+	}
+}

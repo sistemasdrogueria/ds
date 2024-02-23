@@ -1,0 +1,136 @@
+<div class="articulos index large-10 medium-9 columns">
+    <table class='tablasearch' cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>	
+			<th><?= $this->Paginator->sort('fecha') ?></th>            
+            <th><?= $this->Paginator->sort('pedido_ds') ?></th>          
+            <th><?= $this->Paginator->sort('comprobante_id','F. Número') ?></th>
+			<th><?= $this->Paginator->sort('imp_exento','N. Exento') ?></th>
+			<th><?= $this->Paginator->sort('imp_gravado','N. Gravado') ?></th>
+            <th><?= $this->Paginator->sort('imp_iva','I.V.A.') ?></th>
+			<th><?= $this->Paginator->sort('imp_ingreso_bruto','Percp. I.B.') ?></th>
+			<th><?= $this->Paginator->sort('total') ?></th>
+            <th class="actions"><?= __('Actions') ?></th>
+        </tr>
+		   
+    </thead>
+    <tbody>
+
+    <?php $indice=0;?>
+	<?php foreach ($facturasCabeceras as $facturasCabecera): ?>
+        <tr>
+		<?php $indice+=1;?>
+			 <td class="colcenter"><?php 
+				echo date_format($facturasCabecera['fecha'],'d-m-Y');
+			 ?></td>
+            <td class="colcenter"><?= $this->Number->format($facturasCabecera['pedido_ds']) ?></td>
+            <td class="colcenter">
+			   <?php 
+			   
+			    echo
+					$facturasCabecera['letra'].' '.				
+					str_pad($facturasCabecera['comprobante']['seccion'] , 4, "0", STR_PAD_LEFT).'-'.
+			        str_pad($facturasCabecera['comprobante']['numero']  	, 8, "0", STR_PAD_LEFT);
+                ?>
+            </td>
+			<td class='colprecio'>
+			<?php 
+					echo '$ '.number_format($facturasCabecera['imp_exento'],2,',','.'); 
+				?>
+			</td>
+            <td class='colprecio'>
+			<?php 
+					echo '$ '.number_format($facturasCabecera['imp_gravado'],2,',','.'); 
+				?>
+			</td>
+			<td class='colprecio'>
+				<?php 
+					echo '$ '.number_format($facturasCabecera['imp_iva'],2,',','.'); 
+				?>
+			</td>
+			<td class='colprecio'>
+			<?php 
+					echo '$ '.number_format($facturasCabecera['imp_ingreso_bruto'],2,',','.'); 
+			?>
+			</td>
+			<td class='colprecio'>
+				<?php echo '$ '.number_format($facturasCabecera['total'],2,',','.'); ?>
+			</td>
+			 <td class="actions">
+                <?= $this->Html->link(__('View'), ['action' => 'view', $facturasCabecera['id']]) ?>
+            </td>
+        </tr>
+   
+    <?php endforeach; $indice+=2; ?>
+    </tbody>
+    </table>
+    <div class="paginator">
+        <ul class="pagination">
+            <?= $this->Paginator->prev('< ' . __('Anterior')) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next(__('Siguiente') . ' >',['tabindex'=>$indice]) ?>
+			<div class="pagination_count"><span><?= $this->Paginator->counter('{{count}} Articulos') ?> </span></div>
+        </ul>
+    </div>
+</div>
+
+  <script type="text/javascript">
+	$("tr").not(':first').hover(
+	function () {
+		$(this).css("background","#8FA800");
+		$(this).css("color","#000");
+		$(this).css("font-weight","");
+		}, 
+	function () {
+		$(this).css("background","");
+		$(this).css("color","#464646");
+		$(this).css("font-weight","");
+		}
+	);
+</script>
+
+<div class="facturasCuerposItems index large-10 medium-9 columns">
+    <table cellpadding="0" cellspacing="0">
+    <thead>
+        <tr>
+            <th><?= $this->Paginator->sort('id') ?></th>
+            <th><?= $this->Paginator->sort('facturas_encabezados_id') ?></th>
+            <th><?= $this->Paginator->sort('pedido_ds') ?></th>
+            <th><?= $this->Paginator->sort('iva') ?></th>
+            <th><?= $this->Paginator->sort('cantidad_facturada') ?></th>
+            <th><?= $this->Paginator->sort('precio_unitario') ?></th>
+            <th><?= $this->Paginator->sort('precio_publico') ?></th>
+            <th class="actions"><?= __('Actions') ?></th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php foreach ($facturasCuerposItems as $facturasCuerposItem): ?>
+        <tr>
+            <td><?= $this->Number->format($facturasCuerposItem->id) ?></td>
+            <td>
+                <?= $facturasCuerposItem->has('facturas_cabecera') ? $this->Html->link($facturasCuerposItem->facturas_cabecera->id, ['controller' => 'FacturasCabeceras', 'action' => 'view', $facturasCuerposItem->facturas_cabecera->id]) : '' ?>
+            </td>
+            <td><?= $this->Number->format($facturasCuerposItem->pedido_ds) ?></td>
+            <td><?= h($facturasCuerposItem->iva) ?></td>
+            <td><?= $this->Number->format($facturasCuerposItem->cantidad_facturada) ?></td>
+            <td><?= $this->Number->format($facturasCuerposItem->precio_unitario) ?></td>
+            <td><?= $this->Number->format($facturasCuerposItem->precio_publico) ?></td>
+            <td class="actions">
+                <?= $this->Html->link(__('View'), ['action' => 'view', $facturasCuerposItem->id]) ?>
+                <?= $this->Html->link(__('Edit'), ['action' => 'edit', $facturasCuerposItem->id]) ?>
+                <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $facturasCuerposItem->id], ['confirm' => __('Are you sure you want to delete # {0}?', $facturasCuerposItem->id)]) ?>
+            </td>
+        </tr>
+
+    <?php endforeach; ?>
+    </tbody>
+    </table>
+    <div class="paginator">
+        <ul class="pagination">
+            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->numbers() ?>
+            <?= $this->Paginator->next(__('next') . ' >') ?>
+        </ul>
+        <p><?= $this->Paginator->counter() ?></p>
+    </div>
+</div>

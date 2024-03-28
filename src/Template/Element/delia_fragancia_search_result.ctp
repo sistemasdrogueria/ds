@@ -7,6 +7,7 @@ $terminobuscar= 0;
 $marca_id=0;
 $genero_id=0;
 ?>
+
 <?= $this->Form->create('Carritos',['url'=>['controller'=>'Carritos','action'=>'#'],'id'=>'formaddcart','onsubmit'=>'return false;']); ?>
 <div class=fraganciacontenedorajust>
 <div class="fraganciacontenedor">
@@ -116,9 +117,11 @@ else
 <?php endforeach; ?>
 </table>
 </div>
-    <?php if ($articulo["id"]== 48072)
-echo $this->Html->image('GASPAR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes','style'=>'width:40px;']); ?>
-</div>
+    <?php if ($articulo["id"]== 20383)
+echo $this->Html->image('CONEJO-FERRERO.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+
+ ?>
+ </div>
 <?php endforeach; ?>
 </div>
 <!--/div -->

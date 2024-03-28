@@ -20,6 +20,7 @@
 
     <?php $indice=0;?>
 	<?php foreach ($facturasCabeceras as $facturasCabecera): ?>
+	 <?php foreach ($facturasCabecera['facturas_cuerpos_items'] as $items): ?>
         <tr>
 		<?php $indice+=1;?>
 			 <td class="colcenter"><?php 
@@ -37,13 +38,13 @@
             </td>
 			<td class="actions">
                 <?php // $this->Html->link(__('View'), ['action' => 'view', $facturasCabecera['id']]) ?>
-             <?php if ($facturasCabecera['facturas_cuerpos_items']!=null)
-					echo $facturasCabecera['facturas_cuerpos_items'][0]['descripcion'];
+               <?php if ($items!=null)
+					echo $items['descripcion'];
 			 ?>
 			</td>
 			<td>
-			 <?php if ($facturasCabecera['facturas_cuerpos_items']!=null)
-					echo $facturasCabecera['facturas_cuerpos_items'][0]['cantidad_facturada'];
+	 <?php if ($items!=null)
+					echo $items['cantidad_facturada'];
 			 ?>
 			</td>
             <td class='colprecio'>
@@ -71,7 +72,7 @@
 			</td>
 			
         </tr>
-   
+        <?php endforeach; ?>
     <?php endforeach; $indice+=2; ?>
     </tbody>
     </table>

@@ -206,7 +206,9 @@ if (($articulo['restringido_unid_w']>0 || $articulo['restringido_unid']>0) && $a
 	echo '<font color=#fe4c04><b>  MÁX '.$articulo['restringido_unid_w'].' UNI</b></font>';
 }
 ?>	
-<?php if($articulo['id']==48687) {echo $this->Html->image('MELCHOR.png',['title' => 'Stock Bajo, Consultar Operadora', 'width'=>20] );}  ?>
+<?php /*
+if($articulo['id']==48687) {echo $this->Html->image('MELCHOR.png',['title' => 'Stock Bajo, Consultar Operadora', 'width'=>20] );} */
+ ?>
 </div>				
 </td>
 <td class='colprecio' style=" border: solid #fff; border-width: 0px 1px 0px 1px;">
@@ -613,14 +615,14 @@ fvcerca= 'Vencimiento: ';
 fvcerca= fvcerca.concat(fv);			 
 }	
 eanimg ='<img src="https://www.drogueriasur.com.ar/ds/webroot/img/productos/'+ean+'" alt="'+ean+'" width="200px">';
-imgmelchor ='<img src="https://www.drogueriasur.com.ar/dsx/webroot/img/MELCHOR.png" width="50">';
-if(dataimg== 1){
+//imgmelchor ='<img src="https://www.drogueriasur.com.ar/dsx/webroot/img/MELCHOR.png" width="50">';
+//if(dataimg== 1){
 
-document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div><div id='flotante_img'>"+imgmelchor+"</div>";
-}else{
+//document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div><div id='flotante_img'>"+imgmelchor+"</div>";
+//}else{
 
 document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div>";
-}
+//}
 // Posicionamos la capa flotante
 document.getElementById('flotante').style.top = (tempY-120)+"px";
 document.getElementById('flotante').style.left = (tempX-10)+"px";

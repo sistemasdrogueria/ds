@@ -99,8 +99,8 @@ echo $this->Html->link('linkoculto',['controller'=>$sursale['url_controlador'],'
 echo $this->Html->image('publicaciones/'.$sursale['imagen'],['alt'=>'Drogueria Sur S.A.','width'=>'100%']);
 }
 }
-else
-if ($sursale['url_campo']!='')
+else{
+if ($sursale['url_campo']!=''  && empty($sursale['laboratorio_id']) )
 {
 if ($sursale['url_campo']!='preventa')
 echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo'],$sursale['url_campo']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
@@ -110,11 +110,19 @@ echo $this->Html->link('linkoculto',['controller'=>$sursale['url_controlador'],'
 echo $this->Html->image('publicaciones/'.$sursale['imagen'],['alt'=>'Drogueria Sur S.A.','width'=>'100%']);
 }
 }
-else
-if (!is_null($sursale['laboratorio_id']))
-echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo']," ",$sursale['laboratorio_id']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
-else
+else{
+if (!empty($sursale['laboratorio_id'])){
+	 if(!empty($sursale["url_campo"])){
+        $urlcampo = $sursale["url_campo"];
+      }else{
+        $urlcampo =' ';
+      }
+echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo'],$urlcampo,$sursale['laboratorio_id']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
+}else{
 echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
+}
+}
+}
 }
 ?>
  </div>
@@ -152,9 +160,8 @@ else
 echo $this->Html->link('linkoculto',['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo'],$sursale2['descripcion']],['style'=>'display: none','id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
 echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['alt'=>'Drogueria Sur S.A.','width'=>'100%']);
 }
-}
-else
-if ($sursale2['url_campo']!='')
+}else{
+if ($sursale2['url_campo']!='' && empty($sursale2['laboratorio_id']))
 {
 if ($sursale2['url_campo']!='preventa')           
 echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo'],$sursale2['url_campo']],'id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
@@ -164,11 +171,20 @@ echo $this->Html->link('linkoculto',['controller'=>$sursale2['url_controlador'],
 echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['alt'=>'Drogueria Sur S.A.','width'=>'100%']);
 }
 }
-else
-if (!is_null($sursale2['laboratorio_id']))
-echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo']," ",$sursale2['laboratorio_id']],'id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
-else
+else{
+if (!empty($sursale2['laboratorio_id'])){
+	   if(!empty($sursale2["url_campo"])){
+        $urlcampo = $sursale2["url_campo"];
+      }else{
+         $urlcampo =' ';
+      }
+echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo'],$urlcampo,$sursale2['laboratorio_id']],'id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
+}else{
 echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo']],'id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
+
+}
+}
+}
 }
 ?>
 </div>

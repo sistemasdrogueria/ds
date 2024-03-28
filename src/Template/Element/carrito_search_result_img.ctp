@@ -85,8 +85,8 @@ if ($articulo["id"]== 19940)
 echo $this->Html->image('MELCHOR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
 if ($articulo["id"]== 2033)
 echo $this->Html->image('GASPAR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
-*/if ($articulo["id"]== 47965)
-echo $this->Html->image('BALTAZAR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+*//*if ($articulo["id"]== 47965)
+echo $this->Html->image('BALTAZAR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);*/
 /*if ($articulo["id"]== 24650)
 echo $this->Html->image('PAPA-NOEL.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
 
@@ -96,6 +96,15 @@ echo $this->Html->image('CORAZON-ROJO.png', ['alt' => str_replace('"', '', $arti
 
 }
 */
+if ($articulo["id"]== 24052)
+echo $this->Html->image('CONEJO-MILKA.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+
+if ($articulo["id"]== 13116)
+echo $this->Html->image('CONEJO-HAVANNA1.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+
+if ($articulo["id"]== 48426)
+echo $this->Html->image('CONEJO-KINDER.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+
 if ($articulo["fv_cerca"])
 {
     echo 'VENCIMIENTO: '.$articulo["fv"];

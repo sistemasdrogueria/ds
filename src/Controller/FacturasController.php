@@ -816,8 +816,8 @@ return $this->redirect(['action' => 'importresult']);
 					//->andWhere(["FacturasCabeceras.fecha BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"])
 					->andWhere(["FacturasCabeceras.fecha BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'",
 					'ci.articulo_id>27338','ci.articulo_id<27344'])
-					->order(['FacturasCabeceras.fecha' => 'ASC']);
-					//->group('FacturasCabeceras.pedido_ds');
+					->order(['FacturasCabeceras.fecha' => 'ASC'])
+					->group('FacturasCabeceras.pedido_ds');
 
 
 

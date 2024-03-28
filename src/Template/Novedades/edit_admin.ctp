@@ -29,7 +29,6 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 <?php echo $this->Form->input('descripcion_completa', ['label'=>'Descripción Completa','class'=>'ckeditor','id'=>'descripcion_completa']);?> 
 <?php	//echo $this->Form->input('descripcion_completa');?>
 </fieldset>
-
 <fieldset style="width:98%;float:left;">
 <?php	echo $this->Form->input('tipo');?>
 </fieldset>

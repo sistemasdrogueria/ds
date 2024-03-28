@@ -14,12 +14,21 @@
 <th><?= $this->Paginator->sort('stock') ?></th>
 <th><?= $this->Paginator->sort('fecha_alta','F.ALTA') ?></th>
 <th></th>
+<th></th>
 </tr>
 </thead>
 <tbody>
 <?php $i=1; ?>
 <?php foreach ($articulos as $articulo): ?>
-<?php  $encabezado = $i."."; ?>
+<?php  $encabezado = $i."."; 
+
+$codigo_barras = $articulo->codigo_barras;
+
+$url_producto = "https://www.drogueriasur.com.ar/ds/carritos/search_i/" . urlencode($codigo_barras);
+
+// Generar la URL de WhatsApp con el mensaje y la URL del producto
+$url_producto_whatsapp = "https://web.whatsapp.com/send?text=" . urlencode("¡Echa un vistazo a este producto! " . $url_producto);
+?>
 <tr>
 <td class='formcartcanttd'>
 <?php
@@ -66,6 +75,12 @@ echo $this->Form->input($encabezado.'eliminado', ['tabindex'=>$i+1,'label'=>'','
 ));
 ?>
 </td>
+
+<td>
+    <a href="https://web.whatsapp.com/send?text=<?php echo urlencode('https://drogueriasur.com.ar/dsx/compartir/index/'.$articulo->codigo_barras.'/'.urlencode($articulo->descripcion_pag).'') ;?>"  target="_blank"> <?php echo $this->Html->image('compartir.png',['title' => 'Comaprtir']); ?>	</a> 
+</td>
+
+
 </tr>
 <?php $i=$i+1; endforeach; ?>
 </tbody>

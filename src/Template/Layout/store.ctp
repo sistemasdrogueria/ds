@@ -70,7 +70,7 @@ echo $this->Html->css('templatemo-style.min.css?'.$filever2= filesize('css/templ
 <li><?=$this->Html->link(__('Importar Archivos'),['controller'=>'Carritos','action'=>'import'])?></li>
 <li><?=$this->Html->link(__('Pañales PAMI'),['controller'=>'Carritos','action'=>'pami'])?></li>
 <!-- li><?=$this->Html->link(__('PRIMAVERA SALE'),['controller'=>'Carritos','action'=>'primaverasale'])?></li -->
-<li><?=$this->Html->link(__('Insumos Farma'),['controller'=>'Carritos','action'=>'insumos'])?></li>
+<li><?=$this->Html->link(__('Libreria'),['controller'=>'Carritos','action'=>'libreria'])?></li>
 <li><?=$this->Html->link(__('Realizados'),['controller'=>'Pedidos','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Historico'),['controller'=>'Pedidos','action'=>'searchproduct'])?></li>
 <li><?=$this->Html->link(__('Faltas'),['controller'=>'Carritos','action'=>'faltas'])?>

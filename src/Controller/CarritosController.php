@@ -28,7 +28,7 @@ class CarritosController extends AppController
 {
 	public function isAuthorized()
 	{
-		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint', 'promocion', 'insumos', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_hss', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp'])) {
+		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint', 'promocion', 'libreria', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_hss', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp'])) {
 
 			if ($this->request->session()->read('Auth.User.role') == 'admin') {
 				return true;
@@ -1905,7 +1905,7 @@ class CarritosController extends AppController
 		$this->set('ofertasY', $this->paginate($ofertasY));
 
 		$this->loadModel('OfertasTipos');
-		$secciones = $this->OfertasTipos->find('all')->where(['ubicacion=4','activo=1'])->order(['orden' => 'ASC']);
+		$secciones = $this->OfertasTipos->find('all')->where(['ubicacion=4','activo=1'])->order(['orden' => 'DESC']);
 		
 		$this->set('secciones',$secciones->toArray());
 
@@ -2437,7 +2437,7 @@ class CarritosController extends AppController
 		$this->set(compact('articulos'));
 	}
 
-	public function insumos()
+	public function libreria()
 	{
 		$this->categoriaylaboratorio();
 		$this->viewBuilder()->layout('store');
@@ -2477,7 +2477,7 @@ class CarritosController extends AppController
 					]
 				]
 			)
-			->where(['Articulos.subcategoria_id' => 27]);
+			->where(['Articulos.subcategoria_id in (27,28)']);
 
 
 		if ($articulosA != null) {
@@ -2493,7 +2493,7 @@ class CarritosController extends AppController
 				'contain' => ['Descuentos', 'Carritos'],
 				'limit' => $limit,
 				'offset' => 0,
-				'order' => ['Articulos.descripcion_pag' => 'asc']
+				'order' => ['Articulos.stock_fisico' => 'desc', 'Articulos.descripcion_pag'=>'asc']
 			];
 
 			$articulosA->andWhere(['eliminado' => 0])->group(['Articulos.id']);
@@ -4623,20 +4623,40 @@ class CarritosController extends AppController
 			if ($this->request->data['terminobuscar'] != null) {
 				$terminobuscar = str_replace("'", "", $this->request->data['terminobuscar']);
 				$terminocompleto = explode(" ", $terminobuscar);
+				$terminocompletoReverse = $terminocompleto;
 				$termsearch = "";
+				$termsearchinvertido = "";
+				$termsearchReverse = "";
 				$palabral6 = "";
+				$palabral6Reverse = "";
+				$terminocompletoReverse = array_reverse($terminocompletoReverse);
 				if (count($terminocompleto) > 1) {
-					foreach ($terminocompleto as $terminosimple) :
+						foreach ($terminocompleto as $terminosimple) :
 						$termsearch = $termsearch . '%' . $terminosimple . '%';
-						if (strlen($terminosimple) > 5) {
+						if (strlen($terminosimple) > 4) {
 							$palabral6 = $palabral6 . '%' . mb_substr($terminosimple, 0, -1) . '%';
+						} else if (strlen($terminosimple) > 6) {
+							$palabral6 = $palabral6 . '%' . substr($terminosimple, 0,  -2) . '%';
+						}
+
+					endforeach;
+					foreach ($terminocompletoReverse as $terminosimplereverser) :
+						$termsearchReverse = $termsearchReverse . '%' . $terminosimplereverser . '%';
+
+						if (strlen($terminosimplereverser) > 4) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0, -1) . '%';
+						} else if (strlen($terminosimplereverser) > 6) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0,  -2) . '%';
 						}
 
 					endforeach;
 				} else {
 					$termsearch = '%' . $terminocompleto[0] . '%';
-					if (strlen($terminocompleto[0]) > 5) {
+					$termsearchReverse = '%' . $terminocompletoReverse[0] . '%';
+					if (strlen($terminocompleto[0]) > 4) {
 						$palabral6 = $palabral6 . '%' . mb_substr($terminocompleto[0], 0, -1) . '%';
+					} else if (strlen($terminocompleto[0]) > 6) {
+						$palabral6 = $palabral6 . '%' . substr($terminocompleto[0], 0,  -2) . '%';
 					}
 				}
 			} else {
@@ -4644,13 +4664,14 @@ class CarritosController extends AppController
 				$termsearch = "";
 				$palabral6 = "";
 				$terminobuscar = "";
+				$termsearchReverse = "";
 			}
 
 
 			$this->request->session()->write('busqueda.codigobarras', $codigobarras);
 			$this->request->session()->write('busqueda.ofertas', $ofertas);
 			$this->request->session()->write('busqueda.termsearch', $termsearch);
-
+			$this->request->session()->write('busqueda.termsearchReverse', $termsearchReverse);
 			$this->request->session()->write('busqueda.palabral6', $palabral6);
 			$this->request->session()->write('busqueda.terminobuscar', $terminobuscar);
 
@@ -4686,26 +4707,54 @@ class CarritosController extends AppController
 				$termsearch = $this->request->session()->read('busqueda.termsearch');
 				$terminobuscar = $this->request->session()->read('busqueda.terminobuscar');
 				$palabral6 = $this->request->session()->read('busqueda.palabral6');
+			    $termsearchReverse= $this->request->session()->read('busqueda.termsearchReverse');
 			}
 
 
 			if (!empty($this->request->getParam('pass'))) {
 				$terminobuscar = str_replace("'", "", $this->request->getParam('pass')[0]);
 				$terminocompleto = explode(" ", $terminobuscar);
+				$terminocompletoReverse = $terminocompleto;
 				$termsearch = "";
+				$termsearchReverse = "";
 				$palabral6 = "";
+				$palabral6Reverse = "";
+				$terminocompletoReverse = array_reverse($terminocompletoReverse);
 				if (count($terminocompleto) > 1) {
 					foreach ($terminocompleto as $terminosimple) :
 						$termsearch = $termsearch . '%' . $terminosimple . '%';
-						if (strlen($terminosimple) > 5) {
+
+						if (strlen($terminosimple) > 4) {
 							$palabral6 = $palabral6 . '%' . mb_substr($terminosimple, 0, -1) . '%';
+						} else if (strlen($terminosimple) > 6) {
+							$palabral6 = $palabral6 . '%' . mb_substr($terminosimple, 0,  -2) . '%';
+						}
+
+					endforeach;
+
+					foreach ($terminocompletoReverse as $terminosimplereverser) :
+						$termsearchReverse = $termsearchReverse . '%' . $terminosimplereverser . '%';
+
+						if (strlen($terminosimplereverser) > 4) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0, -1) . '%';
+						} else if (strlen($terminosimplereverser) > 6) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0,  -2) . '%';
 						}
 
 					endforeach;
 				} else {
 					$termsearch = '%' . $terminocompleto[0] . '%';
-					if (strlen($terminocompleto[0]) > 5) {
+					$termsearchReverse = '%' . $terminocompletoReverse[0] . '%';
+					if (strlen($terminocompleto[0]) > 4) {
 						$palabral6 = $palabral6 . '%' . mb_substr($terminocompleto[0], 0, -1) . '%';
+					} else if (strlen($terminocompleto[0]) > 6) {
+						$palabral6 = $palabral6 . '%' . mb_substr($terminocompleto[0], 0,  -2) . '%';
+					}
+					
+					if (strlen($termsearchReverse[0]) > 4) {
+						$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($termsearchReverse[0], 0, -1) . '%';
+					} else if (strlen($terminocompleto[0]) > 6) {
+						$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($termsearchReverse[0], 0,  -2) . '%';
 					}
 				}
 				if (empty($this->request->getParam('pass')[1]))
@@ -4808,7 +4857,7 @@ class CarritosController extends AppController
 
 					$articulosA->where(['OR' => [
 						['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch],
-						['Articulos.descripcion_pag LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $palabral6],
+						['Articulos.descripcion_pag LIKE' => $termsearch],['Articulos.descripcion_pag LIKE' => $termsearchReverse], ['Articulos.descripcion_pag LIKE' => $palabral6],
 						['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
 						['Articulos.troquel LIKE' => $termsearch]
 					], 'eliminado' => 0])->order('(CASE WHEN Articulos.descripcion_pag LIKE \'' . $terminobuscar . '%\' then 1 
@@ -4835,7 +4884,7 @@ class CarritosController extends AppController
 			} else
 				if(empty($variablesort)){
 					$articulosA->andwhere(['OR' => [
-					['Articulos.descripcion_pag LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $palabral6], ['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
+					['Articulos.descripcion_pag LIKE' => $termsearch],['Articulos.descripcion_pag LIKE' => $termsearchReverse], ['Articulos.descripcion_pag LIKE' => $palabral6], ['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
 					['Articulos.troquel LIKE' => $termsearch]
 				], 'eliminado' => 0])
 					->order('(CASE WHEN Articulos.descripcion_pag LIKE \'' . $terminobuscar . '%\' then 1 
@@ -5057,22 +5106,47 @@ class CarritosController extends AppController
 
 
 			if ($this->request->data['terminobuscar'] != null) {
-				$terminobuscar = str_replace("'", "", $this->request->data['terminobuscar']);
+				$terminobuscar = str_replace("'", "", $this->request->getData('terminobuscar'));
 				$terminocompleto = explode(" ", $terminobuscar);
+				$terminocompletoReverse = $terminocompleto;
 				$termsearch = "";
+				$termsearchinvertido = "";
+				$termsearchReverse = "";
 				$palabral6 = "";
+				$palabral6Reverse = "";
+				$terminocompletoReverse = array_reverse($terminocompletoReverse);
 				if (count($terminocompleto) > 1) {
 					foreach ($terminocompleto as $terminosimple) :
 						$termsearch = $termsearch . '%' . $terminosimple . '%';
-						if (strlen($terminosimple) > 5) {
+						if (strlen($terminosimple) > 4) {
 							$palabral6 = $palabral6 . '%' . mb_substr($terminosimple, 0, -1) . '%';
+						} else if (strlen($terminosimple) > 6) {
+							$palabral6 = $palabral6 . '%' . substr($terminosimple, 0,  -2) . '%';
+						}
+					endforeach;
+
+					foreach ($terminocompletoReverse as $terminosimplereverser) :
+						$termsearchReverse = $termsearchReverse . '%' . $terminosimplereverser . '%';
+
+						if (strlen($terminosimplereverser) > 4) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0, -1) . '%';
+						} else if (strlen($terminosimplereverser) > 6) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0,  -2) . '%';
 						}
 
 					endforeach;
 				} else {
-					$termsearch = '%' . $terminocompleto[0] . '%';
-					if (strlen($terminocompleto[0]) > 5) {
+						$termsearch = '%' . $terminocompleto[0] . '%';
+						$termsearchReverse = '%' . $terminocompletoReverse[0] . '%';
+					if (strlen($terminocompleto[0]) > 4) {
 						$palabral6 = $palabral6 . '%' . mb_substr($terminocompleto[0], 0, -1) . '%';
+					} else if (strlen($terminocompleto[0]) > 6) {
+						$palabral6 = $palabral6 . '%' . mb_substr($terminocompleto[0], 0,  -2) . '%';
+					}
+					if (strlen($termsearchReverse[0]) > 4) {
+						$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($termsearchReverse[0], 0, -1) . '%';
+					} else if (strlen($terminocompleto[0]) > 6) {
+						$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($termsearchReverse[0], 0,  -2) . '%';
 					}
 				}
 			} else {
@@ -5080,6 +5154,7 @@ class CarritosController extends AppController
 				$termsearch = "";
 				$palabral6 = "";
 				$terminobuscar = "";
+				$termsearchReverse="";
 			}
 
 
@@ -5088,6 +5163,7 @@ class CarritosController extends AppController
 			$this->request->session()->write('busqueda.termsearch', $termsearch);
 			$this->request->session()->write('busqueda.palabral6', $palabral6);
 			$this->request->session()->write('busqueda.terminobuscar', $terminobuscar);
+			$this->request->session()->write('busqueda.termsearchReverse', $termsearchReverse);
 			$this->request->session()->write('busqueda.categoriaid', $categoriaid);
 			$this->request->session()->write('busqueda.laboratorioid', $laboratorioid);
 			$this->request->session()->write('busqueda.monodrogaid', $monodrogaid);
@@ -5112,26 +5188,56 @@ class CarritosController extends AppController
 				$termsearch = $this->request->session()->read('busqueda.termsearch');
 				$terminobuscar = $this->request->session()->read('busqueda.terminobuscar');
 				$palabral6 = $this->request->session()->read('busqueda.palabral6');
+				$termsearchReverse=$this->request->session()->read('busqueda.termsearchReverse');
 			}
 
 
 			if (!empty($this->request->getParam('pass'))) {
-				$terminobuscar = str_replace("'", "", $this->request->getParam('pass')[0]);
+						$terminobuscar = str_replace("'", "", $this->request->getParam('pass')[0]);
 				$terminocompleto = explode(" ", $terminobuscar);
+				$terminocompletoReverse = $terminocompleto;
 				$termsearch = "";
+				$termsearchReverse = "";
 				$palabral6 = "";
+				$palabral6Reverse = "";
+				$terminocompletoReverse = array_reverse($terminocompletoReverse);
+
 				if (count($terminocompleto) > 1) {
-					foreach ($terminocompleto as $terminosimple) :
+				foreach ($terminocompleto as $terminosimple) :
 						$termsearch = $termsearch . '%' . $terminosimple . '%';
-						if (strlen($terminosimple) > 5) {
+
+						if (strlen($terminosimple) > 4) {
 							$palabral6 = $palabral6 . '%' . mb_substr($terminosimple, 0, -1) . '%';
+						} else if (strlen($terminosimple) > 6) {
+							$palabral6 = $palabral6 . '%' . mb_substr($terminosimple, 0,  -2) . '%';
+						}
+
+					endforeach;
+
+					foreach ($terminocompletoReverse as $terminosimplereverser) :
+						$termsearchReverse = $termsearchReverse . '%' . $terminosimplereverser . '%';
+
+						if (strlen($terminosimplereverser) > 4) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0, -1) . '%';
+						} else if (strlen($terminosimplereverser) > 6) {
+							$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($terminosimplereverser, 0,  -2) . '%';
 						}
 
 					endforeach;
 				} else {
-					$termsearch = '%' . $terminocompleto[0] . '%';
-					if (strlen($terminocompleto[0]) > 5) {
+						$termsearch = '%' . $terminocompleto[0] . '%';
+					$termsearchReverse = '%' . $terminocompletoReverse[0] . '%';
+
+					if (strlen($terminocompleto[0]) > 4) {
 						$palabral6 = $palabral6 . '%' . mb_substr($terminocompleto[0], 0, -1) . '%';
+					} else if (strlen($terminocompleto[0]) > 6) {
+						$palabral6 = $palabral6 . '%' . mb_substr($terminocompleto[0], 0,  -2) . '%';
+					}
+
+					if (strlen($termsearchReverse[0]) > 4) {
+						$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($termsearchReverse[0], 0, -1) . '%';
+					} else if (strlen($terminocompleto[0]) > 6) {
+						$palabral6Reverse = $palabral6Reverse . '%' . mb_substr($termsearchReverse[0], 0,  -2) . '%';
 					}
 				}
 				if (empty($this->request->getParam('pass')[1]))
@@ -5234,7 +5340,7 @@ class CarritosController extends AppController
 				if ($barratexto == 1) {
 
 					$articulosA->where(['OR' => [
-						['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $palabral6],
+						['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $termsearch],	['Articulos.descripcion_pag LIKE' => $termsearchReverse], ['Articulos.descripcion_pag LIKE' => $palabral6],
 						['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
 						['Articulos.troquel LIKE' => $termsearch]
 					], 'eliminado' => 0])->order('(CASE WHEN Articulos.descripcion_pag LIKE \'' . $terminobuscar . '%\' then 1 
@@ -5260,7 +5366,7 @@ class CarritosController extends AppController
 			} else
 						if(empty($variablesort)){
 							$articulosA->andwhere(['OR' => [
-					['Articulos.descripcion_pag LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $palabral6], ['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
+					['Articulos.descripcion_pag LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $palabral6],	['Articulos.descripcion_pag LIKE' => $termsearchReverse], ['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
 					['Articulos.troquel LIKE' => $termsearch]
 				], 'eliminado' => 0])
 					->order('(CASE WHEN Articulos.descripcion_pag LIKE \'' . $terminobuscar . '%\' then 1 

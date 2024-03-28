@@ -19,6 +19,12 @@ $expire_time = $expire_time->format(DateTimeInterface::RFC7231);
 header("Expires: $expire_time"); */
 ?>
 <meta charset="utf-8">
+<meta name="facebook-domain-verification" content="jz3sw0qxjwjo7dorjuu5iguwb12aiq" />
+<meta property="og:title" content="DROGUERIA SUR SA" />
+<meta property="og:description" content="DROGUERIA SUR SA" />
+<meta property="og:image" content="https://www.drogueriasur.com.ar/ds/img/logo_ds_simple.png" />
+<meta property="og:url" content="https://www.drogueriasur.com.ar/ds" />
+
 <title>DROGUERIA SUR</title>
 <?php
 echo $this->Html->meta('favicon.ico', '/favicon.ico', ['type' => 'icon']);
@@ -180,6 +186,11 @@ echo '<div>' . $this->Html->image('inicio/' . $slider['imagen'], ['url' => $slid
 } else 
 if (($slider["url_controlador"] != "") && ($slider["url_metodo"] != ""))
 echo '<div>' . $this->Html->image('inicio/' . $slider['imagen'], ['url' => ['controller' => 'Carritos', 'action' => 'search'], 'data-u' => 'image', 'loading' => 'lazy'], ['target' => '_blank', '_full' => true, 'escape' => false, 'loading' => 'lazy']) . '</div>';
+if ($slider['url_controlador']=="URL")
+{
+echo '<div><a href="'.$slider['url_campo'].'" target ="_blank">'.$this->Html->image('inicio/'.$slider['imagen'], ['alt' => 'LINK','width'=>'100%','target' => '_blank', '_full' => true, 'escape' => false, 'loading' => 'lazy'] ) .'</a></div>';
+}
+
 endforeach;
 ?>
 </div>

@@ -34,11 +34,11 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 				
 				var nombre = "RESU"+pad(xy,6)+pad(x,8)+".pdf";
 						
-					var url = 'http://www.drogueriasur.com.ar/ds/webroot/temp/Comprobantes/'+nombre;
+					var url = 'https://www.drogueriasur.com.ar/dsv4/webroot/temp/Comprobantes/'+nombre;
 					
 					if (existeUrl(url))
 					{
-							$("#cuerpo_oferta").html('<iframe src="http://docs.google.com/gview?url=http://200.117.237.178/ds/webroot/temp/Comprobantes/'+nombre+'&embedded=true" style="width:90%; height:500px;" frameborder="0"></iframe>');
+							$("#cuerpo_oferta").html('<iframe src="https://docs.google.com/gview?url=https://www.drogueriasur.com.ar/dsv4/webroot/temp/Comprobantes/'+nombre+'&embedded=true" style="width:90%; height:500px;" frameborder="0"></iframe>');
 							var text = getSelectedText('selectsemananro');
 							$("#titulo_oferta").html(text);
 							$("#link_oferta").html('<a href="'+url+'">Descargar Archivos Aqui</a>');	

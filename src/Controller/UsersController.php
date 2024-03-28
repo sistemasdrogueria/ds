@@ -416,8 +416,7 @@ public function loginValidacion()
 				->where(['email' => $emails])
 				->orWhere(['email_alternativo' => $emails]);
 			$tokengenerado = bin2hex(random_bytes(20));
-			//dd($clientes);
-
+			
 			if ($this->request->is('post')) {
 
 				$user = $this->Users->get($id);

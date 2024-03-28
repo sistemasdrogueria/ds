@@ -95,7 +95,12 @@ else
 }
 else{
     if (!is_null($slider['laboratorio_id'])){
-  echo" <div>".$this->Html->image('publicaciones/'.$slider['imagen'],['url'=>['controller'=>$slider['url_controlador'],'action'=>$slider['url_metodo']," ",$slider['laboratorio_id']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%'])."</div>";
+      if(!empty($slider["url_campo"])){
+        $urlcampo = $slider["url_campo"];
+      }else{
+        $urlcampo =" " ;
+      }
+  echo" <div>".$this->Html->image('publicaciones/'.$slider['imagen'],['url'=>['controller'=>$slider['url_controlador'],'action'=>$slider['url_metodo'],$urlcampo,$slider['laboratorio_id']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%'])."</div>";
 
   }else{
 echo '<div><a href="'.\Cake\Routing\Router::url(array('controller' => 'Carritos', 'action' => 'index')).''.$slider['url_campo'].'">'.$this->Html->image('publicaciones/'.$slider['imagen'], ['data-u'=>'image']) .'</a></div>';

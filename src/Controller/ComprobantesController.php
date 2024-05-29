@@ -1690,6 +1690,10 @@ class ComprobantesController extends AppController
 		$nombrearhivo= 'F'.str_pad($nota, 6, "0", STR_PAD_LEFT).$codigo.'.TXT';
 		$file = new File($nombrearhivodirectorio.$nombrearhivo, true, 0777);
 		
+		$descuento_pf = $this->request->session()->read('Auth.User.pf_dcto');
+        $condicion = $this->request->session()->read('Auth.User.condicion');
+        $condiciongeneral = (1-($descuento_pf * (1-$condicion/100)));
+
 		
 		foreach ($facturascabeceras as $fc): 
 			$espacio = "\t";
@@ -1746,7 +1750,20 @@ class ComprobantesController extends AppController
 				//$imp = $fci['precio_unitario'];
 				$imp = $fci['precio_unitario']*100;// number_format($fci['precio_unitario'],2,'.','');
 				$itemart .= str_pad($imp , 13, "0", STR_PAD_LEFT).$espacio;
-				$imp = $fci['precio_publico']*100;//$imp = number_format($fci['precio_publico'],2,'.','');
+				$precio_publico = $fci['precio_publico'];
+				if ($this->request->session()->read('Auth.User.provincia_id') ==23)
+                {
+                    if ($fci['descuento']>0)
+                    	$descuentoI = $fci['descuento']/100;
+                        else
+						{
+                    		$descuentoI = $condiciongeneral;                    
+							$precio_publico = round($fci['precio_unitario']/(1 - $descuentoI),2);
+						}
+                }
+				
+				
+				$imp = $precio_publico*100;//$imp = number_format($fci['precio_publico'],2,'.','');
 				//$imp = $fci['precio_publico'];
 				$itemart .= str_pad($imp , 11, "0", STR_PAD_LEFT).$espacio;
 				

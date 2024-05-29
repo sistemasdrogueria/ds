@@ -96,6 +96,7 @@ echo $this->Html->image('CORAZON-ROJO.png', ['alt' => str_replace('"', '', $arti
 
 }
 */
+/*
 if ($articulo["id"]== 24052)
 echo $this->Html->image('CONEJO-MILKA.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
 
@@ -104,7 +105,7 @@ echo $this->Html->image('CONEJO-HAVANNA1.png', ['alt' => str_replace('"', '', $a
 
 if ($articulo["id"]== 48426)
 echo $this->Html->image('CONEJO-KINDER.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
-
+*/
 if ($articulo["fv_cerca"])
 {
     echo 'VENCIMIENTO: '.$articulo["fv"];

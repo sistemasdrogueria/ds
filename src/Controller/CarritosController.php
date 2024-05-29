@@ -28,7 +28,7 @@ class CarritosController extends AppController
 {
 	public function isAuthorized()
 	{
-		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint', 'promocion', 'libreria', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_hss', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp'])) {
+		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint', 'promocion', 'libreria', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_hss', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp','hotsale'])) {
 
 			if ($this->request->session()->read('Auth.User.role') == 'admin') {
 				return true;
@@ -1611,7 +1611,7 @@ class CarritosController extends AppController
 	{
 		$this->paginate = [
 			'contain' => [],
-			'limit' => 82,
+			'limit' => 500,
 			'offset' => 0,
 			'order' => ['Articulos.descripcion_pag' => 'asc']
 		];
@@ -1628,13 +1628,13 @@ class CarritosController extends AppController
 		$this->sumacarrito();	*/
 		//$this->set('articulos',null);
 		$this->loadModel('Articulos');
-
+		$list_tipo_dto = '("RV","RR","OR","TD","RL","HS","FR","TH","PS")';
 		$articulosbf = $this->Articulos->find('all')
 			->contain([
 				'Descuentos' => [
 
 					'queryBuilder' => function ($q) {
-						return $q->where(['tipo_oferta = "HS"']); // Full conditions for filtering
+						return $q->where(['tipo_oferta <> "FP"']); // Full conditions for filtering
 					}
 				], 'Carritos' => [
 
@@ -1654,11 +1654,13 @@ class CarritosController extends AppController
 					'conditions' => [
 						'd.articulo_id = Articulos.id',
 						'd.tipo_venta = "D"',
-						'd.tipo_oferta = "HS"'
+						//'d.tipo_oferta in .'.$list_tipo_dto 
+						'd.tipo_oferta in ("RV","RR","OR","TD","RL","HS","FR","TH","CM","FF","BF","SC")'
 					]
 				]
 			)
 
+			->where(['Articulos.clave_amp in (18512	,18509	,26494	,7473	,7889	,22402	,21244	,10263	,3174	,18239	,1782	,19505	,26555	,26589	,26615	,13361	,7492	,13505	,28657	,28968	,28651	,28752	,21559	,6245	,28471	,14249	,3353	,10764	,6294	,14091	,28120	,28935	,18778	,10303	,25899	,10370	,10175	,27159	,8203	,8117	,10577	,8575)'])
 			->where(['Articulos.eliminado' => 0, 'Articulos.stock <> "F"', 'Articulos.stock <>"D"'])
 			->order(['Articulos.laboratorio_id' => 'DESC', 'Articulos.descripcion_sist' => 'DESC']);
 

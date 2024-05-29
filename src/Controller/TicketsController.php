@@ -1794,6 +1794,7 @@ class TicketsController extends AppController
 				$this->request->session()->write('para',$cont_email);
 				$email = new Email();
 				$email->transport('reclamo');
+				//$email->transport('gmail');
 					try 
 					{
 						$res = $email->from(['reclamos@drogueriasur.com.ar' => 'Drogueria Sur'])

@@ -1,4 +1,4 @@
-hots<style>
+<style>
 #search-backf{ /*background-color:#f96732 */}
 #fondobf{	width: 100%;	background-color:#fff;}
 .contadorbf{ box-sizing: border-box;  margin: 0;  padding: 0;  height: 90px;  }
@@ -9,11 +9,10 @@ hots<style>
 </style>
 
 <div class="col-md-9">
-<div class="product-item-3">
 <div class="product-thumb" id="search-backf">
 <?php echo $this->element('search'); ?>
 </div> <!-- /.product-thumb -->
-<div class="product-thumb" id="fondobf">
+<!-- div class="product-thumb" id="fondobf">
 <div >
 <?php echo $this->Html->image('hotsale1.png',['alt'=>'HOT SALE ESTA LLEGANDO.','url'=>['controller'=>'Carritos','action'=>'hotsale']]);?>
 </div>
@@ -25,11 +24,10 @@ hots<style>
 <li><span id="seconds"></span><span2>Segundos</span2></li>
 </ul>
 </div>
-</div>
-<div class="product-content">
-<?php if ($articulos!=null ){echo $this->element('carrito_search_result'); } else {
-	//echo $this->element('carrito_sinresult_hs'); 
-	}?>
+</div -->
+<div class="product-item-3">
+<div class="product-content" style ="background-color: #f3f3f3;">
+<?php if ($articulos!=null ){echo $this->element('carrito_search_result_img'); } else {	}?>
 </div> <!-- /.product-content -->
 </div> <!-- /.product-item -->
 </div> <!-- /.col-md-3 -->
@@ -41,14 +39,14 @@ hots<style>
 </div>
 <div class="product-item-5">	
 <div class="product-content">
-<div class='cliente_info_class3'><?php echo $this->Html->image('ofertaagregarcarro2.png');?></div>
+<div class='cliente_info_class3'><?php echo $this->Html->image('icono_carrito_view.png');?></div>
 <div class='cliente_info_class2'>Carro de Compras</div>
 <div class="row">  <?php echo $this->element('botonescarro'); ?>
-<div class="cartresul">	<?php echo $this->element('cartresult'); ?> </div>
-</div> <!-- /.row -->
-</div> <!-- /.product-content -->
-</div> <!--.product-item-1 -->  
-</div> <!-- /.col-md-4 -->
+<div class="cartresul">	<?php echo $this->element('cartresultbody'); ?> </div>
+</div>
+</div>
+</div>
+</div>
 
 <script>
 var futuro = new Date(2020, 07, 30, 00, 10).getTime();
@@ -94,7 +92,7 @@ function faltan() {
         //document.formulario.reloj.value = "00 dias : 00 horas : 00 minutos : 00 segundos";
     }
 }
-faltan();
+//faltan();
 
 
 </script>

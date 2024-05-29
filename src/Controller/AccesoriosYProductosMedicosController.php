@@ -14,17 +14,8 @@ use Cake\Datasource\ConnectionManager;
  */
 class AccesoriosYProductosMedicosController extends AppController
 {
-	public function initialize(){
-        parent::initialize();
-        
-        // Include the FlashComponent
-        $this->loadComponent('Flash');
-        // Load Files model
-        $this->loadModel('Files');
 
-    }
-	
-	public function isAuthorized()
+		public function isAuthorized()
     {
         
 	
@@ -75,7 +66,6 @@ class AccesoriosYProductosMedicosController extends AppController
 			}
 		return parent::isAuthorized($user);
     }
-
   /**
      * Index method
      *
@@ -239,7 +229,7 @@ class AccesoriosYProductosMedicosController extends AppController
 				]
 			]
 			)
-			->where(['Articulos.eliminado'=>0,'Laboratorios.id NOT IN(360,3,65,359,375,143,337,457,595,600)','Articulos.categoria_id in (2,4)'])->group(['Laboratorios.nombre'])
+			->where(['Articulos.eliminado'=>0,'Articulos.stock<>"D"','Laboratorios.id NOT IN(360,3,65,359,375,143,337,457,595,600)','Articulos.categoria_id in (2,4)'])->group(['Laboratorios.nombre'])
 			->order(['Laboratorios.nombre' => 'asc']);
 		
 

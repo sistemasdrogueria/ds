@@ -12,6 +12,8 @@ use App\Controller\AppController;
  */
 class AlfabetaAccionesFarsController extends AppController
 {
+    
+
 
     /**
      * Index method

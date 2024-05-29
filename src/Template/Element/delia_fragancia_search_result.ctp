@@ -12,8 +12,10 @@ $genero_id=0;
 <div class=fraganciacontenedorajust>
 <div class="fraganciacontenedor">
 <?php foreach ($fragancias as $fragancia): ?>
-    
-   
+    <?php 
+$fraganciaspresentaciones =$fragancia['fragancias_presentaciones'];
+   if ($fraganciaspresentaciones !=null)
+   {?>
 <div class="fraganciadiv">
 <div class="fraganciaimagen" align="center">
 <?php 
@@ -117,11 +119,13 @@ else
 <?php endforeach; ?>
 </table>
 </div>
-    <?php if ($articulo["id"]== 20383)
-echo $this->Html->image('CONEJO-FERRERO.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
 
+
+    <?php /*if ($articulo["id"]== 20383)
+echo $this->Html->image('CONEJO-FERRERO.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+*/
  ?>
- </div>
+ </div> <?php }?>
 <?php endforeach; ?>
 </div>
 <!--/div -->

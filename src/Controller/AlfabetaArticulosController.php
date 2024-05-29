@@ -13,6 +13,8 @@ use App\Controller\AppController;
 class AlfabetaArticulosController extends AppController
 {
 
+
+
     /**
      * Index method
      *

@@ -285,6 +285,7 @@ class GruposController extends AppController
                 $uploadFile = $uploadPath.$fileName;
 				$grupo['imagen']= $fileName;
                 if(move_uploaded_file($this->request->data['file']['tmp_name'],$uploadFile)){
+                    $this->loadModel('Files');
                     $uploadData = $this->Files->newEntity();
                     $uploadData->name = $fileName;
                     $uploadData->path = $uploadPath;

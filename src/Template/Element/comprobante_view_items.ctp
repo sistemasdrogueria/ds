@@ -15,8 +15,18 @@
         </tr>
     </thead>
     <tbody>
-	 <?php $indice=0;?>
-	 
+	<?php $indice=0;
+    	$descuento_pf = $this->request->session()->read('Auth.User.pf_dcto');
+        $condicion = $this->request->session()->read('Auth.User.condicion');
+        $coef = $this->request->session()->read('Auth.User.coef');
+        $condiciongeneral = (1-($descuento_pf * (1-$condicion/100)));
+        $condiciongeneralmsd = 100*(1-($descuento_pf));
+        $condiciongeneralcf = 100*(1-($descuento_pf *1.0248* (1-$condicion/100)));
+        $condiciongeneralaz = 100*(1-($descuento_pf *0.892));
+        $coef_pyf = $this->request->session()->read('Auth.User.coef_pyf');
+    ?>  
+
+
     <?php foreach ($facturasCuerposItems as $facturasCuerposItem): ?>
         <?php $indice+=1;?>
 		<tr>
@@ -40,14 +50,31 @@
             {
                 $precio_publico = $precio_publico *1.21;
             }
-      
+            if ($this->request->session()->read('Auth.User.provincia_id') ==23)
+                {
+                    if ($facturasCuerposItem['descuento']>0)
+                    {
+                        $descuentoI = 1-$facturasCuerposItem['descuento']/100;
+                        $precio_publico = $facturasCuerposItem['precio_publico'];
+                    }
+                    else
+                    {
+                    $descuentoI = $condiciongeneral;
+
+                    $precio_publico = $facturasCuerposItem['precio_unitario']/(1 - $descuentoI);
+                    }
+
+                }
 
             
             if ($facturasCuerposItem['descuento']>0) echo '% '.$facturasCuerposItem['descuento']; else echo '0,00'  ?>
 			</td>
 			
             
-            <td class='colprecio'><?php	echo '$ '.number_format($precio_publico,2,',','.');  ?></td>
+            <td class='colprecio'><?php	
+            
+            if (($facturasCuerposItem['articulo']['categoria_id']==1) ||  ($facturasCuerposItem['articulo']['categoria_id']==6) ||  ($facturasCuerposItem['articulo']['categoria_id']==7))
+            echo '$ '.number_format($precio_publico,2,',','.');  ?></td>
             
             <td class='colprecio'><?php	echo '$ '.number_format($precio_unitario,2,',','.');  ?></td>
 			<td class='colprecio'><?php	echo '$ '.number_format($precio_total,2,',','.');  ?></td>

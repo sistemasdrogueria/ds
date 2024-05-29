@@ -1132,7 +1132,7 @@ class TransfersProveedorsController extends AppController
                 $descuento_especial = $row["descuento_especial"];
                 $descuento = $row["descuento"];
                 if (is_null($procesado))
-                if ($tfl_id ==6 || $tfl_id == 10) // descuento dividir por 100
+                if ($tfl_id ==6 || $tfl_id == 10 || $tfl_id == 25) // descuento dividir por 100
                 {
                     $descuento = $descuento/100;
 
@@ -1140,7 +1140,7 @@ class TransfersProveedorsController extends AppController
 			    $cliente = $this->Clientes->find('all')->select(["id","razon_social","codigo","condicion_descuento","preciofarmacia_descuento","provincia_id"])->where(['codigo' => $codigo_cliente])->first();
                 if (empty($cliente))
                 {
-                    if ($tfl_id ==6 || $tfl_id == 10) 
+                    if ($tfl_id ==6 || $tfl_id == 10 || $tfl_id == 25) 
 
                     $conn->query('UPDATE transfers_proveedors SET status = 52, descuento = '.$descuento.' WHERE id = '.$l_id.';');
                     else
@@ -1166,7 +1166,7 @@ class TransfersProveedorsController extends AppController
                     
                     if (empty($articulo))
                     {
-                        if ($tfl_id ==6 || $tfl_id == 10) 
+                        if ($tfl_id ==6 || $tfl_id == 10 || $tfl_id == 25) 
                         $conn->query('UPDATE transfers_proveedors SET status = 41, descuento = '.$descuento.' WHERE id = '.$l_id.';');
                         else
                         $conn->query('UPDATE transfers_proveedors SET status = 41 WHERE id = '.$l_id.';');
@@ -1805,7 +1805,7 @@ class TransfersProveedorsController extends AppController
             else
             {
                 $transfer['plazo']  =  mb_substr($acuerdo,$pos+6 ,8);  
-                if ($transfer['plazo'] == 'HABITUAL')
+                if ($transfer['plazo'] == 'HABITUAL' || $transfer['plazo'] == 'HAB')
                     $transfer['plazo']  = "30 DIAS";
             }
             $transfer['transfer']  = mb_substr($line,44,8);
@@ -2401,7 +2401,7 @@ class TransfersProveedorsController extends AppController
                     $razon = str_replace("Ú", "U", $razon);
 
                     
-                    $factura = str_pad($row['factura_seccion'], 5, "0", STR_PAD_LEFT).'A'.str_pad($row['factura_numero'], 8, "0", STR_PAD_LEFT);
+                $factura = str_pad($row['factura_seccion'], 4, "0", STR_PAD_LEFT).'A'.str_pad($row['factura_numero'], 8, "0", STR_PAD_LEFT);
 				$line = 
                 str_pad($row['numero_pedido_proveedor'], 16,0,STR_PAD_LEFT).
                 str_pad($row['numero_posicion'], 16,0,STR_PAD_LEFT).
@@ -2422,6 +2422,7 @@ class TransfersProveedorsController extends AppController
                 str_pad($localidad, 40, " ", STR_PAD_RIGHT).  
                 str_pad($row['provincia'], 2, "0", STR_PAD_LEFT).  
                 "1".
+                str_pad(number_format($precio_n,2, '.', ''), 16, "0", STR_PAD_LEFT). 
                 "\r\n";
 				$file->write($line,'w');
 				
@@ -2765,9 +2766,21 @@ class TransfersProveedorsController extends AppController
             return $this->redirect(['action' => 'import_result_admin',$transfersimport_id]);
         }  
 
+        if ($transfersImport['proveedor_id'] !=443) 
+        {
         $conn->query('DELETE FROM carritos_transfers where transfer_proveedor_id = '.$transfer_proveedors_id.';');
         $conn->query('DELETE FROM transfers_proveedors where id = '.$transfer_proveedors_id.';');
-      
+        }
+        else
+    
+        {
+
+            //action="/ds/transfers_proveedors/delete_item_admin/909154/7046"
+            
+            $conn->query('UPDATE transfers_proveedors SET status= 61 where id = '.$transfer_proveedors_id.';');
+
+        }   
+
         
         $this->Flash->success(__('Se elimino los registros importados n°: '.$transfer_proveedors_id ),['key' => 'changepass']);
         return $this->redirect($this->referer());

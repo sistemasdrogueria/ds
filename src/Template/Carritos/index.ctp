@@ -5,17 +5,17 @@
 #la p {hyphens: auto;text-align: justify;white-space: pre-wrap;margin-top: 0cm;margin-right: 0cm;margin-bottom: 0cm;margin-left: 17.85pt;text-align: justify;text-indent: -17.85pt;line-height: 115%;}
 #la h5 {margin: 0;}
 .button-enabled {background-color: #3498db;color: #ffffff;opacity: 1;transform: scale(1);border-radius: 5px;}
-.custom-style { background-color: #f2f2f2; color: #999999; opacity: 0.5; cursor: not-allowed;transform: scale(0.9);border-radius: 5px;}
-#contador{	 width: 100%;    padding-bottom: 30px;}
-.contador_fondo{ width: 100%; overflow: hidden; }
-.contador_num{ box-sizing: border-box; margin: 0;  padding: 0;  text-align:center ; width: 60%; color: #000; float:right ;} 
-.contador_num_logo { box-sizing: border-box; z-index: 100 !important; margin: 0;  padding: 0;  text-align:center ; width: 40%; color: #000 ; float: left; }
-.contador_num h1 {  font-weight: normal;}
-.contador_num li {  display: inline-block;  font-size: 1.4em;  list-style-type: none;  padding: 1.1em;  text-transform: uppercase;}
+.custom-style{background-color: #f2f2f2; color: #999999; opacity: 0.5; cursor: not-allowed;transform: scale(0.9);border-radius: 5px;}
+#contador{width:100%;    padding-bottom: 30px;}
+.contador_fondo{width: 100%; overflow: hidden; }
+.contador_num{box-sizing: border-box; margin: 0;  padding: 0;  text-align:center ; width: 60%; color: #000; float:right ;} 
+.contador_num_logo{box-sizing: border-box; z-index: 100 !important; margin: 0;  padding: 0;  text-align:center ; width: 40%; color: #000 ; float: left; }
+.contador_num h1{font-weight: normal;}
+.contador_num li{display: inline-block;  font-size: 1.4em;  list-style-type: none;  padding: 1.1em;  text-transform: uppercase;}
 .contador_num li span {  display: block; font-size: 4.5rem;}
 .contador_num li span2 {  margin-top:20px;     display: block;}
-.my-fixed-item {position: fixed; z-index:99;top:88%;left: 95%; }
-.my-fixed-item  img{/*position:absolute;*/margin-right: 15px;}
+.my-fixed-item{position: fixed; z-index:99;top:88%;left: 95%; }
+.my-fixed-item img{/*position:absolute;*/margin-right: 15px;}
 .dialog-message2{overflow: hidden  !important; padding: 0; }
 .eliminarbordes{border:0!important;background:#f8f9fc00!important;color:#f8f9fc0f!important}
 .eliminarbordesbar{border:0!important;background:#f8f9fc00!important;color:#f8f9fc0f!important;top:35px!important;z-index:300}
@@ -27,12 +27,12 @@
 .ui-widget-content a:hover{color:inherit}
 .ui-widget-content img:hover{color:inherit}
 .eliminarbordes .ui-dialog-buttonset button{display:none}
-#container {  width: 100%;}
-.header { display: flex;  flex-direction: row;  justify-content: space-between; background-color: white; margin-top: -130px;}
+#container{width:100%}
+.header{display:flex;flex-direction:row;justify-content:space-between;background-color: white; margin-top: -130px;}
 .background-image { width: 100%;  height: 100%; overflow: hidden;}
 @media (max-width: 1300px) {.contador_num{  width: 60%;} .contador_num_logo { width: 40%; }.header{   margin-top: -110px;}}
-@media (max-width: 1100px) {.contador_num{  width: 60%;} .contador_num_logo { width: 40%; }.contador_num li {  font-size: 1em; padding: 0.9em; }.contador_num li span {  font-size: 3rem;}.header{   margin-top: -90px;}.contador_num li span2 {  margin-top:10px;}}
-@media (max-width: 1000px) {.contador_num{  width: 70%;} .contador_num_logo { width: 30%; }.contador_num li {  font-size: 0.9em;  }.contador_num li span {  font-size: 2.5rem;}.contador_num li span2 {  margin-top:10px;}.header{   margin-top: -80px;}}
+@media (max-width: 1100px) {.contador_num{  width: 60%;} .contador_num_logo { width: 40%; }.contador_num li{font-size:1em;padding:0.9em}.contador_num li span {  font-size: 3rem;}.header{   margin-top: -90px;}.contador_num li span2 {  margin-top:10px;}}
+@media (max-width: 1000px) {.contador_num{  width: 70%;} .contador_num_logo { width: 30%; }.contador_num li{font-size:0.9em}.contador_num li span{font-size: 2.5rem;}.contador_num li span2 {  margin-top:10px;}.header{   margin-top: -80px;}}
 </style>
 <div class=my-fixed-item align="center">
 <?php echo $this->Html->image('icon_whatsapp.png',['url'=>'https://api.whatsapp.com/send?phone=5492914254968'],['target' => '_blank','_full'=> true,'escape' => true,'alt'=>'WHATSAPP']);?></div>
@@ -43,7 +43,7 @@
 </div> 
 <!--div  class="product-thumb" id="container">
 <div class="background-image">
-  <?php //echo $this->Html->image('EXPO11_FONDO-CUENTA-REGRESIVA.jpg',['alt'=>'EXPOVIRTUAL 11.','url'=>'https://www.exposurvirtual.com.ar',['target' => '_blank','_full'=> true,'escape' => true]]); ?>
+<?php //echo $this->Html->link($this->Html->image('EXPO12-YA-COMENZO-OFERTAS.jpg', ['alt' => 'EXPOVIRTUAL 12.' ]),'https://www.exposurvirtual.com.ar',['target' => '_blank','escape' => false]);?>
 </div>
 <div class="header">
 <div class="contador_num_logo"></div>
@@ -56,10 +56,10 @@
 </ul>
 </div>
 </div>
-</div-->
+</div -->
 <div class="product-item-3">
 <div class="product-content">
-<?php if ($articulos!=null ){echo $this->element('carrito_search_result'); } else { echo $this->element('carrito_search_sin_result');}?>
+<?php if ($articulos!=null){echo $this->element('carrito_search_result');} else { echo $this->element('carrito_search_sin_result');}?>
 </div> <!-- /.product-content -->
 </div> <!-- /.product-item -->
 </div> <!-- /.col-md-3 -->
@@ -103,7 +103,7 @@ else{
 if ($sursale['url_campo']!=''  && empty($sursale['laboratorio_id']) )
 {
 if ($sursale['url_campo']!='preventa')
-echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo'],$sursale['url_campo']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
+echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action' =>$sursale['url_metodo']."/".$sursale['url_campo']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%','onclick'=>'closedivbutton(1)']);
 else
 {
 echo $this->Html->link('linkoculto',['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo'],$sursale['descripcion']],['style'=>'display: none','id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
@@ -164,7 +164,7 @@ echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['alt'=>'Drogueria 
 if ($sursale2['url_campo']!='' && empty($sursale2['laboratorio_id']))
 {
 if ($sursale2['url_campo']!='preventa')           
-echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo'],$sursale2['url_campo']],'id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
+echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo']."/".$sursale2['url_campo']],'id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%','onclick'=>'closedivbutton(2)']);
 else
 {
 echo $this->Html->link('linkoculto',['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo'],$sursale2['descripcion']],['style'=>'display: none','id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
@@ -493,8 +493,7 @@ $('#exampleModal'+i).modal('hide');
 $('#exampleModal').modal('hide');  
 }
 }
-var futuro = new Date(2023, 11, 10, 10, 00).getTime();
-//actualiza el contador cada 4 segundos ( = 4000 milisegundos)
+var futuro = new Date("2024-05-08T23:59:59").getTime();
 var actualiza = 1000;
 function faltan() {
 var ahora = new Date().getTime();
@@ -505,7 +504,7 @@ var minutos = Math.floor(segundos / 60);
 var segundos_s = segundos % 60;
 var horas = Math.floor(minutos / 60);
 var minutos_s = minutos % 60;
-var dias = Math.floor(horas / 24) -31;
+var dias = Math.floor(horas / 24) ;
 var horas_s = horas % 24;
 (segundos_s < 10) ? segundos_s = "0" + segundos_s : segundos_s = segundos_s;
 (minutos_s < 10) ? minutos_s = "0" + minutos_s : minutos_s = minutos_s;
@@ -522,7 +521,10 @@ setTimeout("faltan()", actualiza);
 }
 // estamos en el futuro
 else {
-//document.formulario.reloj.value = "00 dias : 00 horas : 00 minutos : 00 segundos";
+document.getElementById("days").innerText = "00";
+document.getElementById("hours").innerText = "00";
+document.getElementById("minutes").innerText = "00";
+document.getElementById("seconds").innerText = "00";
 }
 }
 //faltan();

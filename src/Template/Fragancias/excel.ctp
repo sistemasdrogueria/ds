@@ -97,8 +97,10 @@ $fila=1;
 		$objPHPExcel->getActiveSheet()->SetCellValue("E$fila", 'Descripcion Sist.');
 		$objPHPExcel->getActiveSheet()->SetCellValue("F$fila", 'CATEGORIA');
 		$objPHPExcel->getActiveSheet()->SetCellValue("G$fila", 'PRECIO');
+    $objPHPExcel->getActiveSheet()->SetCellValue("H$fila", 'STOCK');
+    $objPHPExcel->getActiveSheet()->SetCellValue("I$fila", 'STOCK FISICO');
 	
-$filas = "A$fila:G$fila"; 
+$filas = "A$fila:I$fila"; 
 $objPHPExcel->getActiveSheet()->setSharedStyle($subtitulo, $filas); //establecer estilo
 $objPHPExcel->getActiveSheet()->getStyle($filas)->getFont()->setBold(true); //negrita
  
@@ -113,15 +115,17 @@ $objPHPExcel->getActiveSheet()->getStyle($filas)->getFont()->setBold(true); //ne
 		$objPHPExcel->getActiveSheet()->SetCellValue("E$fila", $fp['Articulos']['descripcion_sist']);	
 		$objPHPExcel->getActiveSheet()->SetCellValue("F$fila", $fp['Articulos']['categoria_id']);
 				
-	    $objPHPExcel->getActiveSheet()->SetCellValue("G$fila", str_replace(',','',number_format($fp['Articulos']['precio_publico'],2))); 
-	
-    	 $objPHPExcel->getActiveSheet()->setSharedStyle($bordes, "A$fila:G$fila");
+	  $objPHPExcel->getActiveSheet()->SetCellValue("G$fila", str_replace(',','',number_format($fp['Articulos']['precio_publico'],2))); 
+    $objPHPExcel->getActiveSheet()->SetCellValue("H$fila", $fp['Articulos']['stock']);
+    $objPHPExcel->getActiveSheet()->SetCellValue("I$fila", $fp['Articulos']['stock_fisico']);
+
+    $objPHPExcel->getActiveSheet()->setSharedStyle($bordes, "A$fila:I$fila");
 		 
 		 
 		$objPHPExcel->getActiveSheet()->getStyle("G$fila")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
 
 		$objPHPExcel->getActiveSheet()->getStyle($filas)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
-		$objPHPExcel->getActiveSheet()->getStyle("A$fila:G$fila")->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
+		$objPHPExcel->getActiveSheet()->getStyle("A$fila:I$fila")->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
 		//$objPHPExcel->getActiveSheet()->getStyle("F$fila")->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
 		//$objPHPExcel->getActiveSheet()->getStyle("D$fila")->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER));
 		
@@ -129,7 +133,7 @@ $objPHPExcel->getActiveSheet()->getStyle($filas)->getFont()->setBold(true); //ne
 	
 
 //recorrer las columnas
-foreach (range('A', 'G') as $columnID) {
+foreach (range('A', 'I') as $columnID) {
   //autodimensionar las columnas
   $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
 }

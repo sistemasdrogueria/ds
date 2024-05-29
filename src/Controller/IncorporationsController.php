@@ -118,7 +118,7 @@ public function initialize(){
 			else
 				$termsearchp ="";
 			if ($this->request->data['tipo']!= null)
-				$incorporationtipo = $this->request->data['incorporationtipo'];
+				$incorporationtipo = $this->request->data['tipo'];
 			else
 				$incorporationtipo=0;
 			

@@ -284,9 +284,9 @@ class OfertasController extends AppController
 			else
 				$fechahasta =0;
 			if ($this->request->data['termino']!= null)
-				$termsearchp = '%'.$this->request->data['termino'].'%';
+				$termsearchoff = '%'.$this->request->data['termino'].'%';
 			else
-				$termsearchp ="";
+				$termsearchoff ="";
 			if ($this->request->data['ofertatipo']!= null)
 				$ofertatipo = $this->request->data['ofertatipo'];
 			else
@@ -295,7 +295,7 @@ class OfertasController extends AppController
 			
 			$this->request->session()->write('ofertatipo',$ofertatipo);
 			
-			$this->request->session()->write('termsearchp',$termsearchp);
+			$this->request->session()->write('termsearchoff',$termsearchoff);
 			$this->request->session()->write('fechadesde',$fechadesde);	
 			$this->request->session()->write('fechahasta',$fechahasta);
 			if ($fechahasta!=0)
@@ -343,18 +343,18 @@ class OfertasController extends AppController
 		}
 		if (($fechadesde !=0) || ($fechahasta !=0))
 			$ofertasA->andWhere(["Ofertas.fecha_desde BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"]);
-	  	if ($termsearchp!="")
-			$ofertasA->where(['Ofertas.descripcion LIKE'=>$termsearchp])->orWhere(['Ofertas.detalle LIKE'=>$termsearchp]);
-			if ($ofertasA!=null)
+	  	if ($termsearchoff!="" && $termsearchoff!="%%" )
+			$ofertasA->where(['Ofertas.descripcion LIKE'=>$termsearchoff])->orWhere(['Ofertas.detalle LIKE'=>$termsearchoff]);
+		if ($ofertasA!=null)
 				$ofertas = $this->paginate($ofertasA->order(['Ofertas.id'=>'DESC']));
 			else
-				$ofertas = null;		
+				$ofertas = null;	
 		}
 		else
 		{
 			$ofertatipo =  $this->request->session()->read('ofertatipo');
 			$fechahasta = $this->request->session()->read('fechahasta');
-		    $fechadesde = $this->request->session()->read('fechadesde');
+			$fechadesde = $this->request->session()->read('fechadesde');
 			$termsearchp = $this->request->session()->read('termsearchp');
 			$ofertas = $this->paginate($this->Ofertas->find('all')->order(['Ofertas.id'=>'DESC']));
 		}

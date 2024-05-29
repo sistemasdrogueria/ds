@@ -49,7 +49,8 @@ var myBaseUrlsperfu ='<?php echo \Cake\Routing\Router::url(array('controller' =>
 var myBaseUrlsusersadd ='<?php echo \Cake\Routing\Router::url(array('controller' => 'Users', 'action' => 'add')); ?>';
 var myBaseUrlsuserschange ='<?php echo \Cake\Routing\Router::url(array('controller' => 'Users', 'action' => 'change_password')); ?>';
 var myBaseUrleditacliente ='<?php echo \Cake\Routing\Router::url(array('controller' => 'Clientes', 'action' => 'edit_email')); ?>';
-
+var myBaseUrldeletefalta = '<?php echo \Cake\Routing\Router::url(array('controller' => 'Carritos', 'action' => 'deletefalta')); ?>';
+var myBaseUrlsUpdateFalta ='<?php echo \Cake\Routing\Router::url(array('controller' => 'Carritos', 'action' => 'updatefaltas')); ?>';
 </script>
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel=stylesheet>
 </head>

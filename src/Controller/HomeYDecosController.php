@@ -476,7 +476,7 @@ class HomeYDecosController extends AppController
 	
 	public function search($grupoid =null)
     {
-		
+		$grupoid2=0;
 		if ($this->request->is('post'))
 		{	
 			$termsearch2 ="";		
@@ -499,7 +499,11 @@ class HomeYDecosController extends AppController
 				$grupoid = $this->request->data['grupo_id'];
 				
 			}	
-		
+			if ($this->request->data['grupo_id_2']!= null)
+			{
+				$grupoid2 = $this->request->data['grupo_id_2'];
+				
+			}
 	 
 
 
@@ -520,13 +524,18 @@ class HomeYDecosController extends AppController
 			$this->request->session()->write('grupoid',$grupoid);
 			
 
-
 		$this->loadModel('Grupos');
 		
 		$gruposf = $this->Grupos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['grupos_tipos_id'=>7])->order(['nombre' => 'ASC']);
 		$gruposf->toArray();
 		$this->set(compact('gruposf'));
+		if ($grupoid ==72)
+		{$gruposf2 = $this->Grupos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['grupos_tipos_id'=>11])->order(['nombre' => 'ASC']);
+		$gruposf2->toArray();
+		$this->set(compact('gruposf2'));
+		}
 		
+
 		$this->viewBuilder()->layout('store');
         //$this->paginate = [	'limit' => 15];
 		$this->categoriaylaboratorio();
@@ -560,7 +569,16 @@ class HomeYDecosController extends AppController
 				  }
 				if ($grupoid !=0)
 				{
-						  $articulosA->where(['Articulos.grupo_id'=>$grupoid]);
+					if ($grupoid !=72) 	
+						$articulosA->where(['Articulos.grupo_id'=>$grupoid]);
+					else
+						if ($grupoid2!=0)
+						$articulosA->where(['Articulos.grupo_id'=>$grupoid2]);
+						else
+						$articulosA->where([
+											'OR' => [['Articulos.subcategoria_id'=>29],['Articulos.grupo_id in (select id from grupos where grupos_tipos_id=11)']]
+											
+										]);
 				}
 				else
 				$articulosA->where(['Articulos.grupo_id in (select id from grupos where grupos_tipos_id=7)']);
@@ -585,7 +603,7 @@ class HomeYDecosController extends AppController
 					
 					'maxLimit' => 1000,
 					'offset' => 0, 
-					'order' => ['Articulos.descripcion_pag' => 'asc']];
+					'order' => ['Articulos.stock'=>'desc','Articulos.descripcion_pag' => 'asc']];
 						
 					$articulos = $this->paginate($articulosA);
 				}

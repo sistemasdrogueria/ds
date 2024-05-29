@@ -68,8 +68,11 @@ echo $this->Html->css('templatemo-style.min.css?'.$filever2= filesize('css/templ
 <?=$this->Html->link(__('Compras'),['controller'=>'Carritos','action'=>'index'])?>
 <ul>
 <li><?=$this->Html->link(__('Importar Archivos'),['controller'=>'Carritos','action'=>'import'])?></li>
+
 <li><?=$this->Html->link(__('Pañales PAMI'),['controller'=>'Carritos','action'=>'pami'])?></li>
+
 <!-- li><?=$this->Html->link(__('PRIMAVERA SALE'),['controller'=>'Carritos','action'=>'primaverasale'])?></li -->
+<li><?=$this->Html->link(__('Oferta Venc.Cercano'),['controller'=>'Carritos','action'=>'ofertavc'])?></li>
 <li><?=$this->Html->link(__('Libreria'),['controller'=>'Carritos','action'=>'libreria'])?></li>
 <li><?=$this->Html->link(__('Realizados'),['controller'=>'Pedidos','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Historico'),['controller'=>'Pedidos','action'=>'searchproduct'])?></li>
@@ -121,7 +124,7 @@ echo '</div>';
 <li><?=$this->Html->link(__('Transfers Vigentes'),['controller'=>'PatagoniaMed','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Descargar'),['controller'=>'PatagoniaMed','action'=>'consolidado'])?></li>
 <li><?=$this->Html->link(__('Estado Transfer LAB Solicitado'),['controller'=>'Facturas','action'=>'transfer'])?></li>
-<!--li><?=$this->Html->link(__('EXPOSUR PAMPA23'), ['controller' => 'Pedidos', 'action' => 'expo']) ?></li -->
+<li><?=$this->Html->link(__('EXPOSUR VIRTUAL12'), ['controller' => 'Pedidos', 'action' => 'expo']) ?></li>
 </ul>
 </li>
 <li class='active has-sub'>
@@ -141,14 +144,26 @@ echo '</div>';
 <li><?=$this->Html->link(__('Estética'),['controller'=>'DeliaPerfumerias','action'=>'estetica'])?></li>
 <li><?=$this->Html->link(__('Solares'),['controller'=>'DeliaPerfumerias','action'=>'solares'])?></li>
 <li><?=$this->Html->link(__('Make Up'),['controller'=>'DeliaPerfumerias','action'=>'makeup'])?></li>
-<li><?=$this->Html->link(__('Oferta Venc.Cercano'),['controller'=>'Carritos','action'=>'ofertavc'])?></li>
+<!-- li><?=$this->Html->link(__('Oferta Venc.Cercano'),['controller'=>'Carritos','action'=>'ofertavc'])?></li -->
 </ul>
 </li>
 <li><?=$this->Html->link(__('Bienestar'),['controller'=>'Bienestar','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Nutrición'),['controller'=>'NutricionYDeportes','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Ortopedia'),['controller'=>'Ortopedias','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Acc y Prod Médico'), ['controller' => 'AccesoriosYProductosMedicos', 'action' => 'index']) ?></li>
-<li><?=$this->Html->link(__('HOME & DECO'), ['controller' => 'HomeYDecos', 'action' => 'index']) ?></li>
+<li class='active has-sub'>
+<?=$this->Html->link(__('Home & Deco'), ['controller' => 'HomeYDecos', 'action' => 'index']) ?>
+<ul>
+<li><?=$this->Html->link(__('Difusores'), ['controller' => 'HomeYDecos', 'action' => 'search',44]) ?></li>
+<li><?=$this->Html->link(__('Humificador'), ['controller' => 'HomeYDecos', 'action' => 'search',45]) ?></li>
+<li><?=$this->Html->link(__('Home Spray'), ['controller' => 'HomeYDecos', 'action' => 'search',46]) ?></li>
+<li><?=$this->Html->link(__('Bolsos y Mochilas'), ['controller' => 'HomeYDecos', 'action' => 'search',47]) ?></li>
+<li><?=$this->Html->link(__('Pilas y Baterias'), ['controller' => 'HomeYDecos', 'action' => 'search',48]) ?></li>
+<li><?=$this->Html->link(__('Bazar'), ['controller' => 'HomeYDecos', 'action' => 'search',49]) ?></li>
+<li><?=$this->Html->link(__('Entretenimiento'), ['controller' => 'HomeYDecos', 'action' => 'search',51]) ?></li>
+<li><?=$this->Html->link(__('Limpieza'), ['controller' => 'HomeYDecos', 'action' => 'search',72]) ?></li>
+</ul>
+</li>
 <li class='active has-sub' id=novedades>
 <?=$this->Html->link(__('Novedades'),['controller'=>'Novedades','action'=>'comunicado'])?>
 <?php if($this->request->session()->read('notificacion')>0){echo "<div id='novedades_ico'><div>";echo "<div id='novedades_text'>".$this->request->session()->read('notificacion')."</div></div></div>";}?>

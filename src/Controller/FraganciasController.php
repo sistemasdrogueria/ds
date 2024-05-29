@@ -383,6 +383,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 					['Articulos.laboratorio_id' => 218], //Marce esto lo agregue yo , por aca argenis// La roche posay
 					['Articulos.laboratorio_id' => 333], //Marce esto lo agregue yo , por aca argenis//  maison de la parfumaire
 					['Articulos.laboratorio_id' => 356], //Marce esto lo agregue yo , por aca argenis//  CHESTER ICE   , cannon puntana
+					['Articulos.laboratorio_id' => 411],
 					['Articulos.laboratorio_id' => 416],
 					['Articulos.laboratorio_id' => 459],
 					['Articulos.laboratorio_id' => 464],
@@ -390,7 +391,12 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 					['Articulos.laboratorio_id' => 284],
 					['Articulos.laboratorio_id' => 520],
 					['Articulos.laboratorio_id' => 616],
-					['Articulos.laboratorio_id' => 629]
+					['Articulos.laboratorio_id' => 629],
+					['Articulos.laboratorio_id' => 362],
+					['Articulos.laboratorio_id' => 4],
+					['Articulos.laboratorio_id' => 479]
+					
+					
 				]
 			]);
 
@@ -556,13 +562,17 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 					['Articulos.laboratorio_id' => 218], //Marce esto lo agregue yo , por aca argenis// La roche posay
 					['Articulos.laboratorio_id' => 333], //Marce esto lo agregue yo , por aca argenis//  maison de la parfumaire
 					['Articulos.laboratorio_id' => 356], //Marce esto lo agregue yo , por aca argenis//  CHESTER ICE   , cannon puntana
+					['Articulos.laboratorio_id' => 411],
 					['Articulos.laboratorio_id' => 416],
 					['Articulos.laboratorio_id' => 459],
 					['Articulos.laboratorio_id' => 464],
 					['Articulos.laboratorio_id' => 550],
 					['Articulos.laboratorio_id' => 520],
 					['Articulos.laboratorio_id' => 616],
-					['Articulos.laboratorio_id' => 629]
+					['Articulos.laboratorio_id' => 629],
+					['Articulos.laboratorio_id' => 362],
+					['Articulos.laboratorio_id' => 4],
+					['Articulos.laboratorio_id' => 479]
 				]
 			]);
 

@@ -11,7 +11,8 @@ use Cake\Network\Request;
 
 class AdminController extends AppController
 {
-	public function isAuthorized()
+	
+public function isAuthorized()
     {
 		 if (in_array($this->request->action, ['index'])) {
        

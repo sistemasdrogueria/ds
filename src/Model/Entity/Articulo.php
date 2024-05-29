@@ -38,7 +38,8 @@ class Articulo extends Entity
         'descuentos' => true,
         'ofertas' => true,
         'pedidos_items' => true,
-    
+         'fv_cerca'=> true,
+        'fv'=> true,
 		'pedidos_preventas_items' => true,
         'reclamos_items' => true,
     ];

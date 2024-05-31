@@ -1098,16 +1098,17 @@ $('.formcartcant').on("keydown", function(s) {
 
 
 	}
+
 	var cont = 0;
 
-
+/*
 	functime();
 
 	function functime() {
 		var hora = new Date().getMinutes();
 		restante = (75 - hora) * 60000;
 
-		/*console.log(restante);*/
+
 		let timefunction = setTimeout(updateFaltas, restante);
 	}
 
@@ -1125,6 +1126,7 @@ $('.formcartcant').on("keydown", function(s) {
 		});
 	}
 
+*/
 
 function eliminarDatosFaltas(id, arti) {
 

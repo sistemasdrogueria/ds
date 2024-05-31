@@ -529,8 +529,9 @@ class HomeYDecosController extends AppController
 		$gruposf = $this->Grupos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['grupos_tipos_id'=>7])->order(['nombre' => 'ASC']);
 		$gruposf->toArray();
 		$this->set(compact('gruposf'));
+		$this->loadModel('Subgrupos');
 		if ($grupoid ==72)
-		{$gruposf2 = $this->Grupos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['grupos_tipos_id'=>11])->order(['nombre' => 'ASC']);
+		{$gruposf2 = $this->Subgrupos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['grupo_id'=>72])->order(['nombre' => 'ASC']);
 		$gruposf2->toArray();
 		$this->set(compact('gruposf2'));
 		}
@@ -573,15 +574,13 @@ class HomeYDecosController extends AppController
 						$articulosA->where(['Articulos.grupo_id'=>$grupoid]);
 					else
 						if ($grupoid2!=0)
-						$articulosA->where(['Articulos.grupo_id'=>$grupoid2]);
+						$articulosA->where(['Articulos.sub_grupo_id'=>$grupoid2]);
 						else
-						$articulosA->where([
-											'OR' => [['Articulos.subcategoria_id'=>29],['Articulos.grupo_id in (select id from grupos where grupos_tipos_id=11)']]
-											
-										]);
+						$articulosA->where(['Articulos.grupo_id'=>$grupoid]);
+						
 				}
-				else
-				$articulosA->where(['Articulos.grupo_id in (select id from grupos where grupos_tipos_id=7)']);
+			//	else
+			//	$articulosA->where(['Articulos.grupo_id in (select id from grupos where grupos_tipos_id=7)']);
 	
 		 
 				if ($articulosA!=null)

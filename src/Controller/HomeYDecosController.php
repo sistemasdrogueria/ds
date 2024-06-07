@@ -449,7 +449,7 @@ class HomeYDecosController extends AppController
 		$this->set(compact('grupos'));
 
 		$this->viewBuilder()->layout('store');
-        $this->paginate = ['limit' => 5];
+        $this->paginate = ['limit' => 10];
 		
 		$this->clientecredito();
 		$this->sumacarrito();
@@ -530,8 +530,8 @@ class HomeYDecosController extends AppController
 		$gruposf->toArray();
 		$this->set(compact('gruposf'));
 		$this->loadModel('Subgrupos');
-		if ($grupoid ==72)
-		{$gruposf2 = $this->Subgrupos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['grupo_id'=>72])->order(['nombre' => 'ASC']);
+		if ($grupoid ==72 || $grupoid ==47 )
+		{$gruposf2 = $this->Subgrupos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['grupo_id'=>$grupoid])->order(['nombre' => 'ASC']);
 		$gruposf2->toArray();
 		$this->set(compact('gruposf2'));
 		}
@@ -570,7 +570,7 @@ class HomeYDecosController extends AppController
 				  }
 				if ($grupoid !=0)
 				{
-					if ($grupoid !=72) 	
+					if ($grupoid !=72 && $grupoid !=47) 	
 						$articulosA->where(['Articulos.grupo_id'=>$grupoid]);
 					else
 						if ($grupoid2!=0)
@@ -586,14 +586,14 @@ class HomeYDecosController extends AppController
 				if ($articulosA!=null)
 				{
 					$articulosA->andWhere(['Articulos.eliminado'=>0,'Articulos.stock<>"D"'])->group(['Articulos.id']);
-					$limit =50;
+					$limit =1000;
 					if ($articulosA->count()<100 && $articulosA->count()>50 )
 					{
-						$limit = 70;
+						$limit = 1000;
 					}
 					if ($articulosA->count()>100 )
 					{
-						$limit= 70;
+						$limit= 1000;
 					}
 					
 					$this->paginate = [		
@@ -602,7 +602,7 @@ class HomeYDecosController extends AppController
 					
 					'maxLimit' => 1000,
 					'offset' => 0, 
-					'order' => ['Articulos.stock'=>'desc','Articulos.descripcion_pag' => 'asc']];
+					'order' => ['Articulos.stock_fisico'=>'desc','Articulos.descripcion_pag' => 'asc']];
 						
 					$articulos = $this->paginate($articulosA);
 				}

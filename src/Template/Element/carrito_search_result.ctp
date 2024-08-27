@@ -172,7 +172,7 @@ if ($articulo['descuentos'][1]['tipo_venta']=='D')
 
 </td>
 <td class='masinfoband'>
-<div onmouseover="showdiv(event,'<?php echo $texto?>','<?php echo $articulo['iva'];?>','<?php echo $articulo['trazable'];?>','<?php echo $articulo['cadena_frio'];?>','<?php echo $articulo['categoria_id'];?>','<?php echo $articulo['pack'];?>','<?php echo $articulo['fv_cerca'];?>','<?php echo $articulo['fv'];?>','<?php echo $articulo['imagen'];?>','<?php if($articulo['id']==48687) {echo 1;} else{echo 0;}  ?>');" onMouseOut='hiddenDiv()' style='display:table;'>
+<div onmouseover="showdiv(event,'<?php echo $texto?>','<?php echo $articulo['iva'];?>','<?php echo $articulo['trazable'];?>','<?php echo $articulo['cadena_frio'];?>','<?php echo $articulo['categoria_id'];?>','<?php echo $articulo['pack'];?>','<?php echo $articulo['fv_cerca'];?>','<?php echo $articulo['fv'];?>','<?php echo $articulo['imagen'];?>','<?php echo 0; /*if($articulo['id']==9403) {echo 1;} else{if($articulo['id']==6703) {echo 2;} else{echo 0;}}  */ ?>');" onMouseOut='hiddenDiv()' style='display:table;'>
 <?php 
 echo $articulo['descripcion_pag']; 
 if ($articulo['compra_min']>1) {echo ' (Vta.Min. '.$articulo['compra_min'],')';}
@@ -182,7 +182,6 @@ if ($articulo['pack'] !=null){ echo ' <font color="red" >PACK</font>';}
 if ($articulo['descuentos']!=null){ 
 if ($articulo['descuentos'][0]['tipo_venta']=='D' && $articulo['stock']!='F' && $articulo['descuentos'][0]['dto_drogueria']>0)
 {
-	
 echo ' '.$this->Html->image('oferta.png',['title' => 'Oferta']);
 }	
 else
@@ -206,8 +205,10 @@ if (($articulo['restringido_unid_w']>0 || $articulo['restringido_unid']>0) && $a
 	echo '<font color=#fe4c04><b>  MÁX '.$articulo['restringido_unid_w'].' UNI</b></font>';
 }
 ?>	
-<?php /*
-if($articulo['id']==48687) {echo $this->Html->image('MELCHOR.png',['title' => 'Stock Bajo, Consultar Operadora', 'width'=>20] );} */
+<?php 
+   /* 
+   if($articulo['id']==9403) {echo $this->Html->image('22-Lautaro.png',['title' => 'Stock Bajo, Consultar Operadora', 'width'=>60] );}  
+   if($articulo['id']==6703) {echo $this->Html->image('16-Lo-Celso.png',['title' => 'Stock Bajo, Consultar Operadora', 'width'=>60] );}  	*/
  ?>
 </div>				
 </td>
@@ -293,7 +294,7 @@ else
 		}
 		
 		else
-		if  ($articulo['subcategoria_id']<10)
+		if  ($articulo['subcategoria_id']<10 || $articulo['subcategoria_id']=14)
 			echo number_format(round($condiciongeneralcf, 3),2,',','.'). "% ";
 			else
 			if ($articulo['mcdp']==0)
@@ -337,7 +338,7 @@ else
 		}
 		
 		else
-		if  ($articulo['subcategoria_id']<10 && $articulo['subcategoria_id']>=0)
+		if  ($articulo['subcategoria_id']<10 && $articulo['subcategoria_id']>=0 || $articulo['subcategoria_id']==14)
 			echo number_format(round($condiciongeneralcf, 3),2,',','.'). "% ";
 			else
 			if ($articulo['mcdp']==0)
@@ -380,7 +381,7 @@ else
 	}
 	
 	else
-	if  ($articulo['subcategoria_id']<10 && $articulo['subcategoria_id']>=0)
+	if  ($articulo['subcategoria_id']<10 && $articulo['subcategoria_id']>=0 || $articulo['subcategoria_id']==14)
 		echo number_format(round($condiciongeneralcf, 3),2,',','.'). "% ";
 		else
 		if ($articulo['mcdp']==0)
@@ -615,18 +616,24 @@ fvcerca= 'Vencimiento: ';
 fvcerca= fvcerca.concat(fv);			 
 }	
 eanimg ='<img src="https://www.drogueriasur.com.ar/ds/webroot/img/productos/'+ean+'" alt="'+ean+'" width="200px">';
-//imgmelchor ='<img src="https://www.drogueriasur.com.ar/dsx/webroot/img/MELCHOR.png" width="50">';
-//if(dataimg== 1){
+/*imgmel22 ='<img src="https://www.drogueriasur.com.ar/ds/webroot/img/22-Lautaro_big.png" width="250">';
+imgmel16 ='<img src="https://www.drogueriasur.com.ar/ds/webroot/img/16-Lo-Celso_big.png" width="250">';
+if(dataimg== 1){
 
-//document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div><div id='flotante_img'>"+imgmelchor+"</div>";
-//}else{
-
+document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div><div id='flotante_img'>"+imgmel22+"</div>";
+}else{
+	if(dataimg== 2){
+		document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div><div id='flotante_img'>"+imgmel16+"</div>";
+	}
+		else
+		{
+		document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div>";
+		}
+}*/
 document.getElementById('flotante').innerHTML="<div id='flotante_text'>"+text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg+fvimg+fvcerca+"</div><div id='flotante_img'>"+eanimg+"</div>";
-//}
 // Posicionamos la capa flotante
 document.getElementById('flotante').style.top = (tempY-120)+"px";
 document.getElementById('flotante').style.left = (tempX-10)+"px";
-
 document.getElementById('flotante').style.display='block';
 return;
 }

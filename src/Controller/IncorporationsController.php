@@ -97,7 +97,7 @@ public function initialize(){
 
 	public function index_admin()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $this->paginate = [
 			'limit' => 100,
 			'order' => ['Incorporations.id' => 'DESC']

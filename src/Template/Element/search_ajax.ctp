@@ -109,7 +109,7 @@ $('#codigobarras').on("change", function(){
 
   function busquedaClick() {
     var numeroCaracteres = 0;
-    var textoArea = $("#terminobuscar").val().replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\"\.\-]/g, '');
+    var textoArea = $("#terminobuscar").val().replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\/\"\.\-]/g, '');
     if (textoArea) {
       numeroCaracteres = textoArea.length;
     }
@@ -160,7 +160,7 @@ $('#codigobarras').on("change", function(){
           $("#elSpan").text("");
           $.ajax({
             data: {
-              terminobuscar: texto.replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\"\.\-]/g, ''),
+              terminobuscar: texto.replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\"\/\.\-]/g, ''),
               monodroga_id: monodroga,
               accionfar_id: accionfar,
               laboratorio_id: laboratorio,
@@ -281,7 +281,7 @@ $('#codigobarras').on("change", function(){
       } else {
         $.ajax({
           data: {
-            terminobuscar: texto.replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\"\.\-]/g, ''),
+            terminobuscar: texto.replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\"\/\.\-]/g, ''),
             monodroga_id: monodroga,
             accionfar_id: accionfar,
             laboratorio_id: laboratorio,

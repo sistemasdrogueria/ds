@@ -267,9 +267,9 @@ class OfertasController extends AppController
  
 	public function index_admin()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $this->paginate = [
-			'limit' => 100,
+			'limit' => 200,
 			'contain'=>['OfertasTipos','Articulos']
 		];
 		
@@ -326,7 +326,7 @@ class OfertasController extends AppController
 					$fechadesde2->setDate($fechadesde2->year, $fechadesde2->month, 1);
 				$fechadesde2->i18nFormat('yyyy-MM-dd');
 			}
-			if (($fechadesde !=0) || ($fechahasta !=0) || ($termsearchp !="") || ($ofertatipo!=0))
+			if (($fechadesde !=0) || ($fechahasta !=0) || ($termsearchoff !="") || ($ofertatipo!=0))
 				{	
 					$ofertasA = $this->Ofertas->find('all')
 					->contain(['OfertasTipos','Articulos']);
@@ -431,7 +431,7 @@ class OfertasController extends AppController
 						]		
 					]
 					)
-					->where(['Articulos.id'=>$this->request->data['articulo_id']]);
+					->where(['Articulos.eliminado=0','Articulos.id'=>$this->request->data['articulo_id']]);
 		
 		$articulo = $articulosA->first();
 		$this->loadModel('OfertasTipos');
@@ -522,7 +522,7 @@ class OfertasController extends AppController
 		{
 			$articulosA->andWhere([
 					
-					'OR' => [['Articulos.descripcion_pag LIKE'=>$termsearch], 
+					'OR' => [['Articulos.descripcion_pag LIKE'=>$termsearch], ['Articulos.descripcion_sist LIKE'=>$termsearch], 
 					['Articulos.troquel LIKE'=>$termsearch],['Articulos.codigo_barras LIKE'=>$termsearch]],
 				]);
 	
@@ -630,7 +630,10 @@ class OfertasController extends AppController
         'order' => ['Articulos.descripcion_pag' => 'asc']];	
 		
 			if ($articulosA!=null)
+			{
+				$articulosA->andWhere(['Articulos.eliminado=0']);
 				$articulos = $this->paginate($articulosA);
+			}
 			else
 				$articulos = null;
 		

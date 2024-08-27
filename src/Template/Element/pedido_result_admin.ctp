@@ -82,10 +82,10 @@ switch ($pedido['comentario']) {
    
     default: echo 'TIENE';
     }  
-
  ?></td>
 <td class="actions">
 <?php 
+echo $this->Html->link($this->Html->image("admin/icn_view.png", ["alt" => "Ver"]),['controller' => 'pedidos', 'action' => 'view_admin',  $pedido['id']],['escape' => false,'target'=>'_blank']);
 $mensaje='';
 switch ($pedido['pedidos_status_id']) {
 case 1: $mensaje = 'No Habilitada';break;
@@ -107,7 +107,6 @@ echo $this->Html->image('admin/export.png',['title' => 'Tierra del Fuego'] );
 if ($pedido['impreso'])
 echo $this->Html->image('admin/impreso.png',['title' => 'impreso'] );
 }
-echo $this->Html->link($this->Html->image("admin/icn_view.png", ["alt" => "Ver"]),['controller' => 'pedidos', 'action' => 'view_admin',  $pedido['id']],['escape' => false,'target'=>'_blank']);
 //if ($pedido['imporeso'])
 //echo $this->Html->image('admin/impreso.png',['title' => 'impreso'] );
 ?>
@@ -132,4 +131,5 @@ echo $this->Paginator->counter('{{count}} Total');
 ?>
 </div>
 </div>
-</div>		
+</div>
+	

@@ -28,7 +28,7 @@ class CarritosController extends AppController
 {
 	public function isAuthorized()
 	{
-		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint', 'promocion', 'libreria', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_hss', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp','hotsale'])) {
+		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint','tufarmapoint', 'promocion', 'libreria', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_hss', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp','hotsale'])) {
 
 			if ($this->request->session()->read('Auth.User.role') == 'admin') {
 				return true;
@@ -1028,6 +1028,197 @@ class CarritosController extends AppController
 		//$this->viewBuilder()->layout('storefp');
 		$this->viewBuilder()->layout('store');
 		if ($this->request->session()->read('Auth.User.farmapoint') == 0)
+			$this->redirect($this->referer());
+
+		$this->loadModel('LogsAccesos');
+		$logsAcceso = $this->LogsAccesos->newEntity();
+
+		$logsAcceso['fecha'] = date('Y-m-d H:i:s');
+		//debug(date('Y-m-d H:i:s'));
+		$logsAcceso['usuario_id'] = $this->request->session()->read('Auth.User.id');
+		$logsAcceso['ip'] = $this->request->clientIp();
+		$logsAcceso['seccion'] = 1;
+		if ($this->LogsAccesos->save($logsAcceso)) {
+		}
+		$this->clientecredito();
+		$this->sumacarrito();
+		$this->loadModel('Articulos');
+		$articulos = $this->Articulos->find('all')
+			->contain([
+				'Descuentos' => [
+
+					'queryBuilder' => function ($q) {
+						return $q->where(['tipo_oferta = "FP"']); // Full conditions for filtering
+					}
+				]
+			])
+
+			->hydrate(false)
+			->join(
+				[
+					'table' => 'descuentos',
+					'alias' => 'd',
+					'type' => 'INNER',
+					'conditions' => [
+						'd.articulo_id = Articulos.id',
+						'd.tipo_venta = "D"',
+						'd.tipo_oferta = "FP"'
+					]
+				]
+			)
+
+			->where(['Articulos.eliminado' => 0, 'Articulos.stock <> "F"', 'Articulos.stock <>"D"'])
+			->where(['Articulos.imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg")']);
+
+		$this->request->session()->write('articulosxx', $articulos->toArray());
+		if ($this->request->session()->read('marcas2') == null) {
+			$this->loadModel('Articulos');
+			$articulosA = $this->Articulos->find('list', ['keyField' => rtrim('Marcas.id'), 'valueField' => rtrim('Marcas.nombre')])
+				->select([rtrim('Marcas.id'), rtrim('Marcas.nombre')])
+				->join(
+					[
+						'table' => 'descuentos',
+						'alias' => 'd',
+						'type' => 'INNER',
+						'conditions' => [
+							'd.articulo_id = Articulos.id',
+							'd.tipo_venta = "D"',
+							'd.tipo_oferta = "FP"'
+						]
+					]
+				)->join(
+					[
+						'table' => 'marcas',
+						'alias' => 'Marcas',
+						'type' => 'INNER',
+						'conditions' => [
+							'Marcas.id = Articulos.marca_id'
+						]
+					]
+				)
+				->where(['Articulos.eliminado' => 0, 'Articulos.stock <> "F"', 'Articulos.stock <>"D"'])
+				->where(['Articulos.imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg")'])
+				->order(['d.id' => 'DESC', 'Articulos.fp_orden' => 'ASC']);
+			$articulosB = $this->Articulos->find('list', ['keyField' => rtrim('Subcategoria.id'), 'valueField' => rtrim('Subcategoria.nombre')])
+				->select([rtrim('Subcategoria.id'), rtrim('Subcategoria.nombre')])
+				->join(
+					[
+						'table' => 'descuentos',
+						'alias' => 'd',
+						'type' => 'INNER',
+						'conditions' => [
+							'd.articulo_id = Articulos.id',
+							'd.tipo_venta = "D"',
+							'd.tipo_oferta = "FP"'
+						]
+					]
+				)->join(
+					[
+						'table' => 'subcategorias',
+						'alias' => 'Subcategoria',
+						'type' => 'INNER',
+						'conditions' => [
+							'Subcategoria.id = Articulos.subcategoria_id'
+						]
+					]
+				)
+				->where(['Articulos.eliminado' => 0, 'Articulos.stock <> "F"', 'Articulos.stock <>"D"'])
+				->where(['Articulos.imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg")'])
+				->order(['d.id' => 'DESC', 'Articulos.fp_orden' => 'ASC']);
+			$this->request->session()->write('categorias2', $articulosB->toArray());
+			$categoriass = $this->request->session()->read('categorias2');
+			$this->request->session()->write('marcas2', $articulosA->toArray());
+			$marcass = $this->request->session()->read('marcas2');
+		} else {
+			$this->loadModel('Articulos');
+			$articulosA = $this->Articulos->find('list', ['keyField' => rtrim('Marcas.id'), 'valueField' => rtrim('Marcas.nombre')])
+				->select([rtrim('Marcas.id'), rtrim('Marcas.nombre')])
+				->join(
+					[
+						'table' => 'descuentos',
+						'alias' => 'd',
+						'type' => 'INNER',
+						'conditions' => [
+							'd.articulo_id = Articulos.id',
+							'd.tipo_venta = "D"',
+							'd.tipo_oferta = "FP"'
+						]
+					]
+				)->join(
+					[
+						'table' => 'marcas',
+						'alias' => 'Marcas',
+						'type' => 'INNER',
+						'conditions' => [
+							'Marcas.id = Articulos.marca_id'
+						]
+					]
+				)
+				->where(['Articulos.eliminado' => 0, 'Articulos.stock <> "F"', 'Articulos.stock <>"D"'])
+				->where(['Articulos.imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg")'])
+				->order(['d.id' => 'DESC', 'Articulos.fp_orden' => 'ASC']);
+			$articulosB = $this->Articulos->find('list', ['keyField' => rtrim('Subcategoria.id'), 'valueField' => rtrim('Subcategoria.nombre')])
+				->select([rtrim('Subcategoria.id'), rtrim('Subcategoria.nombre')])
+				->join(
+					[
+						'table' => 'descuentos',
+						'alias' => 'd',
+						'type' => 'INNER',
+						'conditions' => [
+							'd.articulo_id = Articulos.id',
+							'd.tipo_venta = "D"',
+							'd.tipo_oferta = "FP"'
+						]
+					]
+				)->join(
+					[
+						'table' => 'subcategorias',
+						'alias' => 'Subcategoria',
+						'type' => 'INNER',
+						'conditions' => [
+							'Subcategoria.id = Articulos.subcategoria_id'
+						]
+					]
+				)
+				->where(['Articulos.eliminado' => 0, 'Articulos.stock <> "F"', 'Articulos.stock <>"D"'])
+				->where(['Articulos.imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg")'])
+				->order(['d.id' => 'DESC', 'Articulos.fp_orden' => 'ASC']);
+			$this->request->session()->write('categorias2', $articulosB->toArray());
+			$this->request->session()->write('marcas2', $articulosA->toArray());
+			$categoriass = $this->request->session()->read('categorias2');
+			$marcass = $this->request->session()->read('marcas2');
+		}
+		$this->set('categorias', $categoriass);
+		$this->set('marcass', $marcass);
+
+
+		$this->articulogrupo();
+		//$this->set('articulosxx',$articulos);
+		/*
+		$connection = ConnectionManager::get('default');
+
+			$ofertas = $connection->execute('SELECT ofertas.*,articulos.id AS articuloid, articulos.precio_publico, articulos.categoria_id, articulos.compra_max, 
+		  descuentos.dto_drogueria, descuentos.articulo_id, descuentos.plazo, descuentos.uni_min, descuentos.tipo_oferta, descuentos.tipo_venta, descuentos.tipo_precio ,ofertas.oferta_tipo_id 
+		  FROM ofertas LEFT JOIN articulos on articulos.id = ofertas.articulo_id INNER JOIN descuentos on descuentos.articulo_id =  articulos.id and 
+		  descuentos.tipo_venta = "D" and	descuentos.fecha_hasta >=CURRENT_DATE() and	descuentos.tipo_oferta in ("RV","RR","OR","TD","RL","FR","FP") where ofertas.activo=1 and articulos.stock<>"F" and articulos.imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg" ORDER BY ofertas.id DESC ' )->fetchAll('assoc');
+		*/
+		$connection = ConnectionManager::get('default');
+		$ofertas = $connection->execute('SELECT ofertas.*,articulos.id AS articuloid, articulos.precio_publico, articulos.laboratorio_id, articulos.categoria_id,  articulos.compra_max, articulos.msd, 
+		  descuentos.dto_drogueria, descuentos.articulo_id, descuentos.plazo, descuentos.uni_min, descuentos.tipo_oferta, descuentos.tipo_venta, descuentos.tipo_precio ,ofertas.oferta_tipo_id 
+		  FROM ofertas LEFT JOIN articulos on articulos.id = ofertas.articulo_id INNER JOIN descuentos on descuentos.articulo_id =  articulos.id and 
+		  descuentos.tipo_venta = "D" and	descuentos.fecha_hasta >=CURRENT_DATE() and	descuentos.tipo_oferta in ("RV","RR","OR","TD","RL","FR") where ofertas.activo=1 and articulos.stock<>"F" ORDER BY ofertas.id DESC ')->fetchAll('assoc');
+		$this->set('ofertas', $ofertas);
+		$articulos = $articulos->toArray();
+		$this->set(compact('articulos'));
+		$this->set('_serialize', 'articulos');
+	}
+
+
+	public function tufarmapoint()
+	{
+		//$this->viewBuilder()->layout('storefp');
+		$this->viewBuilder()->layout('store');
+		if ($this->request->session()->read('Auth.User.tufarmapoint') == 0)
 			$this->redirect($this->referer());
 
 		$this->loadModel('LogsAccesos');

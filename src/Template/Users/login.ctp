@@ -1,11 +1,24 @@
 
-<div class="col-lg-12 wow fadeInLeft delay-06s">
-	<?= $this->Flash->render('auth') ?>
-	<?= $this->Form->create() ?>
-    <legend><?= __('Por Favor ingrese su usuario y contraseña') ?></legend>
-		<?= $this->Form->input('username',['label'=>'Usuario','class'=>'input-text','placeholder'=>'Nombre *']) ?>
-		<?= $this->Form->input('password',['label'=>'Contraseña','class'=>'input-text','placeholder'=>'Contraseña *']) ?>
+<script>
+  
 
-        <?= $this->Form->button(__('Ingresar'),['class'=>'input-btn']) ?>
-		<?= $this->Form->end() ?>
-</div>
+     var onloadCallback = function() {
+  
+     grecaptcha.ready(function() {
+    function getNewRecaptchaToken() {
+        grecaptcha.execute('6LfgfTkoAAAAADIs76s1DbguGb9c4A8CTlx9zGqB', {action: 'submit'}).then(function(token) {
+     document.getElementById('g-recaptcha-response').value = token;
+	  document.getElementById('loginusers').style.display = 'block';
+        });
+    }
+
+    // Inicialmente obtener el token
+    getNewRecaptchaToken();
+
+    // Vuelve a obtener el token cada cierto tiempo (por ejemplo, cada 2 minutos)
+    setInterval(getNewRecaptchaToken, 2 * 60 * 1000); // 2 minutos en milisegundos
+    });
+    };
+    
+
+</script>

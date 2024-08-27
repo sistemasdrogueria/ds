@@ -1,5 +1,5 @@
 <div class="form_search">
-<?= $this->Form->create('',['url'=>['controller'=>'Articulos','action'=>'index'],'id'=>'searchform4']); ?>
+<?= $this->Form->create('',['url'=>['controller'=>'Articulos','action'=>'index_admin'],'id'=>'searchform4']); ?>
 
 <div class="input_text_search">
 <?= $this->Form->input('terminobuscar', ['class'=>'terminobusqueda','label'=>'','type'=>'text' ,'placeholder'=>'Buscar Producto','onchange'=>'javascript:document.confirmInput.submit();']); ?>

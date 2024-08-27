@@ -52,7 +52,7 @@ switch ($incorporation['incorporations_tipos_id']) {
 }
 $filename = WWW_ROOT . 'img' . DS .$uploadPath.$incorporation['imagen'] ;						
 if (file_exists($filename))
-echo $this->Html->image($uploadPath.$incorporation['imagen'], ['alt' => str_replace('"', '', $incorporation['descripcion']),'height' => 75]);
+echo $this->Html->image($uploadPath.$incorporation['imagen'], ['alt' => str_replace('"', '', $incorporation['descripcion']),'height' => 120]);
 //else
 //echo $uploadPath.$incorporation['imagen'];	
 ?> 

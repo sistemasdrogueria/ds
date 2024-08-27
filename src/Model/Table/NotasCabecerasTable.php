@@ -44,6 +44,10 @@ class NotasCabecerasTable extends Table
             'foreignKey' => 'comprobante_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('NotasCuerposItems', [
+            'foreignKey' => 'notas_cabeceras_id',
+            'dependent' => true,
+        ]);
     }
 
     /**

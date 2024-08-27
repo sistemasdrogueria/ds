@@ -1161,6 +1161,7 @@ class TransfersProveedorsController extends AppController
                     $articulo = $this->Articulos->find("all")->select(["id","categoria_id","iva","precio_publico","ean_prov","paq","venta_paq","descripcion_pag"])
                     ->where(['Articulos.codigo_barras  LIKE '  => '' . $ean . ''])
                     ->orWhere(['Articulos.codigo_barras2 LIKE' => '' . $ean . ''])
+                    ->orWhere(['Articulos.codigo_barras3 LIKE' => '' . $ean . ''])
                     ->orWhere(['Articulos.ean_prov LIKE' => '' . $ean . ''])
                     ->where(['Articulos.eliminado' => 0])->first();
                     
@@ -1325,6 +1326,15 @@ class TransfersProveedorsController extends AppController
             $conn->query('UPDATE transfers_proveedors SET transfer = SUBSTRING(numero_pedido_proveedor,LENGTH(numero_pedido_proveedor)-5) where transfers_import_id ='.$transferimport_id.';');
                 
             $conn->query('UPDATE transfers_imports SET procesado ="'.$fecha.'" where id= '.$transferimport_id.';');
+
+            if ($transfersImport['transfers_files_laboratorio_id'] == 6)
+            $conn->query('
+            UPDATE transfers_proveedors tp INNER JOIN (SELECT tp.id FROM transfers_proveedors tp  INNER JOIN articulos a ON a.id= tp.articulo_id INNER JOIN clientes c ON tp.cliente_id = c.id
+            WHERE tp.transfers_import_id = '. $transferimport_id.'    AND c.codigo_postal IN (8109,7500) AND a.laboratorio_id = 25) AS subquery ON tp.id = subquery.id
+            SET tp.plazo = "45 DIAS" WHERE tp.transfers_import_id ='.$transferimport_id.';');
+            
+            //UPDATE transfers_proveedors SET transfer = SUBSTRING(numero_pedido_proveedor,LENGTH(numero_pedido_proveedor)-5) where transfers_import_id ='.$transferimport_id.';');
+            
 
 			return $this->redirect(['action' => 'index_admin']);
             
@@ -1804,8 +1814,8 @@ class TransfersProveedorsController extends AppController
             $transfer['plazo']  = "30 DIAS";
             else
             {
-                $transfer['plazo']  =  mb_substr($acuerdo,$pos+6 ,8);  
-                if ($transfer['plazo'] == 'HABITUAL' || $transfer['plazo'] == 'HAB')
+                $transfer['plazo']  =  mb_substr($acuerdo,$pos+6 ,3);  
+                if ($transfer['plazo'] == 'HABITUAL' || $transfer['plazo'] == 'HAB' || $transfer['plazo']=='PLAZO HAB')
                     $transfer['plazo']  = "30 DIAS";
             }
             $transfer['transfer']  = mb_substr($line,44,8);

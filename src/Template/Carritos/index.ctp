@@ -103,7 +103,7 @@ else{
 if ($sursale['url_campo']!=''  && empty($sursale['laboratorio_id']) )
 {
 if ($sursale['url_campo']!='preventa')
-echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action' =>$sursale['url_metodo']."/".$sursale['url_campo']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%','onclick'=>'closedivbutton(1)']);
+echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo']."/".$sursale['url_campo']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%','onclick'=>'closedivbutton(1)']);
 else
 {
 echo $this->Html->link('linkoculto',['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo'],$sursale['descripcion']],['style'=>'display: none','id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);

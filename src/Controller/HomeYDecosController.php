@@ -466,7 +466,7 @@ class HomeYDecosController extends AppController
         $publication_sin = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()','habilitada' =>'1','ubicacion'=>'19','localidad'=>0])->order(['orden' => 'ASC'])->limit(2);
 		$publication_con = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()','habilitada' =>'1','ubicacion'=>'1','localidad like '=>'%'.$codigo_postal.'%'])->unionAll($publication_sin)->order(['orden' => 'ASC'])->limit(4);
 
-		
+		$this->set('gruposf2','');
 		$this->set('sursale2',$publication_con->first());
 		$this->set('sursale',$publication_con->skip(1)->first());
 		

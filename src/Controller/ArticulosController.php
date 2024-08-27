@@ -27,7 +27,7 @@ class ArticulosController extends AppController
 	
 	public function isAuthorized()
     {
-		 if (in_array($this->request->action, ['edit', 'delete','add','nuevos','index_imagen','imagenesreset','imagenreset','ordenupdate','search_articulos','buscar','buscarfactura'])) {
+		 if (in_array($this->request->action, ['index_admin','edit_admin', 'delete','add','nuevos','index_imagen','imagenesreset','imagenreset','ordenupdate','search_articulos','buscar','buscarfactura'])) {
        
             if($this->request->session()->read('Auth.User.role')=='admin') 
             {				
@@ -47,7 +47,7 @@ class ArticulosController extends AppController
 					if($this->request->session()->read('Auth.User.role')=='provider') 
 					{
 					
-						$this->redirect(array('controller' => 'Articulos', 'action' => 'index'));	
+						$this->redirect(array('controller' => 'Articulos', 'action' => 'index_admin'));	
 						return false;						
 					}
 					else
@@ -70,16 +70,7 @@ class ArticulosController extends AppController
                 }	
             }		
             }		
-			else 
-			{			    		
-				if (in_array($this->request->action, ['index']))
-				{
-					return true;
-					
-				}
-				else
-					return false;		
-			}	
+			
 		return parent::isAuthorized($user);
     }
 
@@ -310,15 +301,15 @@ else
      *
      * @return void
      */
-    public function index()
+    public function index_admin()
     {
 
 		//SELECT id,descripcion_sist, codigo_barras , REPLACE(imagen, '.jpg', '') AS nombre_imagen, fecha_alta FROM articulos WHERE imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg") AND codigo_barras != REPLACE(imagen, '.jpg', '') 
 
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->paginate = [
-            'contain' => ['Laboratorios','Categorias'],
-			'limit' => 500 , 'maxLimit' => 1000
+            'contain' => ['Laboratorios','Categorias','Subcategorias'],
+			'limit' => 500 , 'maxLimit' => 1000, 'order' => array('Articulos.fecha_alta' => 'DESC')
         ];
         //$this->set('_serialize', ['articulos']);
 		$this->set('titulo','Articulos');
@@ -422,7 +413,7 @@ else
 			if ($marcaid !=0)
 			$articulosA->andWhere(['Articulos.marca_id'=>$marcaid]);	
 		
-			$articulosA->order(['fecha_alta'=>'DESC']);
+			//$articulosA->order(['fecha_alta'=>'DESC']);
 			$articulos = $this->paginate($articulosA);
 			$this->loadModel('Marcas');
 			$marcas = $this->Marcas->find('list',['keyField' => 'id','valueField'=>'nombre'])->where(['marcas_tipos_id not in (10,11,12)'])->order(['nombre'=>'ASC']);
@@ -736,6 +727,7 @@ public function imagenesreset($id = null)
 								'OR' => [['Articulos.descripcion_pag LIKE'=>$termsearch], 
 								['Articulos.troquel LIKE'=>$termsearch],['Articulos.codigo_barras LIKE'=>$termsearch],['Articulos.codigo_barras2 LIKE'=>$termsearch]],
 							]);
+						
 			
 						if (($categoriaid !=0) && ($laboratorioid !=0))
 						{
@@ -753,8 +745,7 @@ public function imagenesreset($id = null)
 							{
 								if ($categoriaid !=0)
 								{	
-									$articulosA->andWhere(['Articulos.categoria_id'=>$categoriaid]);
-									
+									$articulosA->andWhere(['Articulos.categoria_id'=>$categoriaid]);								
 								}
 								else
 								{	
@@ -1041,12 +1032,12 @@ public function imagenesreset($id = null)
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
 
-    public function edit($id = null)
+    public function edit_admin($id = null)
     {
-		$this->set('titulo','Agregar de Imagen');
+		$this->set('titulo','Modificar Articulo - IMAGEN Y VC');
 		$this->viewBuilder()->layout('admin');
         $articulo = $this->Articulos->get($id, [
-            'contain' => []
+			'contain' => ['Categorias',  'Laboratorios','Subcategorias','Proveedors'] 
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $articulo = $this->Articulos->patchEntity($articulo, $this->request->data);
@@ -1103,15 +1094,33 @@ public function imagenesreset($id = null)
                 $this->Flash->error(__('Please choose a file to upload.'),['key' => 'changepass']);
 				$this->redirect($this->referer());
             }*/
+			if ($articulo['fv_cerca']==0 && $articulo['fv']!=null)
+			$articulo['fv']=null;
+
             if ($this->Articulos->save($articulo)) {
                 $this->Flash->success('The articulo has been saved.',['key' => 'changepass']);
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'index_admin']);
             } else {
                 $this->Flash->error('The articulo could not be saved. Please, try again.',['key' => 'changepass']);
             }
         }
         $this->set(compact('articulo'));
         $this->set('_serialize', ['articulo']);
+		
+		$this->loadModel('Marcas');
+		$marcas = $this->Marcas->find('list',['keyField' => 'id','valueField'=>'nombre'])->where(['marcas_tipos_id not in (10,11,12)'])->order(['nombre'=>'ASC']);
+		$this->set('marcas', $marcas->toArray());
+		$this->set('_serialize', ['marcas']);
+		
+		$this->loadModel('Grupos');
+		$grupos = $this->Grupos->find('list',['keyField' => 'id','valueField'=>'nombre'])->order(['nombre'=>'ASC']);
+		$this->set('grupos', $grupos->toArray());
+		$this->set('_serialize', ['grupos']);
+		$this->loadModel('Subgrupos');
+		$subgrupos = $this->Subgrupos->find('list',['keyField' => 'id','valueField'=>'nombre'])->order(['nombre'=>'ASC']);
+		$this->set('subgrupos', $subgrupos->toArray());
+		$this->set('_serialize', ['subgrupos']);
+		
 	}
 	
 	

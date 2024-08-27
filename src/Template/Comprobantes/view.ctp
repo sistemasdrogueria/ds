@@ -67,13 +67,25 @@ if (file_exists($nombre_fichero)) {
 <div class="product-item-3"> 
 <div class="product-content">
 <div class="row">
-
 <div class="col-md-12 col-sm-12">
 <?php 
 if (!empty($facturasCabecera))
 {
 echo '<span class=cliente_info_span>FACTURA</span>';
 echo $this->element('comprobante_view_encabezado'); 
+}
+if (!empty($notasCabecera))
+{
+    if ($notasCabecera['tipo'] == "RC")     
+$nombretiponota = "RECIBO OFICIAL";
+else
+if ($notasCabecera['tipo'] == "NC")
+$nombretiponota = "NOTA DE CRÉDITO";
+else
+if ($notasCabecera['tipo'] == "ND")          
+$nombretiponota = "NOTA DE DÉBITO";
+echo '<span class=cliente_info_span>'.$nombretiponota.'</span>';
+echo $this->element('comprobante_view_notas_cabecera'); 
 }	
 ?>
 </div> <!-- /.col-md-12 -->
@@ -88,7 +100,7 @@ echo '<span class=cliente_info_span>DESCARGAS</span>';
 echo '<div class=div_descarga>';
 echo '<div class=div_descarga_line>';
 echo '<div class=div_descarga_label>Comprobante PDF</div>';
-echo '<div class=div_descarga_icon>'.$this->Html->image('pdf.png',['title' => 'Descargar PDF','url'=>['controller'=>'Comprobantes','action' => 'downloadfile', $comprobante->nota, $comprobante->comprobante_tipo_id,$fecha]]).'</div>'; 
+echo '<div class=div_descarga_icon>'.$this->Html->image('icon_down_pdf2.png',['title' => 'Descargar PDF','url'=>['controller'=>'Comprobantes','action' => 'downloadfile', $comprobante->nota, $comprobante->comprobante_tipo_id,$fecha]]).'</div>'; 
 echo '</div>';
 if (!empty($trazas))
 {
@@ -108,7 +120,7 @@ if ($comprobante['comprobante_tipo_id']==1  && $comprobante['anulado']==0)
 {
 echo '<div class=div_descarga_line>';
 echo '<div class=div_descarga_label>Archivo TXT V1</div>';
-echo '<div class=div_descarga_icon>'.$this->Html->image('txt.png',['title' => 'Descargar TXT v1','url'=>['controller'=>'Comprobantes','action' => 'downloadfiletxt', $comprobante->nota,date_format($comprobante->fecha,'Y-m-d')]]).'</div>';
+echo '<div class=div_descarga_icon>'.$this->Html->image('icon_down_txt2_v1.png',['title' => 'Descargar TXT v1','url'=>['controller'=>'Comprobantes','action' => 'downloadfiletxt', $comprobante->nota,date_format($comprobante->fecha,'Y-m-d')]]).'</div>';
 echo '</div>';
 }
     
@@ -116,10 +128,17 @@ if ($comprobante['comprobante_tipo_id']==1  && $comprobante['anulado']==0)
 {
 echo '<div class=div_descarga_line>';
 echo '<div class=div_descarga_label>Archivo TXT V2/vctos</div>';
-echo '<div class=div_descarga_icon>'.$this->Html->image('txtv2.png',['title' => 'Descargar TXT v2','url'=>['controller'=>'Comprobantes','action' => 'downloadfiletxt2', $comprobante->nota,date_format($comprobante->fecha,'Y-m-d')]]).'</div>'; 
+echo '<div class=div_descarga_icon>'.$this->Html->image('icon_down_txt2_v2.png',['title' => 'Descargar TXT v2','url'=>['controller'=>'Comprobantes','action' => 'downloadfiletxt2', $comprobante->nota,date_format($comprobante->fecha,'Y-m-d')]]).'</div>'; 
 echo '</div>';
 }
     
+if (($comprobante['comprobante_tipo_id']==2 || $comprobante['comprobante_tipo_id']==3 )  && $comprobante['anulado']==0)
+{
+    echo '<div class=div_descarga_line>';
+    echo '<div class=div_descarga_label>Archivo TXT NC/ND</div>';
+    echo '<div class=div_descarga_icon>'.$this->Html->image('icon_down_txt_ndnc.png',['title' => 'Descargar TXT NDNC','url'=>['controller'=>'Comprobantes','action' => 'downloadfiletxt3', $comprobante->nota,date_format($comprobante->fecha,'Y-m-d')]]).'</div>'; 
+    echo '</div>';
+}
 echo '</div>';
 ?>
 
@@ -152,8 +171,14 @@ echo '<span class=cliente_info_span>Listados de productos Trazados</span>';
 echo '<br>';
 echo $this->element('comprobante_view_traza_result'); 
 }	
-?>
 
+if (!empty($notasCuerposItems))
+{
+echo '<span class=cliente_info_span>Cuerpo de la Nota</span></br>';
+echo $this->element('comprobante_view_notas_items');
+echo '<br>';
+}
+?>
 </div> <!-- /.product-item -->
 </div> <!-- /.col-md-3 -->
 <style>

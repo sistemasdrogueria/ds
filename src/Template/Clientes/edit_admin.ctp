@@ -69,8 +69,8 @@ echo $this->Form->radio('habilitado',[
 </fieldset>
 <fieldset >
 <?php	
-echo $this->Form->radio('farmapoint',[
-['value' => '1', 'text' => 'En farmapoint', 'style' => 'color:red;'],['value' => '0', 'text' => 'No participa', 'style' => 'color:blue;']],['value' =>$cliente['farmapoint']]);?>
+echo $this->Form->radio('tufarmapoint',[
+['value' => '1', 'text' => 'En Tu farmapoint', 'style' => 'color:red;'],['value' => '0', 'text' => 'No participa', 'style' => 'color:blue;']],['value' =>$cliente['tufarmapoint']]);?>
 </fieldset>
 <fieldset >
 <?php	

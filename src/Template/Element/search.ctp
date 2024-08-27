@@ -61,7 +61,7 @@ $(document).ready(function(){
 });
 $('#terminobuscar').on('keyup', function() {
     var input = $(this).val();
-    var sanitizedInput = input.replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\"\.\-]/g, '');
+    var sanitizedInput = input.replace(/[^a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ\s\'\_\"\/\.\-]/g, '');
     $(this).val(sanitizedInput);
 });
 

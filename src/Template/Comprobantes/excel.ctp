@@ -11,45 +11,40 @@ $objPHPExcel->getProperties()->setTitle("Listado de Comprobantes"); //titulo
 //inicio estilos
 $titulo = new PHPExcel_Style(); //nuevo estilo
 $titulo->applyFromArray(
-  array('alignment' => array( //alineacion
-      'wrap' => false,
-      'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
-    ),
-    'font' => array( //fuente
-      'bold' => true,
-      'size' => 20
-    )
+array('alignment' => array( //alineacion
+'wrap' => false,
+'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER
+),
+'font' => array( //fuente
+'bold' => true,
+'size' => 20
+)
 ));
- 
 $subtitulo = new PHPExcel_Style(); //nuevo estilo
- 
 $subtitulo->applyFromArray(
-  array('fill' => array( //relleno de color
-      'type' => PHPExcel_Style_Fill::FILL_SOLID,
-      'color' => array('rgb' => '2ac5ff')
-    ),
-    'borders' => array( //bordes
-      'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-      'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-      'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-      'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-    ),
-	'alignment' => array(
-			'wrap' => false,
-            'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-        )
-	
+array('fill' => array( //relleno de color
+'type' => PHPExcel_Style_Fill::FILL_SOLID,
+'color' => array('rgb' => '2ac5ff')
+),
+'borders' => array( //bordes
+'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+),
+'alignment' => array(
+'wrap' => false,
+'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+)
 ));
- 
 $bordes = new PHPExcel_Style(); //nuevo estilo
- 
 $bordes->applyFromArray(
-  array('borders' => array(
-      'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-      'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-      'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
-      'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
-    )
+array('borders' => array(
+'top' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+'right' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+'bottom' => array('style' => PHPExcel_Style_Border::BORDER_THIN),
+'left' => array('style' => PHPExcel_Style_Border::BORDER_THIN)
+)
 ));
 //fin estilos
  
@@ -83,26 +78,25 @@ $objPHPExcel->getActiveSheet()->getPageSetup()->setRowsToRepeatAtTopByStartAndEn
  
 $fila=1;
 
-$objPHPExcel->getActiveSheet()->SetCellValue("A$fila", "LISTADO DE COMPROBANTES");
-$objPHPExcel->getActiveSheet()->mergeCells("A$fila:L$fila"); //unir celdas
-$objPHPExcel->getActiveSheet()->setSharedStyle($titulo, "A$fila:L$fila"); //establecer estilo
+$objPHPExcel->getActiveSheet()->setSharedStyle($titulo, "A$fila:M$fila"); //establecer estilo
 $client = $this->request->session()->read('client');
 //titulos de columnas
-$fila+=1;
-		$objPHPExcel->getActiveSheet()->SetCellValue("A$fila", 'FECHA');
-		$objPHPExcel->getActiveSheet()->SetCellValue("B$fila", 'TIPO');
-		$objPHPExcel->getActiveSheet()->SetCellValue("C$fila", 'N° NOTA');
-		$objPHPExcel->getActiveSheet()->SetCellValue("D$fila", 'CLIENTE');
-		$objPHPExcel->getActiveSheet()->SetCellValue("E$fila", 'LETRA COMP.');
-		$objPHPExcel->getActiveSheet()->SetCellValue("F$fila", 'N° COMP.');
-		$objPHPExcel->getActiveSheet()->SetCellValue("G$fila", 'T. EXENTO');
-		$objPHPExcel->getActiveSheet()->SetCellValue("H$fila", 'T. GRAVADO');
-		$objPHPExcel->getActiveSheet()->SetCellValue("I$fila", 'I.V.A.');
-		$objPHPExcel->getActiveSheet()->SetCellValue("J$fila", 'PERC. I.V.A.');
-		$objPHPExcel->getActiveSheet()->SetCellValue("K$fila", 'PERC. I.BRUTOS');
-		$objPHPExcel->getActiveSheet()->SetCellValue("L$fila", 'TOTAL');
+
+$objPHPExcel->getActiveSheet()->SetCellValue("A$fila", 'FECHA');
+$objPHPExcel->getActiveSheet()->SetCellValue("B$fila", 'TIPO');
+$objPHPExcel->getActiveSheet()->SetCellValue("C$fila", 'N° NOTA');
+$objPHPExcel->getActiveSheet()->SetCellValue("D$fila", 'CLIENTE');
+$objPHPExcel->getActiveSheet()->SetCellValue("E$fila", 'LETRA COMP.');
+$objPHPExcel->getActiveSheet()->SetCellValue("F$fila", 'N° COMP.');
+$objPHPExcel->getActiveSheet()->SetCellValue("G$fila", 'T. EXENTO');
+$objPHPExcel->getActiveSheet()->SetCellValue("H$fila", 'T. GRAVADO');
+$objPHPExcel->getActiveSheet()->SetCellValue("I$fila", 'I.V.A.');
+$objPHPExcel->getActiveSheet()->SetCellValue("J$fila", 'PERC. I.V.A.');
+$objPHPExcel->getActiveSheet()->SetCellValue("K$fila", 'PERC. I.BRUTOS');
+$objPHPExcel->getActiveSheet()->SetCellValue("L$fila", 'TOTAL');
+$objPHPExcel->getActiveSheet()->SetCellValue("M$fila", 'MOTIVO');
 	
-$filas = "A$fila:L$fila"; 
+$filas = "A$fila:M$fila"; 
 $objPHPExcel->getActiveSheet()->setSharedStyle($subtitulo, $filas); //establecer estilo
 $objPHPExcel->getActiveSheet()->getStyle($filas)->getFont()->setBold(true); //negrita
  
@@ -125,7 +119,8 @@ $objPHPExcel->getActiveSheet()->getStyle($filas)->getFont()->setBold(true); //ne
 		$objPHPExcel->getActiveSheet()->SetCellValue("J$fila", str_replace(',','',number_format($facturasCabecera['imp_rg3337'],2)));
 		$objPHPExcel->getActiveSheet()->SetCellValue("K$fila", str_replace(',','',number_format($facturasCabecera['imp_ingreso_bruto'],2)));
         $objPHPExcel->getActiveSheet()->SetCellValue("L$fila", str_replace(',','', number_format($facturasCabecera['total'],2)));
-    	 $objPHPExcel->getActiveSheet()->setSharedStyle($bordes, "A$fila:L$fila");
+		 $objPHPExcel->getActiveSheet()->SetCellValue("M$fila", "FACTURA");
+    	 $objPHPExcel->getActiveSheet()->setSharedStyle($bordes, "A$fila:M$fila");
 		 $objPHPExcel->getActiveSheet()->getStyle("A$fila")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
 		 
 		$objPHPExcel->getActiveSheet()->getStyle("G$fila")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
@@ -165,7 +160,22 @@ $objPHPExcel->getActiveSheet()->getStyle($filas)->getFont()->setBold(true); //ne
 		$objPHPExcel->getActiveSheet()->SetCellValue("J$fila", str_replace(',','',number_format($notasCabecera['imp_rg3337'],2)));
 		$objPHPExcel->getActiveSheet()->SetCellValue("K$fila", str_replace(',','',number_format($notasCabecera['imp_ingreso_bruto'],2)));
        $objPHPExcel->getActiveSheet()->SetCellValue("L$fila", str_replace(',','', number_format($notasCabecera['total'],2)));
-    	 $objPHPExcel->getActiveSheet()->setSharedStyle($bordes, "A$fila:L$fila");
+    	
+		 if ($tipo !="RC")
+		 {
+			 if (!empty($notasCabecera['notas_cuerpos_items']))
+			 {
+				 foreach ($notasCabecera['notas_cuerpos_items'] as $item):
+				 if ($item['descripcion']!="                            " && $item['descripcion']!=".                           ")
+					 $objPHPExcel->getActiveSheet()->SetCellValue("M$fila", $item['descripcion']);
+				 endforeach; 
+			 }
+			 else
+			 $objPHPExcel->getActiveSheet()->SetCellValue("M$fila", "");
+		 }	
+		 else
+			 $objPHPExcel->getActiveSheet()->SetCellValue("M$fila", "RECIBO");
+		 $objPHPExcel->getActiveSheet()->setSharedStyle($bordes, "A$fila:M$fila");
 		 $objPHPExcel->getActiveSheet()->getStyle("A$fila")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
 		 
 		$objPHPExcel->getActiveSheet()->getStyle("G$fila")->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_CURRENCY_USD_SIMPLE);
@@ -181,23 +191,16 @@ $objPHPExcel->getActiveSheet()->getStyle($filas)->getFont()->setBold(true); //ne
 		
 	endforeach; 	
 //recorrer las columnas
-foreach (range('A', 'L') as $columnID) {
+foreach (range('A', 'M') as $columnID) {
   //autodimensionar las columnas
   $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
 }
- 
 //establecer pie de impresion en cada hoja
 $objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&R&F página &P / &N');
- 
- 
 //****************Guardar como excel 2007*******************************
 $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel); //Escribir archivo
-
-//$namefile= '"Comprobantes_'.$this->request->session()->read('Auth.User.codigo').'.xlsx"';
 //// nombre del archivo
 header('Content-Disposition: attachment; filename="comprobantes.xlsx"');
 //header('Content-Disposition: attachment; filename='.$namefile);//.$namefile);
-//**********************************************************************
- 
 //forzar a descarga por el navegador
 $objWriter->save('php://output');

@@ -66,7 +66,7 @@ aside#sidebar{width:15%;background:#E0E0E3 url(../img/admin/sidebar.png) repeat;
 #sidebar a:hover{text-decoration:underline}
 #sidebar footer{margin-top:20%}
 section#main2{width:98%;min-height:500px;background:url(../img/admin/sidebar_shadow.png) repeat-y left top;float:left;margin-top:-2px}
-section#main{width:85%;min-height:500px;background:url(../img/admin/sidebar_shadow.png) repeat-y left top;float:left;margin-top:-2px}
+section#main{width:95%;min-height:500px;background:url(../img/admin/sidebar_shadow.png) repeat-y left top;float:left;margin-top:-2px}
 #main h3{color:#1F1F20;text-transform:uppercase;text-shadow:0 1px 0 #fff;font-size:13px;margin:8px 20px}
 #main2 h3{color:#1F1F20;text-transform:uppercase;text-shadow:0 1px 0 #fff;font-size:13px;margin:8px 20px}
 .module{border:1px solid #9BA0AF;width:100%;margin:20px 3% 0;margin-top:20px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;background:#fff}
@@ -79,7 +79,7 @@ section#main{width:85%;min-height:500px;background:url(../img/admin/sidebar_shad
 .width_half{width:46%;margin-right:0;float:left}
 .width_quarter{width:26%;margin-right:0;float:left}
 .width_3_quarter{width:95%;margin-right:0;float:left}
-.width_4_quarter{width:110%;margin-right:0;float:left}
+.width_4_quarter{width:100%;margin-right:0;float:left}
 .stats_graph{width:64%;float:left}
 .stats_overview{background:#F6F6F6;border:1px solid #ccc;float:right;width:26%;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px}
 .overview_today,.overview_previous{width:50%;float:left}
@@ -163,14 +163,22 @@ fieldset input[type=email]:focus{outline:none;border:1px solid #77BACE;-webkit-b
 .input_text_input_search label{display:block;float:left;font-weight:700;font-size:14px;margin:0 10px}
 #button_search{margin:0;display:block;float:left;height:30px;width:85px;margin-left:10px;margin-top:10px}
 #button_import{margin:0;display:block;float:left;height:30px;width:100px;margin-left:20px; padding: 5px;}
-.input_date_search{float:left;margin:0 10px}
+.input_date_search{float:left;margin-left: 10px;}
+.input_date_search input[type=text]{ padding: 4px;}
+.input_file_search{ width: 130px; display: block;float: left;margin-left: 5px; margin-right: 5px; margin-top: 10px;   height: 27px; }
 .input_text_search{display:block;float:left}
-.input_select_search{display:block;float:left;margin-left:10px;margin-right:10px;margin-top:10px}
+.input_select_search{display:block;float:left;margin-left:5px;margin-right:5px;margin-top:10px; height: 27px    ; }
+.input_select_search input[type=select]{ padding: 4px; }
+.input_check_search{width: 20px; display:block;float:left; margin-top:10px;}
+.terminobusquedaselect{padding:4px;}
 .pedidotd{font-weight:700}
-.form_search{height:75px;margin-top:10px}
+/*.form_search{height:75px;margin-top:10px}
 #fechadesde{width:90px}
-#fechahasta{width:90px}
-#termino{width:120px}
+#fechahasta{width:90px}*/
+.form_search{height:45px;margin-top:10px}
+#fechadesde{width:100px}
+#fechahasta{width:100px}
+#termino{width:140px}
 #searchformofertas{width:100%}
 #searchformofertas input{float:left;width:20%}
 #searchformofertas select{float:left;width:17%}
@@ -179,6 +187,7 @@ fieldset input[type=email]:focus{outline:none;border:1px solid #77BACE;-webkit-b
 #searchformofertas label{display:none}
 .volveratras{padding-top:10px;padding-right:10px;float:right}
 .volveratras a{font-size:13px;color:#428BCA}
+.colprecio{ text-align: right;}
 .ofertainputdescuento{float:left;width:150px;margin-right:15px}
 .ofertainputfecha{float:left;width:150px;margin-right:15px}
 .ofertainputopcion{float:left;width:200px;margin-right:15px}
@@ -190,8 +199,154 @@ a.print-marcar{background:url(../img/admin/impreso.png) no-repeat;cursor:pointer
 a.print-preview{background:url(../img/admin/icon-print.png) no-repeat;cursor:pointer;display:block;height:40px;margin:20px 40px;padding:0 0 0 35px;line-height:20px}
 #buttonprint{float:right}
 .columna_reclamo_nombre{width:150px}
-.terminobusqueda{width:180px;margin-left:10px;margin-top:10px}
+.terminobusqueda{width:180px;margin-left:10px;margin-top:10px;height: 20px;}
 .centrado{text-align:center}
 #buttonexcel{display:block;float:left;height:25px;width:85px;margin-left:10px;margin-top:10px}
 .tabs_bt_nuevo{padding-right:10px;float:right;height:32px}
+.paginationtop{	position: relative; float: right;  margin-top: -50px;  margin-left: -50px;   width: 380px;}
+.paginationtop li.disabled,.paginationtop li.active{color:#999;background-color:transparent;cursor:default;float:left;padding:0 14px;line-height:34px;text-decoration:none;border:1px solid #ddd;border-left-width:0;text-decoration:none;list-style:none}
+.paginationtop li.disabled:first-child{border-left-width:1px;-webkit-border-radius:3px 0 0 3px;-moz-border-radius:3px 0 0 3px;border-radius:3px 0 0 3px;text-decoration:none;list-style:none}
+.paginationtop li.disabled:last-child{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;text-decoration:none;list-style:none}
+.paginationtop li{color:#999;background-color:transparent;cursor:default;float:left;padding:0 14px;line-height:34px;text-decoration:none;border:1px solid #ddd;border-left-width:0;text-decoration:none;list-style:none}
+.col_actions{ width: 160px; background-color: #fff;}
+.col_stock_fisico{ text-align: center;}
+.hover-gif {
+width: 50px; /* Ajusta el tamaño según necesites */
+height: auto;
+transition: all 0.3s ease;
+}
+.descripcionpag {
+font-size: 14px ;
+}
+.modal-open {
+overflow: hidden;
+}
+.modal {
+position: fixed;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+z-index: 1050;
+display: none;
+overflow: auto;
+overflow-y: scroll;
+-webkit-overflow-scrolling: touch;
+outline: 0;
+}
+.modal.fade .modal-dialog {
+-webkit-transition: -webkit-transform .3s ease-out;
+-moz-transition:    -moz-transform .3s ease-out;
+-o-transition:      -o-transform .3s ease-out;
+transition:         transform .3s ease-out;
+-webkit-transform: translate(0, -25%);
+-ms-transform: translate(0, -25%);
+transform: translate(0, -25%);
+}
+.modal.in .modal-dialog {
+-webkit-transform: translate(0, 0);
+-ms-transform: translate(0, 0);
+transform: translate(0, 0);
+}
+.enlargeImageModalSource {max-width: 100%;max-height: 120vh;width: auto;height: auto;}
+.enlargeImageModalSource2 {max-width: 100%;max-height: 80%;width: auto;height: auto;}
+.modal-dialog {
+position: relative;
+width: auto;
+/*margin: 10px;*/
+max-width: 90%;
+margin: 30px auto;
+}
+.modal-content {
+position: relative;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #999;
+border: 1px solid rgba(0, 0, 0, .2);
+border-radius: 6px;
+outline: none;
+-webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+}
+.modal-backdrop {
+position: fixed;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+z-index: 1040;
+background-color: #000;
+}
+.modal-backdrop.fade {
+filter: alpha(opacity=0);
+opacity: 0;
+}
+.modal-backdrop.in {
+filter: alpha(opacity=50);
+opacity: .5;
+}
+.modal-header {
+min-height: 16.42857143px;
+padding: 15px;
+border-bottom: 1px solid #e5e5e5;
+}
+.modal-header .close {
+margin-top: -2px;
+}
+.modal-title {
+margin: 0;
+line-height: 1.42857143;
+}
+.modal-body {
+/*position: relative;
+padding: 20px;*/
+padding: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.modal-footer {
+padding: 19px 20px 20px;
+margin-top: 15px;
+text-align: right;
+border-top: 1px solid #e5e5e5;
+}
+.modal-footer .btn + .btn {
+margin-bottom: 0;
+margin-left: 5px;
+}
+.modal-footer .btn-group .btn + .btn {
+margin-left: -1px;
+}
+.modal-footer .btn-block + .btn-block {
+margin-left: 0;
+}
+@media (min-width: 768px) {
+.modal-dialog {
+width: 600px;
+margin: 30px auto;
+}
+.modal-content {
+-webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+}
+.modal-sm {
+width: 300px;
+}
+}
+@media (min-width: 1000px) {
+.modal-lg {
+width: 800px;
+}
+@media (min-width: 1300px) {
+  .modal-lg {
+  width: 900px;
+  }
+  @media (min-width: 1400px) {
+    .modal-lg {
+    width: 1000px;
+    max-height: 800px;
+    }
+}
 .input_date_input_search_i{ padding: 5px;}
+.col_img{text-align: center;}

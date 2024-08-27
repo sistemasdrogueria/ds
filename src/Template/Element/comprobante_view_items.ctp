@@ -26,7 +26,6 @@
         $coef_pyf = $this->request->session()->read('Auth.User.coef_pyf');
     ?>  
 
-
     <?php foreach ($facturasCuerposItems as $facturasCuerposItem): ?>
         <?php $indice+=1;?>
 		<tr>
@@ -71,8 +70,7 @@
 			</td>
 			
             
-            <td class='colprecio'><?php	
-            
+            <td class='colprecio'><?php	         
             if (($facturasCuerposItem['articulo']['categoria_id']==1) ||  ($facturasCuerposItem['articulo']['categoria_id']==6) ||  ($facturasCuerposItem['articulo']['categoria_id']==7))
             echo '$ '.number_format($precio_publico,2,',','.');  ?></td>
             

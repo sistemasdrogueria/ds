@@ -397,6 +397,8 @@ class ClientesController extends AppController
 			
 			if (!empty($this->request->data['farmapoint']))
 			$cliente['farmapoint'] = $this->request->data['farmapoint'];
+			if (!empty($this->request->data['tufarmapoint']))
+			$cliente['tufarmapoint'] = $this->request->data['tufarmapoint'];
 			
 			if (!empty($this->request->data['selectos']))
 			$cliente['selectos'] = $this->request->data['selectos'];

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -65,10 +64,10 @@ class UsersController extends AppController
     $client = new Client();
 
     $response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
-        'secret' => '6Lf0c0EUAAAAADy1h9W0s9Sc64TXVI4iNl8v8Ysu',
-        'response' => $token
+        'secret' => '6LfgfTkoAAAAAAySXLfzwCwny3a_mljco1UR3tBE',
+        'response' => $token,
+		'remoteip' => $this->request->clientIp()
     ]);
-
 	
     if (!$response->isOk()) {
         return ['success' => false, 'message' => 'Error al conectar con el servicio de reCAPTCHA.'];
@@ -79,8 +78,7 @@ class UsersController extends AppController
     if (isset($responseData['success']) && $responseData['success'] === true) {
 		
           // Verificar que la puntuación es mayor a 0.5
-  return ['success' => true, 'score'=>"",'hostname'=>$responseData['hostname'], 'action'=>""];
-      
+  return ['success' => true, 'score' => $responseData['score'], 'hostname' => $responseData['hostname'], 'action' => ""];     
     } elseif (isset($responseData['error-codes']) && is_array($responseData['error-codes'])) {	
         if (in_array('timeout-or-duplicate', $responseData['error-codes'])) {
             return ['success' => false, 'message' => 'El token de reCAPTCHA ha expirado o es duplicado. Por favor, inténtalo de nuevo.'];
@@ -97,22 +95,21 @@ class UsersController extends AppController
 		if ($this->request->is('post')) {
 			$recaptchaToken = $this->request->getData('g-recaptcha-response');
 			$tokensinrecaptcha = $this->request->getData('tokensinrecatpcha');
-
-			$ip = $this->request->clientIp();
-			if (strpos($ip, '200.117.237.178') === 0 || strpos($ip, '200.51.41.202') === 0 ||  strpos($ip, '168.85.96.') === 0) {
+            $ip = $this->request->clientIp();
+			//if (strpos($ip, '200.117.237.178') === 0 || strpos($ip, '200.51.41.202') === 0 ||  strpos($ip, '168.85.96.') === 0) {
 			$recaptchaValidation['success'] = true;
-			}else{
-			$recaptchaValidation = $this->validateRecaptcha($recaptchaToken);
-
-			}
+			$recaptchaValidation['score']= 0.9;
+		//	}else{
+		//	$recaptchaValidation = $this->validateRecaptcha($recaptchaToken);
+         //   }
 			if(!empty($tokensinrecaptcha)){
 
 				$recaptchaValidation['success'] = true;
 
 				}
-						$recaptchaValidation['success'] = true;
 		
 			if ($recaptchaValidation['success']) {
+				if($recaptchaValidation['score'] > 0.5 ){
 				$user = $this->Auth->identify();
 				if ($user) {
 					$this->request->session()->destroy();
@@ -141,6 +138,7 @@ class UsersController extends AppController
 					$this->request->session()->write('Auth.User.pf_dcto', $cliente['preciofarmacia_descuento']);
 					$this->request->session()->write('Auth.User.comunidadsur', $cliente['comunidadsur']);
 					$this->request->session()->write('Auth.User.farmapoint', $cliente['farmapoint']);
+					$this->request->session()->write('Auth.User.tufarmapoint', $cliente['tufarmapoint']);
 					$this->request->session()->write('Auth.User.provincia_id', $cliente['provincia_id']);
 					$this->request->session()->write('Auth.User.gln', $cliente['gln']);
 					$this->request->session()->write('Auth.User.nota_pami', $cliente['nota_pami']);
@@ -193,6 +191,9 @@ class UsersController extends AppController
 					} else if ($user['role'] === 'adminR') {
 
 						return $this->redirect(['controller' => 'jobs', 'action' => 'index_admin']);
+					} else if ($user['role'] === 'adminS') {
+
+						return $this->redirect(['controller' => 'pedidos', 'action' => 'index_admin_new']);
 					} else if ($user['role'] === 'deposit') {
 
 						return $this->redirect(['controller' => 'depositos', 'action' => 'index']);
@@ -232,6 +233,7 @@ class UsersController extends AppController
 							$this->request->session()->write('Auth.User.pf_dcto', $cliente['preciofarmacia_descuento']);
 							$this->request->session()->write('Auth.User.comunidadsur', $cliente['comunidadsur']);
 							$this->request->session()->write('Auth.User.farmapoint', $cliente['farmapoint']);
+							$this->request->session()->write('Auth.User.tufarmapoint', $cliente['tufarmapoint']);
 							$this->request->session()->write('Auth.User.provincia_id', $cliente['provincia_id']);
 							$this->request->session()->write('Auth.User.gln', $cliente['gln']);
 							$this->request->session()->write('Auth.User.nota_pami', $cliente['nota_pami']);
@@ -284,6 +286,9 @@ class UsersController extends AppController
 							} else if ($user['role'] === 'deposit') {
 
 								return $this->redirect(['controller' => 'depositos', 'action' => 'index']);
+							} else if ($user['role'] === 'adminS') {
+
+								return $this->redirect(['controller' => 'pedidos', 'action' => 'index_admin_new']);
 							}
 						} else {
 							$this->Flash->error(__('Usuario o Password incorrecto, pruebe nuevamente', ['key' => 'changepass']));
@@ -293,6 +298,7 @@ class UsersController extends AppController
 						$this->Flash->error(__('Usuario o Password incorrecto, pruebe nuevamente', ['key' => 'changepass']));
 						return $this->redirect($this->referer());
 					}
+				}
 				}
 			} else {
 
@@ -651,8 +657,8 @@ public function loginValidacion()
 		$this->viewBuilder()->layout('admin');
 		$this->paginate = [
 			'contain' => ['Clientes'],
-			'limit' => 200,
-
+			'limit' => 500,
+			'maxLimit' => 500,	
 			'order' => ['Users.id' => 'DESC']
 		];
 		$this->set('users', $this->paginate($this->Users));

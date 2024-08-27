@@ -53,11 +53,11 @@ if (file_exists($filename))
 {
    if ($oferta->oferta_tipo_id<2)
    {
-      echo $this->Html->image($uploadPath.$oferta['articulo']['imagen'], ['alt' => str_replace('"', '', $oferta['descripcion']),'height' => 75]);
+      echo $this->Html->image($uploadPath.$oferta['articulo']['imagen'], ['class'=>'imgFoto2','alt' => str_replace('"', '', $oferta['descripcion']),'height' => 100]);
    }
    else
    {
-     echo $this->Html->image($uploadPath.$oferta['imagen'], ['alt' => str_replace('"', '', $oferta['descripcion']),'height' => 75]);
+     echo $this->Html->image($uploadPath.$oferta['imagen'], ['class'=>'imgFoto','alt' => str_replace('"', '', $oferta['descripcion']),'height' => 100]);
   
    }
    
@@ -119,6 +119,30 @@ echo $this->Paginator->counter('{{count}} Total');
 </div>
 </div>
 </div>	
+<div class="modal fade" id="enlargeImageModal2" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal2" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+</div>
+<div class="modal-body">       
+<img src="" class="enlargeImageModalSource2" style="width: 90%;">       
+</div>
+</div>
+</div>
+</div>
+<div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+</div>
+<div class="modal-body">       
+<img src="" class="enlargeImageModalSource" style="width: 50%;">       
+</div>
+</div>
+</div>
+</div>
 
 <script>
    function seleccionar_todo(valor){
@@ -169,5 +193,42 @@ function preguntarSiNo(id) {
       alertify.error("Se cancelo la operación");
     }
   );
-}</script>
+}
+$(function() {
+$('.imgFoto').on('click', function() {
+var str = $(this).attr('src');
+var res = str;
+var a = new XMLHttpRequest;
+a.open("GET", res, false);
+a.send(null);
+if (a.status === 404){
+var res = $(this).attr('src');
+//var res = res.replace("foto.png", "productos/"+$(this).data("id"));
+}			
+//var res =  $(this).attr('src');
+$('.enlargeImageModalSource').attr('src',res);
+$('#enlargeImageModal').modal('show');
+});
+});
+$(function() {
+$('.imgFoto2').on('click', function() {
+var str = $(this).attr('src');
+var res = str.replace("productos/", "productos/big_");
+var a = new XMLHttpRequest;
+a.open("GET", res, false);
+a.send(null);
+if (a.status === 404){
+var res = $(this).attr('src');
+//var res = res.replace("foto.png", "productos/"+$(this).data("id"));
+}			
+//var res =  $(this).attr('src');
+$('.enlargeImageModalSource2').attr('src',res);
+$('#enlargeImageModal2').modal('show');
+});
+});
+</script>
+<?php
+//echo $this->Html->css('bootstrap.min');
+echo $this->Html->script('bootstrap'); 
+?>
 

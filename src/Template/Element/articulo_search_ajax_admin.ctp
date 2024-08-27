@@ -1,7 +1,7 @@
 <fieldset>
   <div class="padre">
  
-    <?= $this->Form->create('', ['url' => ['controller' => 'Articulos', 'action' => 'index'], 'id' => 'searchformofertas', 'autocomplete' => "off", 'onsubmit' => 'return false;']); ?>
+    <?= $this->Form->create('', ['url' => ['controller' => 'Articulos', 'action' => 'index_admin'], 'id' => 'searchformofertas', 'autocomplete' => "off", 'onsubmit' => 'return false;']); ?>
     <div class=search_prod>
     <?= $this->Form->input('terminobuscar', ['label' => 'Buscar x codigo de barras', 'id' => 'terminobuscar', 'name' => 'terminobuscar', 'type' => 'text', 'placeholder' => 'Buscar x EAN,  troquel o descripción', 'width' => '260px', 'onkeypress' => 'buscararticulo();']); ?>
     </div>

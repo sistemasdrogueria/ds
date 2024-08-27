@@ -55,5 +55,6 @@ class Cliente extends Entity
 		'farmapoint'=>true,
         'coef_pyf'=>true,
          'conditions'=>true,
+         'tufarmapoint'=>true,
     ];
 }

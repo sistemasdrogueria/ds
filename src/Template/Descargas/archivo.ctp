@@ -76,25 +76,6 @@
 </div>
 </div>
 </div>
-</div>
-<div class="col-md-5">
-<div class="product-item-3">
-<div class="product-content3">
-<div class="row">
-<h3 align="center">Novedades</h3>
-<?php foreach ($clientesnovedades as $clientesnovedade): ?>
-<div class=clientes_novedades>
-<div class=clientes_novedades_fecha><?php echo date_format($clientesnovedade['fecha'],'d-m-Y'); ?></div>
-<div class=clientes_novedades_titulo><?php echo $clientesnovedade['titulo'];?> </div>
-<div class=clientes_novedades_detalle> <?php echo nl2br($clientesnovedade['descripcion']);?></div>
-</div>
-<?php endforeach; ?>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-md-7">
 <div class="product-item-3">
 <div class="product-content3">
 <div class="row">
@@ -102,7 +83,7 @@
 <h3 align="center">Descargas de Formatos</h3>
 <table>
 <tr>
-<TD WIDTH="250px" height="40" align="left" valign="top">
+<td WIDTH="250px" height="40" align="left" valign="top">
 <div id="descripcion-campo"><B>Factura Digital</B></div>
 </td>
 <td WIDTH="350px" height="40" align="left" valign="top">
@@ -113,6 +94,18 @@
 <?php echo 'ver2 ' . $this->Html->image('pdf.png', ['title'=>'Descargar pdf', 'url'=>['controller'=>'Descargas', 'action'=>'descargarformato',2]]);?>
 </div>
 <div style="float:left; color:red;margin-left:4px;font-weight:bold;">Nuevo</div>
+</td>
+</tr>
+<tr>
+<td WIDTH="250px" height="40" align="left" valign="top">
+<div id="descripcion-campo"><B>Nota de Crédito y Débito Digital</B></div>
+</td>
+<td WIDTH="350px" height="40" align="left" valign="top">
+<div style="float:left;  width:100px">
+<?php echo $this->Html->image('pdf.png', ['title'=>'Descargar pdf','url'=>['controller'=>'Descargas','action'=>'descargarformato',7]]); ?>
+</div>
+
+
 </td>
 </tr>
 <tr>
@@ -144,6 +137,26 @@
 </div>
 </div>
 </div>
+
+
+<div class="col-md-5">
+<div class="product-item-3">
+<div class="product-content3">
+<div class="row">
+<h3 align="center">Novedades</h3>
+<?php foreach ($clientesnovedades as $clientesnovedade): ?>
+<div class=clientes_novedades>
+<div class=clientes_novedades_fecha><?php echo date_format($clientesnovedade['fecha'],'d-m-Y'); ?></div>
+<div class=clientes_novedades_titulo><?php echo $clientesnovedade['titulo'];?> </div>
+<div class=clientes_novedades_detalle> <?php echo nl2br($clientesnovedade['descripcion']);?></div>
+</div>
+<?php endforeach; ?>
+</div>
+</div>
+</div>
+</div>
+
+
 <div class="modal fade" id="myModal" role="dialog">
 <div class="modal-dialog">
 <!-- Modal content-->

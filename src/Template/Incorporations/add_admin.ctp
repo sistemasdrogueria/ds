@@ -1,5 +1,9 @@
 <article class="module width_3_quarter">
-<header><h3 class="tabs_involved"><?= $titulo ?></h3></header>
+<header><h3 class="tabs_involved"><?= $titulo ?></h3>
+<div class="volveratras">
+<?php echo $this->Html->image('admin/icn_volver.png', ['url' => $previous]);?>
+</div>
+</header>
 <?= $this->Form->create('Incorporations', ['url'=>['controller'=>'Incorporations','action'=>'add_admin'],'type' => 'file']) ?>
 <fieldset>	
 <?php echo $this->Form->input('descripcion'); ?>

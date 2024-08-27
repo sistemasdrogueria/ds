@@ -30,6 +30,12 @@ class ArticulosTable extends Table
         $this->belongsTo('Laboratorios', [
             'foreignKey' => 'laboratorio_id'
         ]);
+        $this->belongsTo('Proveedors', [
+            'foreignKey' => 'proveedor_id'
+        ]);
+        $this->belongsTo('Subcategorias', [
+            'foreignKey' => 'subcategoria_id'
+        ]);
         $this->hasMany('CarritosItems', [
             'foreignKey' => 'articulo_id'
         ]);
@@ -113,7 +119,7 @@ class ArticulosTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['categoria_id'], 'Categorias'));
-        $rules->add($rules->existsIn(['subcategoria_id'], 'Categorias'));
+        $rules->add($rules->existsIn(['subcategoria_id'], 'Subcategorias'));
         $rules->add($rules->existsIn(['laboratorio_id'], 'Laboratorios'));
         return $rules;
     }

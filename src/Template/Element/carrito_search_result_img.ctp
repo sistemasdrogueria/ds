@@ -1,4 +1,4 @@
-<style>.imgFotoReyes{ width: 40px; position: absolute; margin-left: -200px; margin-top: 20px;}
+<style>.imgFotoAmigo{ width: 80px; position: absolute; margin-left: -230px; margin-top: 40px;}
 .parpad { animation-name: parpadeo; animation-duration: 2s;  animation-timing-function: linear;animation-iteration-count: infinite;-webkit-animation-name:parpadeo;-webkit-animation-duration: 2s;-webkit-animation-timing-function: linear;-webkit-animation-iteration-count: infinite;}
 @-moz-keyframes parpadeo{ 0% { opacity: 1.0; }50% { opacity: 0.0; }100% { opacity: 1.0; }}
 @-webkit-keyframes parpadeo { 0% { opacity: 1.0; }50% { opacity: 0.0; }100% { opacity: 1.0; }}
@@ -81,14 +81,25 @@ echo '</span>';
 
 <?php 
 /*
-if ($articulo["id"]== 19940)
-echo $this->Html->image('MELCHOR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
-if ($articulo["id"]== 2033)
-echo $this->Html->image('GASPAR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
-*//*if ($articulo["id"]== 47965)
-echo $this->Html->image('BALTAZAR.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);*/
-/*if ($articulo["id"]== 24650)
-echo $this->Html->image('PAPA-NOEL.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+
+if ($articulo["id"]== 50674)
+echo $this->Html->image('10-Messi.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
+if ($articulo["id"]== 1081)
+echo $this->Html->image('CT-Ayala.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
+
+if ($articulo["id"]== 8136)
+echo $this->Html->image('16-Lo-Celso.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
+if ($articulo["id"]== 19072)
+echo $this->Html->image('6-Pezzella.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
+
+if ($articulo["id"]== 48436)
+echo $this->Html->image('7-De-Paul.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
+if ($articulo["id"]== 21068)
+echo $this->Html->image('11-Di-Maria.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
+
+if ($articulo["id"]== 22579)
+echo $this->Html->image('CT-Aimar.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
+
 
 if ($articulo["id"]== 16781){
 
@@ -98,13 +109,13 @@ echo $this->Html->image('CORAZON-ROJO.png', ['alt' => str_replace('"', '', $arti
 */
 /*
 if ($articulo["id"]== 24052)
-echo $this->Html->image('CONEJO-MILKA.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+echo $this->Html->image('CONEJO-MILKA.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
 
 if ($articulo["id"]== 13116)
-echo $this->Html->image('CONEJO-HAVANNA1.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+echo $this->Html->image('CONEJO-HAVANNA1.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
 
 if ($articulo["id"]== 48426)
-echo $this->Html->image('CONEJO-KINDER.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
+echo $this->Html->image('CONEJO-KINDER.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoAmigo']);
 */
 if ($articulo["fv_cerca"])
 {
@@ -150,7 +161,10 @@ else
 $precio = $precio*$descuento_pf;
 $precio -=$precio*($descuento_off/100);
 }
-}	
+}
+if ($precio!=0 && $articulo['cadena_frio']==1 && $articulo['subcategoria_id']!=10)
+$precio = $precio*1.0248;
+
 $precio_con_dcto = $precio;
 }	
 }
@@ -164,6 +178,8 @@ $precio = $articulo['precio_publico'];
 $precio = $precio*$descuento_pf;
 if ($condicion >0 ) 
 $precio -= $precio*$condicion/100;
+if ($precio!=0 && $articulo['cadena_frio']==1 && $articulo['subcategoria_id']!=10)
+$precio = $precio*1.0248;
 $precio_farmacia = $precio;
 
 }

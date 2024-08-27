@@ -4,12 +4,40 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     $previous = $_SERVER['HTTP_REFERER'];
 }
 ?>
+<style>
+	.header_icon{
+	float: right;	
+	margin-right: 10px;
+	margin-top: 5px;
+}
+.header_icon_delete{
+float: left;
+margin-top: 5px;
+margin-left: 5px;
+margin-right: 5px;
+}
+.header_icon_return{ 
+	float: left;
+}
+</style>
+
 <div class="ofertas form large-10 medium-9 columns">
     <article class="module width_3_quarter">
 	<header><h3 class="tabs_involved"><?= $titulo ?></h3>
-		<div class="volveratras">
-			<a href="<?= $previous ?>">Volver atras<a>
-		</div>
+		<div class = header_icon> 
+<div class="header_icon_delete">
+<?php 
+echo $this->Form->postLink(
+$this->Html->image('admin/icn_trash.png',
+["alt" => __('Delete'), "title" => __('Delete')]), 
+['action' => 'delete_admin', $oferta->id], 
+['escape' => false, 'confirm' => __('Esta seguro de eliminar a # {0}?', $oferta->id)]
+);
+?>
+</div>
+<div class="header_icon_return">
+<?php echo $this->Html->image('admin/icn_volver.png', ['url' => $previous]);?>	</div>
+</div>
 	</header>
 	<?= $this->Form->create($incorporation, ['url'=>['controller'=>'Incorporations','action'=>'edit_admin'],'type' => 'file']) ?>
 	<fieldset>	

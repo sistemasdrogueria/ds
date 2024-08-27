@@ -36,12 +36,31 @@ echo $ipClien;
 } else {
 }  ?>';
 var onloadCallback = function() {
-// Renders the HTML element with id 'example1' as a reCAPTCHA widget.
-// The id of the reCAPTCHA widget is assigned to 'widgetId1'.
-grecaptcha.render('example3', {'sitekey': '6Lf0c0EUAAAAAGN6LqoAB0U-m2T1HXNgIHivpHmo','callback': verifyCallback,'theme': 'white'});
-};
+      // Renders the HTML element with id 'example1' as a reCAPTCHA widget.
+      // The id of the reCAPTCHA widget is assigned to 'widgetId1'.
+/*
+      grecaptcha.render('example3_catcha', {
+        'sitekey': '6Lf0c0EUAAAAAGN6LqoAB0U-m2T1HXNgIHivpHmo',
+        'callback': verifyCallback,
+        'theme': 'white'
+      });
+      */
+
+     grecaptcha.ready(function() {
+    function getNewRecaptchaToken() {
+        grecaptcha.execute('6LfgfTkoAAAAADIs76s1DbguGb9c4A8CTlx9zGqB', {action: 'submit'}).then(function(token) {
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    }
+
+    // Inicialmente obtener el token
+    getNewRecaptchaToken();
+    document.getElementById('loginusers').style.display = 'block';
+    // Vuelve a obtener el token cada cierto tiempo (por ejemplo, cada 2 minutos)
+    setInterval(getNewRecaptchaToken, 2 * 60 * 1000); // 2 minutos en milisegundos
+    });
+    };
 </script>
-<!--[if lt 
 <!--[if lt IE 9]>
 <?php
 echo $this->Html->script('respond-1.1.0.min');
@@ -69,21 +88,22 @@ echo $this->Html->script('html5element');
 }
 </script>
 <style>
-.my-fixed-item {position: fixed;z-index: 99;top: 84%;left: 95%;}
+.my-fixed-item{position:fixed;z-index:99;top:90%;left:90%;}
 .my-fixed-item img {margin-right: 15px;}
 #loading-modal {display: none;position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, 0.5);/* Fondo semitransparente */z-index: 9999;}
 .modal-content-loading {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);background-color: white;/* Color de fondo del modal */padding: 20px;border-radius: 8px;}
-#example3 { position: absolute;top: 4%;margin-top: 15px;float: right;margin-left: 40%;}
+#example3_catcha { position: absolute;top: 4%;margin-top: 15px;float: right;margin-left: 40%;}
 @media only screen and (max-width: 768px) {
-#example3 {top: 10%;margin-left: 20%;}}
+#example3_catcha {top: 10%;margin-left: 20%;}}
 @media only screen and (min-width: 600px) and (max-width: 767px) {
-#example3 {top: 170%;margin-left: 20%;}}
+#example3_catcha {top: 170%;margin-left: 20%;}}
 @media only screen and (min-width: 769px) and (max-width: 1024px) {
-#example3 {top: 150%;margin-left: 27%;}
+#example3_catcha {top: 150%;margin-left: 27%;}
 .top_cont_outer {margin-top: 4%;}}
 @media only screen and (max-width: 600px) {
-#example3 {top: 15%;margin-left: 10%;position: relative;}
+#example3_catcha {top: 15%;margin-left: 10%;position: relative;}
 .top_cont_outer {margin-top: 4%;}}
+#loginusers{display:none;}
 </style>
 </head>
 
@@ -111,10 +131,8 @@ echo $this->Html->script('html5element');
 </div>
 </nav>
 <div id="mensaje" style="display:none;"> <?= $this->Flash->render('changepass'); ?> </div>
-
 <?= $this->Form->create(null, ['url' => ['controller' => 'users', 'action' => 'login'], 'name' => 'confirmInput', 'id' => 'loginusers']) ?>
-<div class="col-md-12">
-<div class="col-md-12">
+
 <div class="input_text_login">
 <div class="input_text_input">
 <?= $this->Form->input('username', ['class' => 'input-text2', 'id' => 'username', 'label' => '', 'type' => 'text', 'placeholder' => 'Usuario *']); ?>
@@ -122,35 +140,28 @@ echo $this->Html->script('html5element');
 <div class="input_text_input">
 <?= $this->Form->password('password', ['class' => 'input-text2', 'id' => 'password', 'label' => '', 'type' => 'password', 'placeholder' => 'Contraseña *']); ?>
 </div>
+          <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
 <div class="input_text_input">
 <?= $this->Form->button('Ingresar', ['class' => 'buttonlogin', 'type' => 'submit']) ?>
-</div>
-</div>
-</div>
-<div class="col-md-12">
-<div class="col-md-12">
 <form action="?" method="POST">
-<div id="example3"></div>
+<div id="example3_catcha"></div>
 <br>
 </form>
-</div>
-</div>
-</div>
-</form>
+
+
+
 </div>
 <?= $this->Form->end(['data-type' => 'hidden']) ?>
 </div>
 <?= $this->Flash->render() ?>
-<div style="float: right;display: block;margin-left: 1px;"> ¿Todavía no sos cliente? <br>Hacé <?= $this->Html->link(__("click acá"), ['controller' => 'ClientesAltas', 'action' => 'add']) ?> para serlo.
-</div>
+<div style="float: right;display: block;margin: 10px;"> ¿Todavía no sos cliente? <br>Hacé <?= $this->Html->link(__("click acá"), ['controller' => 'ClientesAltas', 'action' => 'add']) ?> para serlo.</div>
 </div>
 </div>
 </div>
 </header>
 <!--Header_section-->
 <!--Hero_Section-->
-<div class=my-fixed-item align="center">
-<?php echo $this->Html->image('icon_whatsapp.png', ['url' => 'https://api.whatsapp.com/send?phone=5492914254968'], ['target' => '_blank', '_full' => true, 'escape' => true, 'alt' => 'WHATSAPP']); ?></div>
+<div class=my-fixed-item align="center"><?php echo $this->Html->image('icon_whatsapp.png', ['url' => 'https://api.whatsapp.com/send?phone=5492914254968'], ['target' => '_blank', '_full' => true, 'escape' => true, 'alt' => 'WHATSAPP']); ?></div>
 <section id="hero_section" class="top_cont_outer">
 <div class="hero_wrapper">
 <!-- div class="container" -->
@@ -575,7 +586,7 @@ showAlertCode(response.email, response.validate, response.datadi);
 Swal.fire({
 icon: "error",
 title: "Oops...",
-text: " No tienes ningun email almacenado, comunicate con tu agente de ventas para almacenar un email.",
+text: "No tienes ningun email almacenado, comunicate con tu agente de ventas para almacenar un email.",
 });
 }
 } else if (response.status === 'error') {
@@ -597,11 +608,12 @@ alert('Ha ocurrido un error en la petición.');
 }
 return false;
 }
+/*
 if (MydataIg) {
 if (MydataIg == '200.117.237.178' || MydataIg == '200.51.41.202') {
 return true;
 }
-}
+}*/
 if (username.trim() === "") {
 Swal.fire({
 icon: "error",
@@ -650,7 +662,7 @@ existingInput.value = response;
 document.addEventListener('DOMContentLoaded', (event) => {
 // El DOM está completamente cargado, pero otros recursos como imágenes podrían todavía no estarlo.
 // Muestra el formulario de login
-document.getElementById('loginusers').style.display = 'block';
+
 });
 $(function() {
 var UI = document.getElementById('flashmensajesuccess');

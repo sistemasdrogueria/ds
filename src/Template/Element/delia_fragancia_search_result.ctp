@@ -125,7 +125,8 @@ else
 echo $this->Html->image('CONEJO-FERRERO.png', ['alt' => str_replace('"', '', $articulo['descripcion_sist']),'class'=>'imgFotoReyes']);
 */
  ?>
- </div> <?php }?>
+ </div>
+  <?php }?>
 <?php endforeach; ?>
 </div>
 <!--/div -->

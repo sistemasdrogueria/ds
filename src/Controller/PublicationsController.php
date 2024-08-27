@@ -139,7 +139,7 @@ public function initialize(){
 		$this->loadModel('PublicationsTipos');
         $publicationsTipos =  $this->PublicationsTipos->find('list', ['keyField' => 'id','valueField' => 'nombre']);
 		$this->set('publicationsTipos',$publicationsTipos->toArray());
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $this->paginate = [
 			'limit' => 100,
 			'order' => (['Publications.id' => 'DESC'])

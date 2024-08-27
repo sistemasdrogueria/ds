@@ -18,9 +18,12 @@ class PedidosController extends AppController
 {
 	public function isAuthorized()
     {
-           if (in_array($this->request->action, ['index_admin','view_admin','index_admin_search','impreso','pami_admin','pami_admin_search','index_admin_reporte','reportPedidosExcel','importresultredirect','importresultventas'])) {
+           if (in_array($this->request->action, ['index_admin','view_admin','view_admin_new','index_admin_search','impreso','pami_admin','pami_admin_search','index_admin_reporte','reportPedidosExcel','importresultredirect','importresultventas','confirmpedidojax','index_admin_new'])) {
        
             if($this->request->session()->read('Auth.User.role')=='admin') 	
+			return true;			
+            else 
+				if($this->request->session()->read('Auth.User.role')=='adminS') 	
                 return true;			
             else 
 				$this->Flash->error(__('No tiene permisos para ingresar'),['key' => 'changepass']);
@@ -1299,9 +1302,14 @@ else
 						$conn->query('CALL AgregarPedido('.$cliente_id.','.$cliente_id.','.$envio.','.$envio.',"'.$fecha.'","TR","'.$comentario .'","'.$plazo.'",0,0);');
 					endforeach;			}
 				// Separo los items el Tipo Oferta TL
-				$carritotl = $this->Carritos->find('all')->select(['articulo_id','plazoley_dcto'])->distinct(['plazoley_dcto'])
+/*				$carritotl = $this->Carritos->find('all')->select(['plazoley_dcto'])->distinct(['plazoley_dcto'])
 						->where(['Carritos.cliente_id' => $cliente_id])
 						->andWhere(['Carritos.tipo_fact'=>'TL']);
+*/
+				$carritotl = $this->Carritos->find('all')
+				->select(['plazoley_dcto','articulo_id'])
+				->where(['Carritos.cliente_id' => $cliente_id,	'Carritos.tipo_fact' => 'TL'])
+				->group('Carritos.plazoley_dcto');
 				if ($carritotl->count()>0)
 				{
 					foreach ($carritotl as $carrito): 
@@ -2022,7 +2030,202 @@ else
     }
 	
 
+	public function index_admin_new()
+    {
+		$this->viewBuilder()->layout('adminS');
+		$this->paginate = [
+          
+			'limit' => 500,
+			 'maxLimit' => 1000
+        ];
+		
+		if ($this->request->is('post'))
+		{	
+	
+			if ($this->request->data['fechadesde']!= null)
+			{
+				$fechadesde = $this->request->data['fechadesde'];
+			}	
+			else
+			{
+				$fechadesde=0;
+			}
+			if ($this->request->data['fechahasta']!= null)
+			{
+				$fechahasta = $this->request->data['fechahasta'];
+			}	
+			else
+			{
+				$fechahasta =0;
+			}
+			if ($this->request->data['termino']!= null)
+			{
+				$termino = '%'.$this->request->data['termino'].'%';
+			}	
+			else
+			{
+				$termino ="";
+			}	
+			if ($this->request->data['termino2']!= null)
+			{
+				$termino2 = $this->request->data['termino2'];
+			}	
+			else
+			{
+				$termino2 ="";
+			}	
+			if ($this->request->data['termino3']!= null)
+			{
+				$termino3 = $this->request->data['termino3'];
+			}	
+			else
+			{
+				$termino3 ="";
+			}	
+			$this->request->session()->write('termino',$termino);
+			$this->request->session()->write('termino2',$termino2);
+			$this->request->session()->write('termino3',$termino3);
+			$this->request->session()->write('fechadesde',$fechadesde);	
+			$this->request->session()->write('fechahasta',$fechahasta);
+		}
+		else 
+		{
 
+			$session = $this->request->session();
+			if ($session->check('fechahasta')) {
+				$fechahasta = $session->read('fechahasta');
+			} else {
+				$fechahasta = 0; // o un valor por defecto
+			}
+			
+			if ($session->check('fechadesde')) {
+				$fechadesde = $session->read('fechadesde');
+			} else {
+				$fechadesde = 0; // o un valor por defecto
+			}
+			
+			if ($session->check('termino')) {
+				$termino = $session->read('termino');
+			} else {
+				$termino = ""; // o un valor por defecto
+			}
+			
+			if ($session->check('termino2')) {
+				$termino2 = $session->read('termino2');
+			} else {
+				$termino2 = ""; // o un valor por defecto
+			}
+			
+			if ($session->check('termino3')) {
+				$termino3 = $session->read('termino3');
+			} else {
+				$termino3 = ""; // o un valor por defecto
+			}
+		}
+		if ($fechahasta!=0)
+		{
+			//$fechahasta2 = Time::now();
+			$fechahasta2 = Time::createFromFormat(
+			'd/m/Y',
+			$fechahasta,
+			'America/Argentina/Buenos_Aires');
+			$fechahasta2->modify('+1 days');
+			$fechahasta2->i18nFormat('yyyy-MM-dd');
+		}
+		else
+		{
+			$fechahasta2 = Time::now();
+			//$fechahasta2-> modify('-1 days');
+			$fechahasta2->i18nFormat('yyyy-MM-dd');
+			$fechahasta =1;
+		}
+		if ($fechadesde!=0)
+		{
+			//$fechadesde2 = Time::now();
+			$fechadesde2 = Time::createFromFormat(
+				'd/m/Y',
+			$fechadesde,
+			'America/Argentina/Buenos_Aires');
+			$fechadesde2->i18nFormat('yyyy-MM-dd');
+		}
+		else
+		{
+			$fechadesde2 = Time::now();
+			$fechadesde2->modify('-1 days');
+			$fechadesde2->i18nFormat('yyyy-MM-dd');
+			$fechadesde =1;
+		}
+		// siempre
+		$pedidosA = $this->Pedidos->find('all')
+				->select(['id',	'creado', 'c.codigo','c.razon_social','cliente_id', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','impreso','pedidos_status_id','comentario'])
+				->hydrate(false)
+				->join([
+					'c' => [
+						'table' => 'clientes',
+						'type' => 'left',
+						'conditions' => 'c.id = Pedidos.cliente_id',
+					]
+				])
+				->order(['Pedidos.id' => 'DESC'])
+				->group('Pedidos.id');
+		// 
+		if ($termino!="")
+		{
+		$pedidosA ->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'left',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'left',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				]);	
+		}
+
+				
+	  	if ($termino!="")
+		{
+			$pedidosA->where(['a.descripcion_pag LIKE'=>$termino])->orWhere(['a.troquel LIKE'=>$termino]);
+		}
+		
+		if (($fechadesde !=0) && ($fechahasta !=0))
+		    	$pedidosA->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"]);
+		else
+				if (($fechadesde !=0) || ($fechahasta !=0))
+					$pedidosA->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"]);
+
+		if ($termino3!="")
+		{
+				$pedidosA->where(['c.codigo'=>$termino3])->orWhere(['c.nombre LIKE'=>"%".$termino3."%"]);
+		}
+		if ($termino2!="")
+		{
+				$pedidosA->where(['Pedidos.id' => $termino2]);
+		}
+		
+		if (($fechadesde !=0) && ($fechahasta !=0) && ($termino2!="") && ($termino!="") && ($termino3!="") )
+					{
+							$pedidosA=null;
+							$this->redirect($this->referer());
+					}
+		if ($pedidosA!=null)
+		{
+			$pedidos = $this->paginate($pedidosA);
+		}
+		else
+			$pedidos = null;
+		
+		
+		$this->loadModel('Estados');
+		$estados = $this->Estados->find('all');
+		$this->set('estados',$estados->toArray());
+		
+		$this->set('pedidos',$pedidos);
+		$this->set('titulo','Lista de Resultado de pedidos ' .$fechadesde2->i18nFormat('yyyy-MM-dd').' - '.$fechahasta2->i18nFormat('yyyy-MM-dd') );
+    }
 
 	public function index_admin_search()
     {
@@ -2344,6 +2547,7 @@ else
 		$this->set('pedidos',$pedidos);
 		$this->set('titulo','Lista de Resultado de pedidos');
     }
+
 	public function index_admin_reporte(){
 	$this->viewBuilder()->layout('admin');
    }
@@ -2456,6 +2660,33 @@ else
     public function view_admin($id = null)
     {
 		$this->viewBuilder()->layout('admin2');
+        $pedido = $this->Pedidos->get($id, [
+            'contain' => ['Clientes']
+        ]);
+		$this->loadModel('PedidosItems');
+		$this->loadModel('PedidosItemsStatus');
+		$itemstatus = $this->PedidosItemsStatus->find('list',['keyField' => 'id','valueField'=>'nombre']);
+		$this->set('itemstatus', $itemstatus->toArray());
+		
+        $this->set('pedido', $pedido);
+		
+        $this->set('_serialize', ['pedido']);
+		$this->set('titulo','Vista del Pedidos');
+		$this->paginate = [
+			'limit' => 1000,
+			'maxLimit' => 1000,
+            'contain' => ['Pedidos', 'Articulos'],
+			'order' => ['Articulos.descripcion_pag' => 'ASC']
+			
+        ];
+        $this->set('pedidosItems', $this->paginate($this->PedidosItems->find()->where(['pedido_id'=>$id])));
+        $this->set('_serialize', ['pedidosItems']);
+		
+    }
+
+	public function view_admin_new($id = null)
+    {
+		$this->viewBuilder()->layout('adminS');
         $pedido = $this->Pedidos->get($id, [
             'contain' => ['Clientes']
         ]);

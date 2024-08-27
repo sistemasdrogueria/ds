@@ -1,15 +1,11 @@
 <style>
 .seccion_noticias {display: flex;  justify-content: center}
-
 .noticia_titulo { font-size: 22px;     text-decoration: none;}
 .noticia_titulo a { color: black ;font-family: "Open Sans",Arial,sans-serif;color: #2a3f52;font-weight: 700;}
 .noticia_div {border-bottom: #ddd solid 1px; margin-top :5px;margin-bottom: 20px; padding-bottom: 10px;}
 .noticia_fecha{ font-size: 14px; margin-top: 5px; margin-bottom: 15px; font-weight: bold;}
 .noticia_subtitulo {margin-top:15px; margin-bottom: 15px; font-weight: bold; font-size: 15px;}
 .noticia_img {margin-top: 10px; margin-bottom: 10px;}
-
-
-
 @media (max-width: 500px ) {
 .seccion_noticias {display: inline-flex;flex-direction: column;justify-content: center}
 } 

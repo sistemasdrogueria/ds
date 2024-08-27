@@ -155,54 +155,57 @@ class DescargasController extends AppController
 		
 	public function descargarformato($opcion=null)
 	{
-		if ($opcion==1)
-			{
-				$name= "Formato_Factura_Digital_v1.pdf";	
-				$tipo="pdf";				
-			}
-			if ($opcion==2)
-			{
-				$name= "Formato_Factura_Digital_v2.pdf";
-				$tipo="pdf";
-			}
-			if ($opcion==3)
-			{
-				$name= "Formato_Pedido_Respuesto_Falta.pdf";
-				$tipo="pdf";
-			}
-			if ($opcion==4)
-			{
-				$name= "Formato_Trazabilidad.pdf";
-				$tipo="pdf";
-			}
-			if ($opcion==5)
-			{
-				$name= "Formato_Producto.pdf";
-				$tipo="pdf";
-			}
-			if ($opcion==6)
-			{
-				$name= "Manual_Procedimiento_Ticket.pdf";
-				$tipo="pdf";
-			}
-				//$direccion = 'http://200.117.237.178:8080/down/arch/'.$name;
-				$servidor = $_SERVER['SERVER_NAME'];
-				if ($servidor==="www.drogueriasur.com.ar" || $servidor==="drogueriasur.com.ar")
-				
-				$direccion2 = $_SERVER['DOCUMENT_ROOT'] . '/ds/webroot/file/'. $name;
-				else
-				$direccion2 = $_SERVER['DOCUMENT_ROOT'] . '/webroot/file/'. $name;
-			
-			/*if ( copy($direccion, $direccion2) ) {
-				
-			}else{
-				
-			}*/
-			$this->response->type($tipo);
-			
-			$this->response->file($direccion2,['download' => true, 'name' => $name]);
 
-			return $this->response;
+		switch ($opcion) {
+			case 1:
+			$name= "Formato_Factura_Digital_v1.pdf";	
+			$tipo="pdf";
+			break;
+			case 2:
+			$name= "Formato_Factura_Digital_v2.pdf";
+			$tipo="pdf";
+			break;
+			case 3:
+			$name= "Formato_Pedido_Respuesto_Falta.pdf";
+			$tipo="pdf";
+			break;
+			case 4:
+			$name= "Formato_Trazabilidad.pdf";
+			$tipo="pdf";
+			break;
+			case 5:
+			$name= "Formato_Producto.pdf";
+			$tipo="pdf";
+			break;
+			case 6:
+			$name= "Manual_Procedimiento_Ticket.pdf";
+			$tipo="pdf";
+			break;
+			case 7:
+			$name= "Formato_Notas_Digital.pdf";
+			$tipo="pdf";
+			break;
+
+		}
+
+		//$direccion = 'http://200.117.237.178:8080/down/arch/'.$name;
+		$servidor = $_SERVER['SERVER_NAME'];
+		if ($servidor==="www.drogueriasur.com.ar" || $servidor==="drogueriasur.com.ar")
+		
+		$direccion2 = $_SERVER['DOCUMENT_ROOT'] . '/ds/webroot/file/'. $name;
+		else
+		$direccion2 = $_SERVER['DOCUMENT_ROOT'] . '/webroot/file/'. $name;
+		
+		/*if ( copy($direccion, $direccion2) ) {
+			
+		}else{
+			
+		}*/
+		$this->response->type($tipo);
+		
+		$this->response->file($direccion2,['download' => true, 'name' => $name]);
+
+		return $this->response;
 		
 	}
 	

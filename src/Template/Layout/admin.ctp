@@ -32,7 +32,7 @@ echo $this->Html->script('jquery.notifyBar.min');?>
 <div class=btn_view_site> <?= $this->Html->link(__('Salir'), ['controller' => 'Users', 'action' => 'logout']) ?></div>
 </section>
 <aside id=sidebar class=column>
-<h3><?= $this->Html->link(__('Articulos'), ['controller' => 'Articulos', 'action' => 'index']) ?></h3>
+<h3><?= $this->Html->link(__('Articulos'), ['controller' => 'Articulos', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Clientes'), ['controller' => 'Clientes', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Comprobantes'), ['controller' => 'Comprobantes', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Descargas'), ['controller' => 'Descargas', 'action' => 'index_admin']) ?></h3>
@@ -47,6 +47,7 @@ echo $this->Html->script('jquery.notifyBar.min');?>
 <h3><?= $this->Html->link(__('Ofertas Tipos'), ['controller' => 'OfertasTipos', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Pañales Pami'), ['controller' => 'Pedidos', 'action' => 'pami_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Pedidos'), ['controller' => 'Pedidos', 'action' => 'index_admin']) ?></h3>
+<h3><?= $this->Html->link(__('Pedidos NEW'), ['controller' => 'Pedidos', 'action' => 'index_admin_new']) ?></h3>
 <h3><?= $this->Html->link(__('Reclamos'), ['controller' => 'Tickets', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Resumenes'), ['controller' => 'CtacteResumenSemanales', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Publicaciones'), ['controller' => 'Publications', 'action' => 'index_admin']) ?></h3>

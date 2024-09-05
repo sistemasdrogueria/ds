@@ -68,9 +68,7 @@ echo $this->Html->css('templatemo-style.min.css?'.$filever2= filesize('css/templ
 <?=$this->Html->link(__('Compras'),['controller'=>'Carritos','action'=>'index'])?>
 <ul>
 <li><?=$this->Html->link(__('Importar Archivos'),['controller'=>'Carritos','action'=>'import'])?></li>
-
 <li><?=$this->Html->link(__('Pañales PAMI'),['controller'=>'Carritos','action'=>'pami'])?></li>
-
 <!-- li><?=$this->Html->link(__('PRIMAVERA SALE'),['controller'=>'Carritos','action'=>'primaverasale'])?></li -->
 <li><?=$this->Html->link(__('Oferta Venc.Cercano'),['controller'=>'Carritos','action'=>'ofertavc'])?></li>
 <li><?=$this->Html->link(__('Libreria'),['controller'=>'Carritos','action'=>'libreria'])?></li>
@@ -99,6 +97,8 @@ echo '</div>';
 <li><?=$this->Html->link(__('Cargar'),['controller'=>'Tickets','action'=>'add'])?></li>
 <li><?=$this->Html->link(__('Realizados'),['controller'=>'Tickets','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Recalls'),['controller'=>'Tickets','action'=>'recall'])?></li>
+<li><?=$this->Html->link(__('Convenio de Vencido '),['controller'=>'Descargas','action'=>'descargarformato',8])?></li>
+<li><?=$this->Html->link(__('Lab. Adheridos '),['controller'=>'Descargas','action'=>'descargarformato',9])?></li>
 </ul>
 </li>
 <li><?=$this->Html->link(__('Estadisticas'),['controller'=>'Estadisticas','action'=>'index'])?></li>

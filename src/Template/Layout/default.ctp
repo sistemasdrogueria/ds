@@ -201,7 +201,6 @@ if ($slider['url_controlador']=="URL")
 {
 echo '<div><a href="'.$slider['url_campo'].'" target ="_blank">'.$this->Html->image('inicio/'.$slider['imagen'], ['alt' => 'LINK','width'=>'100%','target' => '_blank', '_full' => true, 'escape' => false, 'loading' => 'lazy'] ) .'</a></div>';
 }
-
 endforeach;
 ?>
 </div>

@@ -185,6 +185,14 @@ class DescargasController extends AppController
 			$name= "Formato_Notas_Digital.pdf";
 			$tipo="pdf";
 			break;
+			case 8:
+			$name= "Normativas_Convenio_de_Vencidos.pdf";
+			$tipo="pdf";
+			break;
+			case 9:
+			$name= "Laboratorios_Adheridos_al_Convenio.pdf";
+			$tipo="pdf";
+			break;
 
 		}
 

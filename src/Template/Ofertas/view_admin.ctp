@@ -133,7 +133,6 @@ $this->Html->image('admin/icn_trash.png',
             <p><?= h($oferta->imagen) ?></p>
         </div>
         <div class="large-2 columns numbers end">
-
             <h1 class="subheader"><?= __('Descuento Producto') ?></h1>
             <p><?= $this->Number->format($oferta->descuento_producto) ?></p>
             <h1 class="subheader"><?= __('Unidades Minimas') ?></h1>

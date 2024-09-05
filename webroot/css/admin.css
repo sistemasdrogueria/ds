@@ -338,10 +338,12 @@ width: 300px;
 .modal-lg {
 width: 800px;
 }
+}
 @media (min-width: 1300px) {
   .modal-lg {
   width: 900px;
   }
+}
   @media (min-width: 1400px) {
     .modal-lg {
     width: 1000px;

@@ -39,9 +39,14 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 	</fieldset>
 	<fieldset>
 		<div class="">
-			<?php
-			echo $this->Form->input('fv_cerca', ['label' => 'Vencimiento cerca', 'type' => 'checkbox','checked'=>$articulo['fv_cerca']]);
-			
+			<?php	
+			if ($articulo->fv_cerca) {
+				echo
+				$this->Form->checkbox('fv_cerca', ['label' => 'Vencimiento cerca', 'type' => 'checkbox', 'value' => $articulo->fv_cerca, 'checked' => true]);
+			} else {
+				echo
+				$this->Form->checkbox('fv_cerca', ['label' => 'Vencimiento cerca', 'type' => 'checkbox', 'value' => $articulo->fv_cerca, 'checked' => false]);
+			}
 			?>
 		</div>
 		<div class="">

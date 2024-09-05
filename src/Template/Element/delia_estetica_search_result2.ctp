@@ -185,7 +185,6 @@ $precio = $precio*1.0248;
 $precio_farmacia = $precio;
 
 }
-
 if ($this->request->session()->read('Auth.User.codigo_postal')==9410 || $this->request->session()->read('Auth.User.codigo_postal')==9420) 				
 {
 $precio_farmacia = $precio_farmacia *$articulo['tf_coef'];;

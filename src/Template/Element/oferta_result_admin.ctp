@@ -53,7 +53,7 @@ if (file_exists($filename))
 {
    if ($oferta->oferta_tipo_id<2)
    {
-      echo $this->Html->image($uploadPath.$oferta['articulo']['imagen'], ['class'=>'imgFoto2','alt' => str_replace('"', '', $oferta['descripcion']),'height' => 100]);
+      echo $this->Html->image($uploadPath.$oferta['articulo']['imagen'], ['class'=>'imgFoto2','alt' => str_replace('"', '', $oferta['descripcion']),'height' =>100]);
    }
    else
    {

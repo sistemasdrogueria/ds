@@ -1,6 +1,6 @@
-.cabecera{float:left;width:100%;padding-bottom:10px}
+/*.cabecera{float:left;width:100%;padding-bottom:10px}
 .contacto{float:left;width:50%}
-.logo {float:left;width:44% ; margin-top: 5px;}
+.logo {float:left;width:44% ; margin-top: 5px;} */
 .remito{float:left;width:12%; text-align: center; margin-top: -20px;}
 .remito_letra{ font-size: 28px; font-weight: bold; padding: 5px; border: 3px #ebebeb solid; width: 50px; text-align: center; margin: 0 auto; }
 .remito_codigo { margin-top: 3px;}
@@ -15,7 +15,7 @@
 #remito_fecha_f { display:inline-block; }
 #remito_fecha {display:inline-block; margin-left: 20px;}
 
-.anexo{float:left;width:50%;text-align:center}
+/*.anexo{float:left;width:50%;text-align:center}*/
 .datos_impositivo {	float: left;    width: 45%;    text-align: center;    font-size: 13px;    padding-left: 5%; margin-top: 15px;}
 .datos_empresa { line-height: 18px;float:left;/*width:50% ;*/     margin-top: -18px;     width: 48%;    margin-left: 16px; }
 h1{font-size:16px;font-family:'Open Sans',sans-serif;font-weight:400;text-decoration:underline}
@@ -23,7 +23,9 @@ hr{width:100%}
 .comprobantes_datos{width:100%;padding-bottom:10px}
 .datos_left{float:left;width:50%}
 .datos_right{float:left;width:50%}
-.comprobantes_result{width:100%;padding-top:10px;padding-bottom:10px}
+.datos_r_left{float:left;width:60%}
+.datos_r_right{float:left;width:39%}
+.comprobantes_result{width:100%;padding-top:5px;padding-bottom:10px}
 .colcenter{text-align:center}
 td,th{padding:0;display:table-cell;vertical-align:inherit}
 .tablasearch{width:100%}
@@ -31,7 +33,19 @@ td,th{padding:0;display:table-cell;vertical-align:inherit}
 .tablasearch tr:nth-child(even){background:#ebebeb;color:#000}
 .tablasearch tr:nth-child(odd){background:#FFF}
 .tablasearch tr{height:25px;margin-top:3px}
-.labeldatos{width:105px;height:30px;float:left;font-size:13px;vertical-align:text-bottom}
+/*.labeldatos{width:105px;height:30px;float:left;font-size:13px;vertical-align:text-bottom}
 .resuldatos{width:150px;float:left;height:30px}
 .resuldatos2{width:300px;float:left}
-.linea{width:100%;float:left}
+.linea{width:100%;float:left}*/
+.linea {width: 100%;float: left;white-space: nowrap; }
+.labeldatos, .resuldatos, .resuldatos2 {display: inline-block;vertical-align: middle;height:25px}
+.labeldatos {width: 35%; font-size: 13px;}
+.resuldatos, .resuldatos2 {width: 65%; height: 25px;}
+.resuldatos2{font-weight: bold;}
+.cabecera {width: 100%;/*padding-bottom: 10px;*/}
+.logoytitulo {display: flex;align-items: center;justify-content: space-between;}
+.logo {width: 40%;display: inline-block;vertical-align: middle;}
+.titulo {width: 55%; font-size: 20px; display: inline-block;vertical-align: middle;}
+.contacto {text-align: center; margin-top: 10px;}
+.contactodireccion, .contactootros {display: inline-block;width: 45%; vertical-align: top; text-align: center; }
+.contactourl {width: 100%;text-align: center;margin-top: 10px; }

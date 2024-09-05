@@ -164,7 +164,6 @@ $precio -=$precio*($descuento_off/100);
 }
 if ($precio!=0 && $articulo['cadena_frio']==1 && $articulo['subcategoria_id']!=10)
 $precio = $precio*1.0248;
-
 $precio_con_dcto = $precio;
 }	
 }

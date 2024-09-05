@@ -100,7 +100,7 @@ echo $this->Html->link(
 );
 
 ?>
-<a href="https://web.whatsapp.com/send?text=<?php echo urlencode('https://drogueriasur.com.ar/dsx/compartir/index/'.$articulo->codigo_barras.'/'.urlencode($articulo->descripcion_pag).'') ;?>"  target="_blank"> 
+<a href="https://web.whatsapp.com/send?text=<?php $descripcion_limpia = preg_replace('/[^A-Za-z0-9\s]/', ' ', $articulo->descripcion_pag);  echo rawurlencode('https://drogueriasur.com.ar/dsx/compartir/index/'.$articulo->codigo_barras.'/'.rawurlencode($descripcion_limpia).'') ;?>"  target="_blank"> 
 <?php echo $this->Html->image('admin/admin_compartir.png',['title' => 'Comaprtir','data-static'=>'../img/admin/admin_compartir.png','data-hover'=>'../img/admin/admin_compartir.gif','class'=>'hover-gif',]); ?>	</a> 
 </td>
 </tr>

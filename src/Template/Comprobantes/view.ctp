@@ -131,7 +131,6 @@ echo '<div class=div_descarga_label>Archivo TXT V2/vctos</div>';
 echo '<div class=div_descarga_icon>'.$this->Html->image('icon_down_txt2_v2.png',['title' => 'Descargar TXT v2','url'=>['controller'=>'Comprobantes','action' => 'downloadfiletxt2', $comprobante->nota,date_format($comprobante->fecha,'Y-m-d')]]).'</div>'; 
 echo '</div>';
 }
-    
 if (($comprobante['comprobante_tipo_id']==2 || $comprobante['comprobante_tipo_id']==3 )  && $comprobante['anulado']==0)
 {
     echo '<div class=div_descarga_line>';

@@ -574,7 +574,7 @@ class HomeYDecosController extends AppController
 						$articulosA->where(['Articulos.grupo_id'=>$grupoid]);
 					else
 						if ($grupoid2!=0)
-						$articulosA->where(['Articulos.sub_grupo_id'=>$grupoid2]);
+						$articulosA->where(['Articulos.grupo_id'=>$grupoid,'Articulos.sub_grupo_id'=>$grupoid2]);
 						else
 						$articulosA->where(['Articulos.grupo_id'=>$grupoid]);
 						

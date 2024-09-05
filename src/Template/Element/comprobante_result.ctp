@@ -24,7 +24,6 @@
 <tr>
 <td class="colcenter"><?php echo date_format($comprobante->fecha,'d-m-Y');?></td>
 <td class="colcenter">  <?php echo $comprobante->comprobantes_tipo->nombre ?>    
-<!--?= $comprobante->has('comprobantes_tipo') ? $comprobante->comprobantes_tipo->nombre : '' ? -->
 <?php if ($comprobante['comprobantes_tipo_id']>1 && $comprobante['os']>0) echo ' OS';?>
 </td>
 <td class="colcenter"><?= $this->Number->format($comprobante->nota) ?></td>

@@ -163,11 +163,11 @@ $(this).append('<a class="ico" href="#" data-ean="'+ean+'">'+descripcion+'<img s
 		{
         $(this).html(0);
 		$(this).val(0);
-	    ajaxcartAgregar($(this).attr("data-id"), 0, $(this).attr("data-pv-id"), $(this).attr("data-id-input"));
+	    ajaxcartAgregar($(this).attr("data-id"), 0, $(this).attr("data-pv-id"), $(this).attr("data-id-input"),null);
 		}else{
 		var quantity = Math.round($(this).val());
 
-		ajaxcart($(this).attr("data-id"), quantity, $(this).attr("data-pv-id"), $(this).attr("data-id-input"));
+		ajaxcart($(this).attr("data-id"), quantity, $(this).attr("data-pv-id"), $(this).attr("data-id-input"),null);
 		}
 $('.page_cart2').remove();
 $('table.tablasearch').each(function () {
@@ -237,7 +237,7 @@ $('.formcarritocant,.formcartcant,.fragcant,.cantidad').on("change", function(s)
 	else{
 		var quantity = Math.round($(this).val());
 
-		ajaxcartAgregar($(this).attr("data-id"), quantity, $(this).attr("data-pv-id"), $(this).attr("data-id-input"));
+		ajaxcartAgregar($(this).attr("data-id"), quantity, $(this).attr("data-pv-id"), $(this).attr("data-id-input"),null);
 				var codigo = s.which || s.keyCode;
 				
 		}
@@ -259,7 +259,7 @@ $('.formcarritocant,.formcartcant,.fragcant,.cantidad').on("change", function(s)
 
 		var quantity = Math.round($(s).val());
 
-		ajaxcartAgregar($(s).attr("data-id"), quantity, $(s).attr("data-pv-id"), $(s).attr("data-id-input"));
+		ajaxcartAgregar($(s).attr("data-id"), quantity, $(s).attr("data-pv-id"), $(s).attr("data-id-input"),null);
 		var id = $(s).attr("data-id");
 		var inputdelete = $(s).attr("data-id-input");
 

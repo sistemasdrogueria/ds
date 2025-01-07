@@ -13,9 +13,7 @@ $previous = $_SERVER['HTTP_REFERER'];
 <div id="buttonprint">
 <a class="print-preview">Imprimir</a>
 </div>
-<div id="buttonprint">
-<a class="print-marcar">Marcar como Impreso</a>
-</div>
+
 <div class="tab_container">
 <div id="tab1" class="tab_content">
 <div class="pedidos view large-10 medium-9 columns">
@@ -27,31 +25,17 @@ $previous = $_SERVER['HTTP_REFERER'];
 <td class="pedidotd" cols="5">
 <?= $pedido->has('cliente') ? '('.$pedido->cliente->codigo.')'.$pedido->cliente->razon_social : '' ?>
 </td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
-<td> </td>
+<td> </td><td> </td>
+<td> </td><td> </td>
+<td> </td><td> </td>
 </tr>
 <tr>
-<td> <?= __('Enviado') ?> </td>
-<td class="pedidotd">
-<?php 	echo date_format($pedido['creado'],'d-m-Y H:i:s');	?>
-</td>
-<td> <?= __('N° de Pedido') ?></td>
-<td class="pedidotd">
-<?= $this->Number->format($pedido->id) ?>
-</td>
-<td> <?= __('Tipo Factura') ?></td>
-<td class="pedidotd">
-<?= h($pedido->tipo_fact) ?>
-</td>
-<td> <?= __('Comentario') ?></td>
-<td class="pedidotd">
-<?= h($pedido->comentario) ?>
-</td>
-<td>
+<td> <?= __('Enviado:') ?> </td><td class="pedidotd"><?php 	echo date_format($pedido['creado'],'d-m-Y H:i:s');	?></td>
+<td> <?= __('N°:') ?></td><td class="pedidotd"><?= $pedido->id ?></td>
+<td> <?= __('Tipo:') ?></td><td class="pedidotd"><?= h($pedido->tipo_fact) ?></td>
+<td> <?= __('Plazo:') ?></td><td class="pedidotd"><?= h($pedido->oferta_plazo) ?></td>
+<td> <?= __('Transfer:') ?></td><td class="pedidotd"><?= h($pedido->transfer) ?></td>
+<td> <?= __('Comentario:') ?></td><td class="pedidotd"><?= h($pedido->comentario) ?></td>
 </tr> 
 </table>
 </div>

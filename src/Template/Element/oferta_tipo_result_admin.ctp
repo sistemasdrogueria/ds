@@ -38,9 +38,15 @@ echo "NO"
 </td>
 <td><?= $ofertatipo['orden'] ?></td>
 <td class="actions">
-<?=	$this->Html->image("admin/icn_edit.png",  ["alt" => "Edit",'url' => ['controller' => 'OfertasTipos', 'action' => 'edit_admin',  $ofertatipo->id]]);?>
-<!-- ?=	$this->Html->image("admin/icn_view.png",  ["alt" => "Ver", 'url' => ['controller' => 'OfertasTipos', 'action' => 'view_admin',  $ofertatipo->id]]);? -->
-<a href="#" onclick="preguntarSiNo(<?php echo $ofertatipo->id ?>)"><?php echo $this->Html->image('admin/icn_trash.png');?></a>
+<?php
+echo $this->Html->image("admin/admin_edit.png", ["alt" => "Edit",'url' => ['controller' => 'OfertasTipos', 'action' => 'edit_admin',  $ofertatipo->id],
+'data-static'=>'../img/admin/admin_edit.png','data-hover'=>'../img/admin/admin_edit.gif','class'=>'hover-gif','style'=>'width=50px']); 
+?>
+<a href="#" onclick="preguntarSiNo(<?php echo $ofertatipo->id ?>)">
+<?php echo $this->Html->image("admin/admin_delete.png", ["alt" => "imagen_reset",'data-static'=>'../img/admin/admin_delete.png','data-hover'=>'../img/admin/admin_delete.gif','class'=>'hover-gif','style'=>'width=50px']); ?>
+</a>
+
+
 </td>
 </tr>
 <?php endforeach; ?>

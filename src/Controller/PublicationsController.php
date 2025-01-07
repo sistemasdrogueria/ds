@@ -219,10 +219,9 @@ public function initialize(){
 			$publicationsA->where(['Publications.ubicacion'=>$tipo]);
 		
 		if ($publicationsA!=null)
-		{
-				//$publicationsA->order(['Publications.id' => 'DESC']);
+
 				$publications = $this->paginate($publicationsA);
-		}
+		
 			else
 				$publications = null;		
 		}
@@ -303,7 +302,7 @@ public function initialize(){
         $publicationsTipos =  $this->PublicationsTipos->find('list', ['keyField' => 'id','valueField' => 'nombre']);
 		$this->set('publicationsTipos',$publicationsTipos->toArray());
 
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->set('titulo','Publicación');
         $publication = $this->Publications->newEntity();
         if ($this->request->is('post')) {
@@ -382,6 +381,12 @@ public function initialize(){
 										->order(['nombre' => 'ASC']);	
 		$this->set(compact('marcas'));
 
+	
+		$this->loadModel('Provincias');
+        $provincias =  $this->Provincias->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['envio'=>1])->toArray();
+		$provincias = [0 => 'Seleccionar provincia'] + $provincias;
+		$this->set('provincias',$provincias);
+
     }
 	
     /**
@@ -397,7 +402,7 @@ public function initialize(){
 		$this->loadModel('PublicationsTipos');
         $publicationsTipos =  $this->PublicationsTipos->find('list', ['keyField' => 'id','valueField' => 'nombre']);
 		$this->set('publicationsTipos',$publicationsTipos->toArray());
-	$this->viewBuilder()->layout('admin');
+	$this->viewBuilder()->layout('admin2');
        $publication = $this->Publications->get($id, [
             'contain' => []
         ]);
@@ -475,6 +480,11 @@ public function initialize(){
 	   $this->set(compact('publication'));
 
 		$this->set('titulo','Modificar Publicación');
+		
+		$this->loadModel('Provincias');
+        $provincias =  $this->Provincias->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['envio'=>1])->toArray();
+		$provincias = [0 => 'Seleccionar provincia'] + $provincias;
+		$this->set('provincias',$provincias);
     }
 
     /**

@@ -9,7 +9,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
     $previous = $_SERVER['HTTP_REFERER'];
 }
 ?>
-<article class="module width_3_quarter">
+<article class="module width_4_quarter">
 <header><h3 class="tabs_involved"><?= $titulo ?></h3><div class = header_icon><div class="header_icon_return"><?php echo $this->Html->image('admin/icn_volver.png', ['url' => $previous]);?></div></div>
 </header>
 <?= $this->Form->create($ofertasTipo) ?>

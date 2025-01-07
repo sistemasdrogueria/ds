@@ -126,7 +126,7 @@ class GruposController extends AppController
         
             
         $this->set('titulo','Grupos');
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $this->set('grupos', $grupos);
         $this->set('_serialize', ['grupos']);
         $this->loadModel('GruposTipos');
@@ -148,7 +148,7 @@ class GruposController extends AppController
     {
         $this->set('titulo','Grupo');
        
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $grupo = $this->Grupos->get($id, [
             
         ]);
@@ -262,7 +262,7 @@ class GruposController extends AppController
         $grupostipos = $this->GruposTipos->find('list',['keyField' => 'id','valueField'=>'nombre']);
         $this->set('grupostipos', $grupostipos->toArray());
         $this->set('_serialize', ['grupostipos']);
-	    $this->viewBuilder()->layout('admin');
+	    $this->viewBuilder()->layout('admin2');
          $grupo = $this->Grupos->get($id, ['contain' => []]);
 
  
@@ -347,7 +347,7 @@ class GruposController extends AppController
         $this->set('grupostipos', $grupostipos->toArray());
         $this->set('_serialize', ['grupostipos']);
 
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->set('titulo','Grupos');
         $grupo = $this->Grupos->newEntity();
         if ($this->request->is('post')) {

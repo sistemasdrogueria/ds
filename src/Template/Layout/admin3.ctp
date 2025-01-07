@@ -24,7 +24,7 @@
 			echo $this->Html->css('jquery.notifyBar');
 			echo $this->Html->script('jquery.notifyBar');
 			echo $this->Html->css('bootstrap.min');
-			echo $this->Html->css('admin'); 	
+			echo $this->Html->css('admin3'); 	
 	?>
 	
 	<script type="text/javascript">

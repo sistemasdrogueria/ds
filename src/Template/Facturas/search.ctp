@@ -5,14 +5,14 @@
 				
 				<div class="col-md-12 col-sm-12">
 				<span class='cliente_info_span'>Facturas</span>
-					<?php echo $this->element('searchfactura'); ?>
+					<?php echo $this->element('factura_index_search'); ?>
 				</div> <!-- /.col-md-12 -->
 			</div> <!-- /.row -->
 		</div> <!-- /.product-content -->	   
 		<div class="product-content">	
 			<div class="row">
 					<span class='cliente_info_span'>Descargar Listado de Facturas</span>
-					<?php echo $this->element('searchfacturaopciones'); ?>
+					<?php echo $this->element('factura_index_search_opciones'); ?>
 				
 		
 				
@@ -28,7 +28,7 @@
 		<div class="row">
 		<span class='cliente_info_span'>Listados de Facturas</span>
 		<br>
-			<?php echo $this->element('facturasearch'); ?>
+			<?php echo $this->element('factura_index_result'); ?>
 		</div>
 		</div>
 		

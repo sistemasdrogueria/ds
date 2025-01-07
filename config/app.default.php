@@ -336,7 +336,15 @@ return [
      *
      * To use database sessions, load the SQL file located at config/Schema/sessions.sql
      */
-    'Session' => [
-        'defaults' => 'php',
-    ],
+   'Session' => [
+    'defaults' => 'php',
+    'cookieLifetime' => 259200, // Tiempo de vida del cookie en segundos (3 días)
+    'ini' => [
+        'session.gc_maxlifetime' => 259200 // Duración de la sesión para el recolector de basura en segundos (3 días)
+    ]
+],
+        'Recaptcha' => [
+    'site_key' => '6LfgfTkoAAAAADIs76s1DbguGb9c4A8CTlx9zGqB',
+    'secret_key' => '6LfgfTkoAAAAAAySXLfzwCwny3a_mljco1UR3tBE'
+]
 ];

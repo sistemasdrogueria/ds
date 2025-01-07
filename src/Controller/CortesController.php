@@ -143,7 +143,7 @@ class CortesController extends AppController
         $this->viewBuilder()->layout('admin');
         $this->set('salidas', $salidas->toArray()); 
         
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $this->set(compact('cortes'));
         $this->set('_serialize', ['cortes']);
    
@@ -161,7 +161,7 @@ class CortesController extends AppController
         $corte = $this->Cortes->get($id, [
             'contain' => ['Transportes']
         ]);
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $this->set('corte', $corte);
         $this->set('_serialize', ['corte']);
     }
@@ -228,7 +228,7 @@ class CortesController extends AppController
         }
         $this->loadModel('Transportes');
         $salidas = $this->Transportes->find('list',['keyField' => 'id','valueField'=>'nombre']);
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $this->set('salidas', $salidas->toArray());    
         $this->set(compact('corte'));
         $this->set('_serialize', ['corte']);
@@ -244,7 +244,7 @@ class CortesController extends AppController
     public function edit_admin($id = null)
     {
         $this->set('titulo','Editar horario de corte');
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $corte = $this->Cortes->get($id, [
             'contain' => []
         ]);
@@ -259,7 +259,7 @@ class CortesController extends AppController
         
         $this->loadModel('Transportes');
         $salidas = $this->Transportes->find('list',['keyField' => 'id','valueField'=>'nombre']);
-        $this->viewBuilder()->layout('admin');
+  
         $this->set('salidas', $salidas->toArray());    
         
         $this->set(compact('corte'));

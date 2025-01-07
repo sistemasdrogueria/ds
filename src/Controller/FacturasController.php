@@ -65,7 +65,7 @@ public function isAuthorized()
 		$this->loadModel('FacturasCabeceras');
         $this->paginate = [
             'contain' => ['Comprobantes'],
-			'limit' => 80
+			'limit' => 200
         ];
 		$fecha = Time::now();
 		$fecha->setDate($fecha->year, $fecha->month, 1);
@@ -1943,7 +1943,7 @@ return $this->redirect(['action' => 'importresult']);
         
 		$facturasCabecera = $this->FacturasCabeceras->get($id, ['contain' => ['Clientes', 'Comprobantes']]);
 		
-
+		$this->listadocliente();
 		$this->paginate = [
             'contain' => ['FacturasCabeceras', 'Articulos']
         ];
@@ -1953,7 +1953,9 @@ return $this->redirect(['action' => 'importresult']);
 		$this->set('facturasCuerposItems', $this->paginate($facturasCuerposItems));
         $this->set('_serialize', ['facturasCuerposItems']);
 		
-		
+		//$fecha = Time::createFromFormat('d/m/Y',$facturasCabecera['fecha'],'America/Argentina/Buenos_Aires');
+		//$this->set('fecha',$fecha->i18nFormat('yyyyMMdd') );
+
         $this->set('facturasCabecera', $facturasCabecera);
         $this->set('_serialize', ['facturasCabecera']);
     }

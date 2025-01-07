@@ -18,7 +18,7 @@ class PedidosController extends AppController
 {
 	public function isAuthorized()
     {
-           if (in_array($this->request->action, ['index_admin','view_admin','view_admin_new','index_admin_search','impreso','pami_admin','pami_admin_search','index_admin_reporte','reportPedidosExcel','importresultredirect','importresultventas','confirmpedidojax','index_admin_new'])) {
+           if (in_array($this->request->action, ['index_admin','duplicate_admin','view_admin','view_admin_new','index_admin_search','impreso','pami_admin','pami_admin_search','index_admin_reporte','reportPedidosExcel','importresultredirect','importresultventas','confirmpedidojax','index_admin_new'])) {
        
             if($this->request->session()->read('Auth.User.role')=='admin') 	
 			return true;			
@@ -592,8 +592,7 @@ else
 		{ $this->Flash->error(__('Momentaneamente no disponible, intente mas tarde.'),['key' => 'changepass']);
 			$this->redirect($this->referer());}
 		else
-		{
-			
+		{		
 			
 			$nombreArchivo= 'respuesta'.
 			//$this->request->session()->read('Auth.User.codigo').
@@ -1254,7 +1253,7 @@ else
 			$conn->query('CALL CopiarCarrito('.$cliente_id.');');
 			$conn->query('CALL actualizarcarritosindescuento('.$cliente_id.');');
 			
-			if ($this->request->session()->read('Auth.User.codigo_postal')==9405 || $this->request->session()->read('Auth.User.codigo_postal')==9410 || $this->request->session()->read('Auth.User.codigo_postal')==9420)
+			if ($this->request->session()->read('Auth.User.codigo_postal')==9410 || $this->request->session()->read('Auth.User.codigo_postal')==9420)
 			{	
 				
 				//Separo los items el Tipo Oferta TR
@@ -1302,10 +1301,10 @@ else
 						$conn->query('CALL AgregarPedido('.$cliente_id.','.$cliente_id.','.$envio.','.$envio.',"'.$fecha.'","TR","'.$comentario .'","'.$plazo.'",0,0);');
 					endforeach;			}
 				// Separo los items el Tipo Oferta TL
-/*				$carritotl = $this->Carritos->find('all')->select(['plazoley_dcto'])->distinct(['plazoley_dcto'])
+				/*$carritotl = $this->Carritos->find('all')->select(['articulo_id','plazoley_dcto'])->distinct(['plazoley_dcto'])
 						->where(['Carritos.cliente_id' => $cliente_id])
 						->andWhere(['Carritos.tipo_fact'=>'TL']);
-*/
+				*/
 				$carritotl = $this->Carritos->find('all')
 				->select(['plazoley_dcto','articulo_id'])
 				->where(['Carritos.cliente_id' => $cliente_id,	'Carritos.tipo_fact' => 'TL'])
@@ -1436,19 +1435,13 @@ else
 						str_pad($row['pedidos_items_status_id'], 2,0,STR_PAD_LEFT).
 						"\r\n";
 				$file->write($line,'w');
-				
-
-
 			endforeach; 
 			$file->close(); // Be sure to close the file when you're done
 			$this->response->type('txt');
 			$nombre_fichero = 'temp'. DS .'Comprobantes'. DS .$nombreArchivo.'.TXT';
 
 				if (file_exists($nombre_fichero)) {
-					$this->response->file(
-					'temp'. DS .'Comprobantes'. DS .$nombreArchivo.'.TXT',
-					['download' => true, 'name' => $nombreArchivo.'.TXT']
-					);
+					$this->response->file('temp'. DS .'Comprobantes'. DS .$nombreArchivo.'.TXT',['download' => true, 'name' => $nombreArchivo.'.TXT']);
 				}
 
 			return $this->response;
@@ -2032,7 +2025,7 @@ else
 
 	public function index_admin_new()
     {
-		$this->viewBuilder()->layout('adminS');
+		$this->viewBuilder()->layout('admin2');
 		$this->paginate = [
           
 			'limit' => 500,
@@ -2279,9 +2272,18 @@ else
 			{
 				$termino3 ="";
 			}	
+			if ($this->request->data['termino4']!= null)
+			{
+				$termino4 = $this->request->data['termino4'];
+			}	
+			else
+			{
+				$termino4 =0;
+			}	
 			$this->request->session()->write('termino',$termino);
 			$this->request->session()->write('termino2',$termino2);
 			$this->request->session()->write('termino3',$termino3);
+			$this->request->session()->write('termino4',$termino4);
 			$this->request->session()->write('fechadesde',$fechadesde);	
 			$this->request->session()->write('fechahasta',$fechahasta);
 		}
@@ -2292,6 +2294,7 @@ else
 			$termino = $this->request->session()->read('termino');
 			$termino2 = $this->request->session()->read('termino2');
 			$termino3 = $this->request->session()->read('termino3');
+			$termino4 = $this->request->session()->read('termino4');
 		}
 		if ($fechahasta!=0)
 		{
@@ -2325,7 +2328,7 @@ else
 		}
 		// siempre
 		$pedidosA = $this->Pedidos->find('all')
-				->select(['id',	'creado', 'c.codigo','c.razon_social', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','impreso','pedidos_status_id','comentario'])
+				->select(['id',	'creado', 'c.codigo','c.razon_social', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','impreso','pedidos_status_id','comentario','cliente_id'])
 				->hydrate(false)
 				->join([
 					'c' => [
@@ -2374,7 +2377,322 @@ else
 				$pedidosA->where(['Pedidos.id' => $termino2]);
 		}
 		
-		IF (($fechadesde !=0) && ($fechahasta !=0) && ($termino2!="") && ($termino!="") && ($termino3!="") )
+		if ($termino4!=0)
+		{
+			if (($fechadesde ==0) && ($fechahasta ==0))
+		    	$pedidosA->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"]);
+
+			switch ($termino4) {
+				case 1:
+					$pedidosA->where(['Pedidos.forma_envio' => 99]);
+					break;
+				case 2:
+					$pedidosA->where(['Pedidos.forma_envio' => 98]);
+					break;
+				case 3:
+					$pedidosA->where(['Pedidos.tipo_fact' => 'N']);
+					break;
+				case 4:
+					$pedidosA->where(['Pedidos.tipo_fact in ("TR","TL")']);
+					break;
+				case 5:
+					$pedidosA->where(['Pedidos.comentario' => 'P.PAMI ']);
+					break;
+				case 6:
+					$pedidosA->where(['Pedidos.estado_id' => 1]);
+					break;
+				case 7:
+					$pedidosA->where(['Pedidos.estado_id '=> 2]);
+					break;
+				case 8:
+
+					
+
+					$pedidosA->where(['c.codigo>79000 and c.codigo<79999']);
+					break;
+				default:
+					// Manejo de caso por defecto
+					//throw new InvalidArgumentException("El valor de termino4 no es válido.");
+			}
+
+		}
+		if (($fechadesde !=0) && ($fechahasta !=0) && ($termino2!="") && ($termino!="") && ($termino3!="") && ($termino4!=0)  )
+					{
+							$pedidosA=null;
+							$this->redirect($this->referer());
+					}
+		if ($pedidosA!=null)
+		{
+			$pedidos = $this->paginate($pedidosA);
+		}
+		else
+			$pedidos = null;
+		
+		
+		$this->loadModel('Estados');
+		$estados = $this->Estados->find('all');
+		$this->set('estados',$estados->toArray());
+		
+		$this->set('pedidos',$pedidos);
+		$this->set('titulo','Lista de Resultado de pedidos');
+    }
+
+	public function duplicate_admin($tipopedido = null , $cliente_id = null )
+    {
+		$this->viewBuilder()->layout('admin2');
+		$this->paginate = [
+          
+			'limit' => 500,
+			 'maxLimit' => 1000
+        ];
+		
+		if ($this->request->is('post'))
+		{	
+			if ($this->request->data['tipopedido']!= null)
+			{
+				$tipopedido = $this->request->data['tipopedido'];
+			}	
+			else
+			{
+				$tipopedido="";
+			}
+			if ($this->request->data['cliente_id']!= null)
+			{
+				$cliente_id = $this->request->data['cliente_id'];
+			}	
+			else
+			{
+				$cliente_id=0;
+			}
+			
+
+
+			if ($this->request->data['fechadesde']!= null)
+			{
+				$fechadesde = $this->request->data['fechadesde'];
+			}	
+			else
+			{
+				$fechadesde=0;
+			}
+			if ($this->request->data['fechahasta']!= null)
+			{
+				$fechahasta = $this->request->data['fechahasta'];
+			}	
+			else
+			{
+				$fechahasta =0;
+			}
+			if ($this->request->data['termino']!= null)
+			{
+				$termino = '%'.$this->request->data['termino'].'%';
+			}	
+			else
+			{
+				$termino ="";
+			}	
+			if ($this->request->data['termino2']!= null)
+			{
+				$termino2 = $this->request->data['termino2'];
+			}	
+			else
+			{
+				$termino2 ="";
+			}	
+			if ($this->request->data['termino3']!= null)
+			{
+				$termino3 = $this->request->data['termino3'];
+			}	
+			else
+			{
+				$termino3 ="";
+			}	
+			if ($this->request->data['termino4']!= null)
+			{
+				$termino4 = $this->request->data['termino4'];
+			}	
+			else
+			{
+				$termino4 =0;
+			}	
+			$this->request->session()->write('termino',$termino);
+			$this->request->session()->write('termino2',$termino2);
+			$this->request->session()->write('termino3',$termino3);
+			$this->request->session()->write('termino4',$termino4);
+			$this->request->session()->write('fechadesde',$fechadesde);	
+			
+			$this->request->session()->write('fechahasta',$fechahasta);
+
+			$this->request->session()->write('tipopedido',$tipopedido);	
+			$this->request->session()->write('duplicate_cliente_id',$cliente_id);
+		}
+		else 
+		{
+			//$fechahasta = $this->request->session()->read('fechahasta');
+		    //$fechadesde = $this->request->session()->read('fechadesde');
+			$termino = $this->request->session()->read('termino');
+			$termino2 = $this->request->session()->read('termino2');
+			$termino3 = $this->request->session()->read('termino3');
+			$termino4 = $this->request->session()->read('termino4');
+			//$tipopedido = $this->request->session()->read('tipopedido');
+			//$cliente_id = $this->request->session()->read('duplicate_cliente_id');
+
+
+		}
+		if (!empty($fechahasta))
+		{
+			if ($fechahasta!=0)
+			{
+				//$fechahasta2 = Time::now();
+				$fechahasta2 = Time::createFromFormat(
+				'd/m/Y',
+				$fechahasta,
+				'America/Argentina/Buenos_Aires');
+				$fechahasta2->modify('+1 days');
+				$fechahasta2->i18nFormat('yyyy-MM-dd');
+			}
+			else
+			{
+				$fechahasta2 = Time::now();
+				$fechahasta2->modify('+1 days');
+				//$fechahasta2 = $fechahasta2->i18nFormat('yyyy-MM-dd');
+			}
+		}
+		else
+		{
+			$fechahasta2 = Time::now();
+			$fechahasta2->modify('+1 days');
+			//$fechahasta2 = $fechahasta2->i18nFormat('yyyy-MM-dd');
+			$fechahasta =1;
+		}
+
+		if (!empty($fechadesde))
+		{
+			if ($fechadesde!=0)
+			{
+				//$fechadesde2 = Time::now();
+				$fechadesde2 = Time::createFromFormat(
+					'd/m/Y',
+				$fechadesde,
+				'America/Argentina/Buenos_Aires');
+				$fechadesde2->i18nFormat('yyyy-MM-dd');
+			}
+			else
+			{
+				$fechadesde2 = Time::now();
+				$fechadesde2->i18nFormat('yyyy-MM-dd');
+			}
+		}
+		else
+		{
+			$fechadesde =1;
+			$fechadesde2 = Time::now();
+			$fechadesde2->modify('-1 days');
+			$fechadesde2->i18nFormat('yyyy-MM-dd');
+			//$fechahasta2 = $fechahasta2->i18nFormat('yyyy-MM-dd');
+		}
+		// siempre
+		$pedidosA = $this->Pedidos->find('all')
+				->select(['id',	'creado', 'c.codigo','c.razon_social', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','impreso','pedidos_status_id','comentario','cliente_id'])
+				->hydrate(false)
+				->join([
+					'c' => [
+						'table' => 'clientes',
+						'type' => 'left',
+						'conditions' => 'c.id = Pedidos.cliente_id',
+					]
+				])
+				->order(['Pedidos.id' => 'DESC'])
+				->group('Pedidos.id');
+		// 
+		if ($termino!="")
+		{
+		$pedidosA ->join([
+					'pe' => [
+						'table' => 'pedidos_items',
+						'type' => 'left',
+						'conditions' => 'pe.pedido_id = Pedidos.id',
+					],
+					'a' => [
+						'table' => 'articulos',
+						'type' => 'left',
+						'conditions' => 'a.id = pe.articulo_id',
+					]
+				]);	
+		}
+
+				
+	  	if ($termino!="")
+		{
+			$pedidosA->where(['a.descripcion_pag LIKE'=>$termino])->orWhere(['a.troquel LIKE'=>$termino]);
+		}
+		
+		if (($fechadesde !=0) && ($fechahasta !=0))
+		    	$pedidosA->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"]);
+		else
+				if (($fechadesde !=0) || ($fechahasta !=0))
+					$pedidosA->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"]);
+
+		if ($termino3!="")
+		{
+				$pedidosA->where(['c.codigo'=>$termino3])->orWhere(['c.nombre LIKE'=>"%".$termino3."%"]);
+		}
+		if ($termino2!="")
+		{
+				$pedidosA->where(['Pedidos.id' => $termino2]);
+		}
+		
+		if ($tipopedido !="")
+		{
+			$pedidosA->where(['Pedidos.tipo_fact' => $tipopedido]);
+		}
+
+		if ($cliente_id !=0)
+		{
+			$pedidosA->where(['Pedidos.cliente_id' => $cliente_id]);
+		}
+
+
+		if ($termino4!=0)
+		{
+			if (($fechadesde ==0) && ($fechahasta ==0))
+		    	$pedidosA->andWhere(["Pedidos.creado BETWEEN '".$fechadesde2->i18nFormat('yyyy-MM-dd')."' AND '".$fechahasta2->i18nFormat('yyyy-MM-dd')."'"]);
+
+			switch ($termino4) {
+				case 1:
+					$pedidosA->where(['Pedidos.forma_envio' => 99]);
+					break;
+				case 2:
+					$pedidosA->where(['Pedidos.forma_envio' => 98]);
+					break;
+				case 3:
+					$pedidosA->where(['Pedidos.tipo_fact' => 'N']);
+					break;
+				case 4:
+					$pedidosA->where(['Pedidos.tipo_fact in ("TR","TL")']);
+					break;
+				case 5:
+					$pedidosA->where(['Pedidos.comentario' => 'P.PAMI ']);
+					break;
+				case 6:
+					$pedidosA->where(['Pedidos.estado_id' => 1]);
+					break;
+				case 7:
+					$pedidosA->where(['Pedidos.estado_id '=> 2]);
+					break;
+				case 8:
+
+					
+
+					$pedidosA->where(['c.codigo>79000 and c.codigo<79999']);
+					break;
+				default:
+					// Manejo de caso por defecto
+					//throw new InvalidArgumentException("El valor de termino4 no es válido.");
+			}
+
+		}
+		if (($fechadesde !=0) && ($fechahasta !=0) && ($termino2!="") && ($termino!="") && ($termino3!="") && ($termino4!=0)  )
 					{
 							$pedidosA=null;
 							$this->redirect($this->referer());
@@ -2618,7 +2936,7 @@ else
 			$fechadesde2->i18nFormat('yyyy-MM-dd');
 
 		$pedidos = $this->Pedidos->find('all')
-				->select(['id',	'creado', 'c.codigo','c.razon_social', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','comentario','impreso','pedidos_status_id'])
+				->select(['id',	'creado', 'c.codigo','c.razon_social', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','comentario','impreso','pedidos_status_id','cliente_id'])
 				->hydrate(false)
 				->join([
 					'c' => [
@@ -2636,7 +2954,7 @@ else
 		$this->loadModel('Estados');
 		$estados = $this->Estados->find('all');
 		$this->set('estados',$estados->toArray());
-		$this->set('titulo','Lista de pedidos');
+		$this->set('titulo','PEDIDOS');
     }
 
 	public function index_admin_search2()

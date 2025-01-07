@@ -1,69 +1,100 @@
 <div id=reclamo-temp-item class="articulos index large-10 medium-9 columns">
-    <table class='tablasearch' cellpadding="0" cellspacing="0">
-    <thead>
-        <tr>	
-			<th>Cant.</th>
-            <th>Descripción</th>
-            <th>Laboratorio</th>
-			<th>Fecha Venc.</th>
-            <th>Lote</th>
-			<th>Serie</th>
-			<th></th>
-        </tr>
-    </thead>
-    <tbody>
-	<?php 			
-		$lab = $laboratorios->toArray(); ?>
-
-    <tbody>
-    <?php foreach ($reclamositemstemps as $reclamosItemsTemp): ?>
-        <tr>
-            <td class='form_reclamo_cant_td'><?= $this->Number->format($reclamosItemsTemp['cantidad']) ?></td>
-            <td><?= h($reclamosItemsTemp['detalle']) ?></td>
-			<td> 
-			<?php echo $lab[$reclamosItemsTemp['a']['laboratorio_id']];?>
-			</td>
-            <td class="form_reclamo_fv_td">
-			<?php 
-			if ($reclamosItemsTemp['fecha_vencimiento']!=null)
-					echo date_format($reclamosItemsTemp['fecha_vencimiento'],'d-m-Y');
-			?>	
-			</td>
-            <td class="form_reclamo_lote_td"><?= h($reclamosItemsTemp['lote']) ?></td>
-			<td class="form_reclamo_serie_td"><?= h($reclamosItemsTemp['serie']) ?></td>
-            <td class="actions">
-			
-			      <?php 
-					
-					echo $this->Form->postLink(
-						$this->Html->image('delete_ico.png',
-						   array("alt" => __('Delete'), "title" => __('Delete'))), 
-						array('controller'=>'ReclamosItemsTemps','action' => 'delete',$reclamosItemsTemp['id']), 
-						array('escape' => false, 'confirm' => __('Esta seguro de eliminar a # {0}?', $reclamosItemsTemp['id']))
-					);
-			  ?>
-                  
-            </td>
-        </tr>
-
-    <?php endforeach; ?>
-    </tbody>
-	 </table>
-	
-    
+	<div class="product-grid">
+		<?php foreach ($reclamositemstemps as $reclamosItemsTemp): ?>
+			<div class="product-card" id="<?= $reclamosItemsTemp->id ?>">
+				<div class="product-header">
+					<div class="product-title-container">
+						<h2 class="article-title"><?= $reclamosItemsTemp->detalle ?></h2>
+						<hr class="linea-divisor">
+						<p class="product-lab">Laboratorio: <?= $reclamosItemsTemp->articulo->laboratorio->nombre ?></p>
+						<p class="product-lab">EAN: <?= $reclamosItemsTemp->articulo->codigo_barras ?></p>
+					</div>
+				</div>
+				<div class="product-details">
+					<div style="border: solid 1px #bdbdbd;padding: 5px;border-radius: 15px;">
+						<p class="detail-label">Cantidad.</p>
+						<p class="detail-value cantidad"><?= $reclamosItemsTemp->cantidad ?? ' Sin completar ' ?></p>
+					</div>
+					<div style="border: solid 1px #bdbdbd;padding: 5px;border-radius: 15px;">
+						<p class="detail-label">Fecha Venc.</p>
+						<p class="detail-value"><?= $reclamosItemsTemp->fecha_vencimiento ?? ' Sin completar ' ?></p>
+					</div>
+					<div style="border: solid 1px #bdbdbd;padding: 5px;border-radius: 15px;">
+						<p class="detail-label">Lote</p>
+						<p class="detail-value">
+							<?php if (($reclamosItemsTemp->lote == '') || ($reclamosItemsTemp->lote == null)): ?>
+								Sin completar
+							<?php else: ?>
+								<?= $reclamosItemsTemp->lote ?>
+							<?php endif; ?>
+						</p>
+					</div>
+					<div style="border: solid 1px #bdbdbd;padding: 5px;border-radius: 15px;">
+						<p class="detail-label">Serie</p>
+						<p class="detail-value">
+							<?php if (($reclamosItemsTemp->serie == '') || ($reclamosItemsTemp->serie == null)): ?>
+								Sin completar
+							<?php else: ?>
+								<?= $reclamosItemsTemp->serie ?>
+							<?php endif; ?>
+						</p>
+					</div>
+				</div>
+				<div class="product-footer">
+					<button type="button" class="delete-btn" aria-label="Eliminar producto" data-id="<?= $reclamosItemsTemp['id'] ?>" data-detalle="<?= h($reclamosItemsTemp->detalle) ?>">
+						<i class="fas fa-trash-alt"></i>
+					</button>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
 </div>
-<script>
-	$(".tablasearch tr").not(':first').hover(
-	function () {
-		$(this).css("background","#8FA800");
-		$(this).css("color","#000");
-		$(this).css("font-weight","");
-		}, 
-	function () {
-		$(this).css("background","");
-		$(this).css("color","");
-		$(this).css("font-weight","");
-		}
-	);
 
+
+<?= $this->Html->meta('csrfToken', $this->request->getAttribute('csrfToken')); ?>
+
+<script>
+	$(document).ready(function() {
+		$('.delete-btn').on('click', function(event) {
+			event.preventDefault();
+
+			const itemId = $(this).data('id');
+			const detalle = $(this).data('detalle');
+
+			Swal.fire({
+				title: `¿Desea eliminar el ítem ${detalle} del reclamo?`,
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: 'Sí, eliminar',
+				cancelButtonText: 'Cancelar'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: '<?= $this->Url->build(['controller' => 'ReclamosItemsTemps', 'action' => 'delete']) ?>' + '/' + itemId,
+						type: 'POST',
+						data: {
+							id: itemId,
+							_csrfToken: $('meta[name="csrfToken"]').attr('content')
+						},
+						success: function(response) {
+							Swal.fire(
+								'Eliminado',
+								'El ítem ha sido eliminado exitosamente.',
+								'success'
+							).then(() => $('#' + itemId).remove());
+						},
+						error: function() {
+							Swal.fire(
+								'Error',
+								'No se pudo eliminar el ítem. Inténtelo nuevamente.',
+								'error'
+							);
+						}
+					});
+				}
+			});
+		});
+	});
 </script>

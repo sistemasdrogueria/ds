@@ -28,7 +28,7 @@ class CarritosController extends AppController
 {
 	public function isAuthorized()
 	{
-		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint','tufarmapoint', 'promocion', 'libreria', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_hss', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp','hotsale'])) {
+		if (in_array($this->request->action, ['enviarsolicitud', 'alternativo', 'searchadd', 'pami', 'ofertavc', 'edit', 'delete', 'delete_temp', 'add', 'search', 'vaciar', 'confirm', 'import', 'importresult', 'importresultexcel', 'index', 'home', 'carritoadd', 'carritoaddall', 'downloadfile', 'carritoaddoferta', 'vaciarimport', 'carritotempadd', 'carritotempaddall', 'importconfirm', 'view', 'excel', 'fraganciaselectiva', 'resultfraganciaselectiva', 'sale', 'removed_admin', 'recover_admin', 'recover_confirm_admin', 'index_admin', 'farmapoint','tufarmapoint', 'promocion', 'libreria', 'blackfriday', 'search_i', 'hotsale_search', 'primaverasale', 'sur_friday_sale', 'hot_sur_sale', 'dulzura', 'itemupdate', 'itemupdateofertas', 'sumacarrito', 'calcularsubtotales', 'contenidoCarrito', 'clientecredito', 'search_cm', 'search_bf', 'reporte_carro', 'itemupdatetemps', 'importresulttemp', 'deletecarritotemps', 'search_ajax', 'excel_contenido', 'faltas', 'deletefalta', 'updatefaltas', 'variablestmp','hotsale','search_ic'])) {
 
 			if ($this->request->session()->read('Auth.User.role') == 'admin') {
 				return true;
@@ -865,7 +865,7 @@ class CarritosController extends AppController
 		$this->viewBuilder()->layout('store');
 		$this->paginate = [
 			'contain' => [],
-			'limit' => 200, 'maxLimit' => 200,
+			'limit' => 300, 'maxLimit' => 300,
 			'offset' => 0,
 			'order' => ['Articulos.descripcion_pag' => 'asc']
 		];
@@ -1213,12 +1213,11 @@ class CarritosController extends AppController
 		$this->set('_serialize', 'articulos');
 	}
 
-
 	public function tufarmapoint()
 	{
 		//$this->viewBuilder()->layout('storefp');
 		$this->viewBuilder()->layout('store');
-		if ($this->request->session()->read('Auth.User.tufarmapoint') == 0)
+		if ($this->request->session()->read('Auth.User.farmapoint') == 0)
 			$this->redirect($this->referer());
 
 		$this->loadModel('LogsAccesos');
@@ -1260,7 +1259,6 @@ class CarritosController extends AppController
 
 			->where(['Articulos.eliminado' => 0, 'Articulos.stock <> "F"', 'Articulos.stock <>"D"'])
 			->where(['Articulos.imagen NOT IN ("sinimagen.png","perfumeria.jpg","medicamento.jpg")']);
-
 		$this->request->session()->write('articulosxx', $articulos->toArray());
 		if ($this->request->session()->read('marcas2') == null) {
 			$this->loadModel('Articulos');
@@ -1819,7 +1817,7 @@ class CarritosController extends AppController
 		$this->sumacarrito();	*/
 		//$this->set('articulos',null);
 		$this->loadModel('Articulos');
-		$list_tipo_dto = '("RV","RR","OR","TD","RL","HS","FR","TH","PS")';
+		//$list_tipo_dto = '("RV","RR","OR","TD","RL","HS","FR","TH","PS")';
 		$articulosbf = $this->Articulos->find('all')
 			->contain([
 				'Descuentos' => [
@@ -1845,7 +1843,6 @@ class CarritosController extends AppController
 					'conditions' => [
 						'd.articulo_id = Articulos.id',
 						'd.tipo_venta = "D"',
-						//'d.tipo_oferta in .'.$list_tipo_dto 
 						'd.tipo_oferta in ("RV","RR","OR","TD","RL","HS","FR","TH","CM","FF","BF","SC")'
 					]
 				]
@@ -2063,9 +2060,9 @@ class CarritosController extends AppController
 		$fecha = Time::now();
 		$fecha = $fecha->i18nFormat('yyyy-MM-dd');
 		$this->loadModel('Ofertas');
-
+        
+		//$ofertasX = $this->Ofertas->find('all')->where(['oferta_tipo_id in (2,4,5,6,8,9,10,11,19)', 'activo' => 1, 'fecha_desde <= CURRENT_DATE()', 'fecha_hasta >=CURRENT_DATE()'])->order([/*'oferta_tipo_id'=>'ASC',*/'orden' => 'ASC']);
 		$ofertasX = $this->Ofertas->find('all')->where(['oferta_tipo_id in (2,4,5,6,7,8,9,10,11,19)', 'activo' => 1, 'fecha_desde <= CURRENT_DATE()', 'fecha_hasta >=CURRENT_DATE()'])->order([/*'oferta_tipo_id'=>'ASC',*/'orden' => 'ASC']);
-
 		$this->set('ofertasX', $this->paginate($ofertasX));
 
 		$ofertasY = $this->Ofertas->find('all')
@@ -2127,15 +2124,18 @@ class CarritosController extends AppController
 		//$publication_con = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()','habilitada' =>'1','ubicacion'=>'2','localidad'=>$codigo_postal]);
 		//$publication_sin = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()','habilitada' =>'1','ubicacion'=>'2','localidad'=>0])->union($publication_con);
 		$codigo_postal = $this->request->session()->read('Auth.User.codigo_postal');
+		$provincia_id = $this->request->session()->read('Auth.User.provincia_id');
 		$cliente_id = $this->request->session()->read('Auth.User.cliente_id');
 		if (
 			36040 == $cliente_id || 36193 == $cliente_id || 36227 == $cliente_id || 36247 == $cliente_id || 36481 == $cliente_id || 36505 == $cliente_id || 36913 == $cliente_id ||  67157 == $cliente_id ||
 			36950 == $cliente_id || 36966 == $cliente_id || 38678 == $cliente_id || 67154 == $cliente_id || 67156 == $cliente_id || 67167 == $cliente_id || 74353 == $cliente_id
 		)
 			$codigo_postal = 9999;
-		$publication_sin = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '2', 'localidad' => 0])->order(['orden' => 'ASC'])->limit(2);
-		$publication_con = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '2', 'localidad like ' => '%' . $codigo_postal . '%'])->unionAll($publication_sin)->order(['orden' => 'ASC'])->limit(4);
-		$publication_con->order(['orden' => 'ASC']);
+		$publication_sin = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '2','provincia_id'=> 0, 'localidad' => 0])->order(['orden' => 'ASC'])->limit(2);
+		$publication_con = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '2', 'provincia_id'=> 0,'localidad like ' => '%' . $codigo_postal . '%'])->unionAll($publication_sin)->order(['orden' => 'ASC'])->limit(4);
+		$publication_con_p = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '2', 'provincia_id'=> $provincia_id,'localidad not like ' => '%' . $codigo_postal . '%'])->unionAll($publication_con)->order(['orden' => 'ASC'])->limit(4);
+		
+		$publication_con_p->order(['orden' => 'ASC']);
 		/* 
 		$publication_singral = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()','habilitada' =>'1','ubicacion'=>'2','localidad'=>0])->order(['orden' => 'ASC'])->limit(2);
 		$publication_grl = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()','habilitada' =>'1','ubicacion'=>'2','localidad'=>'2'])->unionAll($publication_singral)->order(['orden' => 'ASC'])->limit(4);
@@ -2144,8 +2144,8 @@ class CarritosController extends AppController
 		$this->set('sursale',$publication_grl->skip(1)->first());
 		*/
 		if (36016 != $this->request->session()->read('Auth.User.cliente_id') && 37981 != $cliente_id) {
-			$this->set('sursale2', $publication_con->first());
-			$this->set('sursale', $publication_con->skip(1)->first());
+			$this->set('sursale2', $publication_con_p->first());
+			$this->set('sursale', $publication_con_p->skip(1)->first());
 		} else {
 			$this->set('sursale2', null);
 			$this->set('sursale', null);
@@ -4785,9 +4785,14 @@ class CarritosController extends AppController
 				$barratexto = 0;
 			}
 		}
-
+ /*
 			if ($this->request->data['accionfar_id'] != null) {
 				$accionfarid = $this->request->data['accionfar_id'];
+			} else {
+				$accionfarid = 0;
+			}*/
+			if ($this->request->getData('accionfar_id') !== null) { 
+				$accionfarid = $this->request->getData('accionfar_id');
 			} else {
 				$accionfarid = 0;
 			}
@@ -4878,7 +4883,7 @@ class CarritosController extends AppController
 			$monodrogaid = 0;
 			$accionfarid = 0;
 			$laboratorioid = 0;
-			$barratexto=0;
+			$barratexto = 0;
 			 //$this->request->session()->read('laboratorioid');
 			if (!empty($this->request->session()->read('busqueda.laboratorioid')))
 				$laboratorioid = $this->request->session()->read('busqueda.laboratorioid');
@@ -4900,7 +4905,7 @@ class CarritosController extends AppController
 				$termsearch = $this->request->session()->read('busqueda.termsearch');
 				$terminobuscar = $this->request->session()->read('busqueda.terminobuscar');
 				$palabral6 = $this->request->session()->read('busqueda.palabral6');
-			    $termsearchReverse= $this->request->session()->read('busqueda.termsearchReverse');
+			    $termsearchReverse = $this->request->session()->read('busqueda.termsearchReverse');
 			}
 
 
@@ -5078,8 +5083,7 @@ class CarritosController extends AppController
 				if(empty($variablesort)){
 					$articulosA->andwhere(['OR' => [
 					['Articulos.descripcion_pag LIKE' => $termsearch],['Articulos.descripcion_pag LIKE' => $termsearchReverse], ['Articulos.descripcion_pag LIKE' => $palabral6], ['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
-					['Articulos.troquel LIKE' => $termsearch]
-				], 'eliminado' => 0])
+					['Articulos.troquel LIKE' => $termsearch]], 'eliminado' => 0])
 					->order('(CASE WHEN Articulos.descripcion_pag LIKE \'' . $terminobuscar . '%\' then 1 
 				WHEN Articulos.descripcion_pag LIKE \'%' . $terminobuscar . '%\' then 2
 				WHEN Articulos.descripcion_pag LIKE \'%' . $termsearch . '%\' then 3
@@ -5090,8 +5094,6 @@ class CarritosController extends AppController
 								['Articulos.descripcion_pag LIKE' => $termsearch], ['Articulos.descripcion_pag LIKE' => $palabral6], ['Articulos.codigo_barras LIKE' => $termsearch], ['Articulos.codigo_barras2 LIKE' => $termsearch], ['Articulos.codigo_barras3 LIKE' => $termsearch], ['REPLACE(Articulos.troquel,"-","") LIKE ' => $termsearch],
 								['Articulos.troquel LIKE' => $termsearch]
 							], 'eliminado' => 0]);
-
-
 				}
 				/*
 				$articulosA->andWhere([
@@ -5739,12 +5741,12 @@ class CarritosController extends AppController
 				$laboratorioid = 0;
 			}
 
-			if ($this->request->data['terms_mult'] != null) {
+			if (!empty($this->request->data['terms_mult']) && $this->request->data['terms_mult'] != null) {
 				$terms_m = $this->request->data['terms_mult'];
 			} else
 				$terms_m = "";
 
-			if ($this->request->data['terminobuscar'] != null) {
+			if (!empty($this->request->data['terminobuscar']) && $this->request->data['terminobuscar'] != null) {
 				$terminocompleto = explode(" ", $this->request->data['terminobuscar']);
 				$terms = "";
 				if (count($terminocompleto) > 1) {
@@ -5773,7 +5775,6 @@ class CarritosController extends AppController
 
 
 			if (!empty($this->request->getParam('pass'))) {
-
 
 				$terminocompleto = explode(" ", $this->request->getParam('pass')[0]);
 				$terms = "";
@@ -5884,7 +5885,171 @@ class CarritosController extends AppController
 				'contain' => ['Carritos'],
 				'limit' => $limit, 'maxLimit' => 5000,
 				'offset' => 0,
-				'order' => ['Articulos.descripcion_pag' => 'asc']
+				'order' => ['Articulos.stock_fisico' => 'desc']
+			];
+
+
+			$articulos = $this->paginate($articulosA);
+		} else
+			$articulos = null;
+		$this->set(compact('articulos'));
+
+		$this->loadModel('Publications');
+		$publicationsearch = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '7'])->order(['orden' => 'ASC'])->all();
+
+		$this->set('publicationsearch', $publicationsearch->toArray());
+		$this->request->session()->write('publicationsearch', $publicationsearch->toArray());
+
+		$publicationzocalo = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '13'])->order(['orden' => 'ASC'])->all();
+		$this->set('banner_slider', $publicationzocalo->toArray());
+		$this->request->session()->write('banner_slider', $publicationzocalo->toArray());
+
+		$this->set('banner_slider', $this->request->session()->read('banner_slider'));
+	}
+
+	public function search_ic($subcategoria_id = null, $grupo_id = null, $subgrupo_id = null, $marca_id =null)
+	{
+		if ($this->request->is('post')) {
+			if (!empty($this->request->data['subcategoria_id'])) {
+				$subcategoria_id = $this->request->data['subcategoria_id'];
+			} else {
+				$subcategoria_id = 0;
+			}
+
+			if (!empty($this->request->data['grupo_id']) && $this->request->data['grupo_id'] != null) {
+				$grupo_id = $this->request->data['grupo_id'];
+			} else
+				$grupo_id = 0;
+
+			if (!empty($this->request->data['subgrupo_id']) && $this->request->data['subgrupo_id'] != null) {
+				$subgrupo_id = $this->request->data['subgrupo_id'];
+			} else
+				$subgrupo_id = 0;
+
+			if (!empty($this->request->data['marca_id']) && $this->request->data['marca_id'] != null) {
+				$marca_id = $this->request->data['marca_id'];
+			} else
+				$marca_id = 0;
+			
+			$this->request->session()->write('sic_grupo_id', $grupo_id);
+			$this->request->session()->write('sic_subgrupo_id', $subgrupo_id);
+			$this->request->session()->write('sic_subcategoria_id', $subcategoria_id);
+			$this->request->session()->write('sic_marca_id', $marca_id);
+		} else {
+
+
+			if (!empty($this->request->getParam('pass'))) {
+				$subcategoria_id = 0 ;
+				if (!empty($this->request->getParam('pass')[0]))
+					$subcategoria_id = $this->request->getParam('pass')[0];					
+				$grupo_id = 0;
+				if (!empty($this->request->getParam('pass')[1]))
+					$grupo_id = $$this->request->getParam('pass')[1];
+				$subgrupo_id = 0;
+				if (!empty($this->request->getParam('pass')[2]))
+					$subgrupo_id = $this->request->getParam('pass')[2];
+				$marca_id =0;
+				if (!empty($this->request->getParam('pass')[3]))
+				$marca_id = $this->request->getParam('pass')[3];
+			}
+			else
+			{
+			$subcategoria_id = 0; 
+			if (!empty($this->request->session()->read('sic_subcategoria_id')))
+			$subcategoria_id = $this->request->session()->read('sic_subcategoria_id');
+			$grupo_id = 0;
+			if (!empty($this->request->session()->read('sic_grupo_id')))
+			$grupo_id = $this->request->session()->read('sic_grupo_id');
+			$subgrupo_id = 0;
+			if (!empty($this->request->session()->read('sic_subgrupo_id')))
+			$grupo_id = $this->request->session()->read('sic_subgrupo_id');
+			$marca_id = 0;
+			if (!empty($this->request->session()->read('sic_marca_id')))
+			$marca_id = $this->request->session()->read('sic_marca_id');
+			}
+		}
+
+		$this->categoriaylaboratorio();
+		$this->clientecredito();
+		$this->sumacarrito();
+		$this->monodrogayaccionterapeutica();
+
+
+		$this->viewBuilder()->layout('store');
+
+		$this->loadModel('Articulos');
+
+		$fecha = Time::now();
+		//$fecha->i18nFormat('YYYY-MM-dd');
+		//$list_tipo_dto=array();
+
+		if ($this->request->session()->read('Auth.User.farmapoint') > 0) {
+			$list_tipo_dto_dist = 'tipo_oferta <> "VC"';
+			$list_tipo_dto = '("RV","RR","OR","TD","RL","HS","FR","TH","PS","FP")';
+		} else {
+			$list_tipo_dto_dist = '[tipo_oferta <> "FP" , tipo_oferta <> "VC"]';
+			$list_tipo_dto = '("RV","RR","OR","TD","RL","HS","FR","TH","PS")';
+		}
+		$articulosA = $this->Articulos->find()
+			->contain([
+				'Descuentos' => [
+					'queryBuilder' => function ($q) {
+						return $q->where(['tipo_oferta <> "VC"']); // Full conditions for filtering
+					}
+					//'tipo_oferta in ("RV","RR","OR","TD","RL","HS","FR","TH","TD")',
+
+				],
+				'Carritos' => [
+
+					'queryBuilder' => function ($q) {
+						return $q->where(['cliente_id' => $this->request->session()->read('Auth.User.cliente_id')]); // Full conditions for filtering
+					}
+				]
+			])
+			->hydrate(false)
+			->join(
+				[
+					'table' => 'descuentos',
+					'alias' => 'd',
+					'type' => 'LEFT',
+					'conditions' => [
+						'd.articulo_id = Articulos.id',
+						'd.tipo_venta = "D"',
+						'd.fecha_hasta >=' => $fecha->i18nFormat('yyyy-MM-dd'),
+						'd.tipo_oferta in ' . $list_tipo_dto //("RV","RR","OR","TD","RL","HS","FR","TH","PS","FP")'
+					]
+				]
+			);
+
+		//	subcategoria_id ,marca_id , grupo_id , subgrupo_id
+		
+		if ($subcategoria_id != 0) 			
+		$articulosA->andWhere(['Articulos.subcategoria_id' => $subcategoria_id]);
+		
+		if ($marca_id != 0) 
+		$articulosA->andWhere(['Articulos.marca_id' => $marca_id]);
+		
+		if ($grupo_id != 0) 
+		$articulosA->andWhere(['Articulos.grupo_id' => $grupo_id]);
+		
+		if ($subgrupo_id != 0) 
+		$articulosA->andWhere(['Articulos.sub_grupo_id' => $subgrupo_id]);
+		
+		if ($grupo_id ==0 && $subgrupo_id ==0 && $subcategoria_id ==0 && $marca_id =0)
+				$articulosA = null;
+
+
+		if ($articulosA != null) {
+			$articulosA->andWhere(['Articulos.eliminado' => 0])->group(['Articulos.id']);
+			$limit = 5000;
+
+
+			$this->paginate = [
+				'contain' => ['Carritos'],
+				'limit' => $limit,
+				'maxLimit' => 5000,
+				'offset' => 0,
+				'order' => ['Articulos.stock_fisico' => 'DESC','Articulos.descripcion_pag' => 'asc']
 			];
 
 
@@ -6126,9 +6291,14 @@ class CarritosController extends AppController
 	}
 
 
-	public function search_cm($terms = null, $terms_lab = null, $terms_mult = null)
+	public function search_cm($terms_mar =null,  $terms_lab = null,$terms = null, $terms_mult = null)
 	{
 		if ($this->request->is('post')) {
+			if (!empty($this->request->data['terms_mar'])) {
+				$marcaid = $this->request->data['terms_mar'];
+			} else {
+				$marcaid = 0;
+			}
 			if (!empty($this->request->data['laboratorio_id'])) {
 				$laboratorioid = $this->request->data['laboratorio_id'];
 			} else {
@@ -6152,44 +6322,56 @@ class CarritosController extends AppController
 			} else {
 				$terms = "";
 			}
-			$this->request->session()->write('termsearch', $terms);
-			$this->request->session()->write('laboratorioid', $laboratorioid);
+			$this->request->session()->write('cmtermsearch', $terms);
+			$this->request->session()->write('cmlaboratorioid', $laboratorioid);
+			$this->request->session()->write('cmmarcaid', $marcaid);
 		} else {
 
 
+			$marcaid = 0; //$this->request->session()->read('laboratorioid');
+			if (!empty($this->request->session()->read('cmmarcaid')))
+				$marcaid = $this->request->session()->read('cmmarcaid');
 			$laboratorioid = 0; //$this->request->session()->read('laboratorioid');
-			if (!empty($this->request->session()->read('laboratorioid')))
-				$laboratorioid = $this->request->session()->read('laboratorioid');
+			if (!empty($this->request->session()->read('cmlaboratorioid')))
+				$laboratorioid = $this->request->session()->read('cmlaboratorioid');
 
 			$terms_m = "";
 
 			$terms = "";
-			if (!empty($this->request->session()->read('termsearch')))
-				$terms = $this->request->session()->read('termsearch');
+			if (!empty($this->request->session()->read('cmtermsearch')))
+				$terms = $this->request->session()->read('cmtermsearch');
 
 
 			if (!empty($this->request->getParam('pass'))) {
 
-
-				$terminocompleto = explode(" ", $this->request->getParam('pass')[0]);
+				if (empty($this->request->getParam('pass')[2]))
+				$terms = "";
+				else
+				{
+				$terminocompleto = explode(" ", $this->request->getParam('pass')[2]);
 				$terms = "";
 				if (count($terminocompleto) > 1) {
 					foreach ($terminocompleto as $terminosimple) :
 						$terms = $terms . '%' . $terminosimple . '%';
 					endforeach;
 				} else
-					$terms = '%' . $terminocompleto[0] . '%';
-
+					$terms = '%' . $terminocompleto[2] . '%';
+				}
 				//$this->request->getParam('pass');
 				if (empty($this->request->getParam('pass')[1]))
 					$laboratorioid = 0;
 				else
 					$laboratorioid = $terms_lab;
 
-				if (empty($this->request->getParam('pass')[2]))
+				if (empty($this->request->getParam('pass')[0]))
+					$marcaid = 0;
+				else
+					$marcaid = $terms_mar;
+
+				if (empty($this->request->getParam('pass')[3]))
 					$terms_m = "";
 				else
-					$terms_m = $this->request->getParam('pass')[0];
+					$terms_m = $this->request->getParam('pass')[3];
 			}
 		}
 
@@ -6199,7 +6381,7 @@ class CarritosController extends AppController
 		$this->monodrogayaccionterapeutica();
 
 
-		$this->viewBuilder()->layout('store_cm');
+		$this->viewBuilder()->layout('store');
 
 		$this->loadModel('Articulos');
 
@@ -6209,16 +6391,16 @@ class CarritosController extends AppController
 
 		if ($this->request->session()->read('Auth.User.farmapoint') > 0) {
 			$list_tipo_dto_dist = 'tipo_oferta <> "VC"';
-			$list_tipo_dto = '("OR","TD","RL","HS","FR","TH","PS","FP","CM","SC")';
+			$list_tipo_dto = '("OR","TD","RL","HS","FR","TH","PS","BF","FP","CM","SC","RR")';
 		} else {
 			$list_tipo_dto_dist = '[tipo_oferta <> "FP" , tipo_oferta <> "VC"]';
-			$list_tipo_dto = '("OR","TD","RL","HS","FR","TH","PS","CM","SC")';
+			$list_tipo_dto = '("OR","TD","RL","HS","FR","TH","PS","BF","CM","SC","RR")';
 		}
 		$articulosA = $this->Articulos->find()
 			->contain([
 				'Descuentos' => [
 					'queryBuilder' => function ($q) {
-						return $q->where(['tipo_oferta <> "VC"', 'tipo_oferta <> "RR"']); // Full conditions for filtering
+						return $q->where(['tipo_oferta <> "VC"']); // Full conditions for filtering , 'tipo_oferta <> "RR"
 					}
 					//'tipo_oferta in ("RV","RR","OR","TD","RL","HS","FR","TH","TD")',
 
@@ -6262,57 +6444,29 @@ class CarritosController extends AppController
 
 			switch ($laboratorioid) {
 				case 157:
-					$articulosA->andWhere(['Articulos.codigo_barras IN (650240006647, 
-						7798140250425,
-						7798140258636,
-						0650240011351,
-						7798140255024,
-						7798140258285,
-						7798140251682,
-						650240015670)']);
+					$articulosA->andWhere(['Articulos.codigo_barras IN (650240006647 
+						)']);
 					break;
 				case 22:
-					$articulosA->andWhere(['Articulos.codigo_barras IN (  7795323002420,
-							7795323002437,
-							7795323002444,
-							7795323002253,
-							7795323002239,
-							7795323002208
-						   )']);
+					$articulosA->andWhere(['Articulos.codigo_barras IN (  7795323002420  )']);
 					break;
 				case 21:
-					$articulosA->andWhere(['Articulos.codigo_barras IN ( 7790375269210,
-						7790375260941,
-						7790580130718,
-						7790580130077
-						
-					
+					$articulosA->andWhere(['Articulos.codigo_barras IN ( 7790375269210
 
-						
 						)']);
 					break;
 				case 121:
-					$articulosA->andWhere(['Articulos.codigo_barras IN (  7796285285135,7796285273941,
-						7796285285999,
-						7796285286002)']);
+					$articulosA->andWhere(['Articulos.codigo_barras IN (  7796285285135)']);
 					break;
 				case 24:
-					$articulosA->andWhere(['Articulos.codigo_barras IN (7793640215479	,
-							7793640992448	,
-							7793640992455	,
-							7793640000839	,
-							7793640215523)']);
+					$articulosA->andWhere(['Articulos.codigo_barras IN (7793640215479	)']);
 					break;
 
 
 
 
 				case 425:
-					$articulosA->andWhere(['Articulos.codigo_barras IN (  7798120265883,
-						7798120265869,
-						7798120265944,
-						7798120265913,
-						7798120265616,7798120265951)']);
+					$articulosA->andWhere(['Articulos.codigo_barras IN (  7798120265883)']);
 					break;
 
 				default: {
@@ -6320,19 +6474,13 @@ class CarritosController extends AppController
 					}
 			}
 		}
-
-
+		if (($marcaid != 0)) 
+		$articulosA->andWhere(['Articulos.marca_id' => $marcaid]);
 
 
 		if ($articulosA != null) {
 			$articulosA->andWhere(['Articulos.stock <> "F"', 'Articulos.stock <> "D"', 'Articulos.eliminado' => 0])->group(['Articulos.id']);
-			$limit = 25;
-			if ($articulosA->count() < 100 && $articulosA->count() > 50) {
-				$limit = 50;
-			}
-			if ($articulosA->count() > 100) {
-				$limit = 70;
-			}
+			$limit = 100;
 
 			$this->paginate = [
 				'contain' => ['Carritos'],
@@ -6352,7 +6500,7 @@ class CarritosController extends AppController
 
 		$this->set('publicationsearch', $publicationsearch->toArray());
 		$this->request->session()->write('publicationsearch', $publicationsearch->toArray());
-		$publicationzocalo = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '12', 'laboratorio_id' => $laboratorioid])->order(['id' => 'DESC'])->all();
+		$publicationzocalo = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '12', 'marca_id' => $marcaid])->order(['id' => 'DESC'])->all();
 		$this->set('banner_slider', $publicationzocalo->toArray());
 		$this->request->session()->write('banner_slider', $publicationzocalo->toArray());
 
@@ -8313,6 +8461,13 @@ class CarritosController extends AppController
 						$quantity = isset($this->request->data['quantity']) ? $this->request->data['quantity'] : 1;
 						$descuento_id = $this->request->data['descuento_id'];
 						$validarUni = [];
+								$tipo_oferta_data = "";
+						if (isset($this->request->data['tipo_oferta'])) {
+							if (!empty($this->request->data['tipo_oferta'])) {
+								$tipo_oferta_data = $this->request->data['tipo_oferta'];
+							}
+						}
+
 						$this->loadModel('Descuentos');
 						$this->loadModel('Articulos');
 						$descuento = $this->Descuentos->find()->where(['id' => $descuento_id])->first([]);
@@ -8368,7 +8523,11 @@ class CarritosController extends AppController
 									$carro['descuento'] = $descuentooferta;
 									$carro['plazoley_dcto'] = $descuento['plazo'];
 									$carro['unidad_minima'] = $descuento['uni_min'];
-									$carro['tipo_oferta'] = $descuento['tipo_oferta'];
+									if (!empty($tipo_oferta_data)) {
+										$carro['tipo_oferta'] = $tipo_oferta_data;
+									} else {
+										$carro['tipo_oferta'] = $descuento['tipo_oferta'];
+									}
 									$carro['tipo_venta'] = $descuento['tipo_venta'];
 									$carro['tipo_precio'] = $descuento['tipo_precio'];
 									$carro['combo_tipo_id'] = $descuento['combo_tipo_id'];
@@ -8384,7 +8543,11 @@ class CarritosController extends AppController
 									$carro['descuento'] = 0;
 									$carro['plazoley_dcto'] = 'HABITUAL';
 									$carro['unidad_minima'] = 1;
-									$carro['tipo_oferta'] = null;
+									if (!empty($tipo_oferta_data)) {
+										$carro['tipo_oferta'] = $tipo_oferta_data;
+									} else {
+										$carro['tipo_oferta'] = null;
+									}
 									$carro['tipo_venta'] = null;
 									$carro['tipo_precio'] = null;
 									$carro['combo_id'] = 0;
@@ -8462,9 +8625,15 @@ class CarritosController extends AppController
 								$categoria = (int)$articulo['categoria_id'];
 								$validar = true;
 								if ($this->request->session()->read('Auth.User.habilitado') == 2) {
-									if ($categoria == 6 || $categoria == 7) {
-										$responseData = ['6 0 7' => true, 'responseText' => "6", 'status' => 200];
+									$clienteId = $this->request->session()->read('Auth.User.cliente_id');
+									if ($categoria == 6) {
+											$responseData = ['6 0 7' => true, 'responseText' => "6", 'status' => 200];
 										$validar = false;
+										if (in_array($clienteId, [37027, 37086])) {
+											$resultMonodroga = $this->validarMonodrogaForExeption($articulo['id']);
+											$validar = $resultMonodroga;
+										}
+
 										//$this->Flash->error('No se puede agregar este producto al carro de compras. ',['key' => 'changepass']);
 										//return $this->redirect($this->referer());					
 									}
@@ -8587,6 +8756,18 @@ class CarritosController extends AppController
 		}
 
 		die;
+	}
+
+	
+	public function validarMonodrogaForExeption($articulo_id)
+	{
+		$this->loadModel('AlfabetaArticulosExtras');
+		$listadomonodrogaid = $this->AlfabetaArticulosExtras->find('all')->select(['articulo_id', 'alfabeta_monodroga_id'])->where(['articulo_id' => $articulo_id, 'alfabeta_monodroga_id IN' => [4038, 1540, 4347, 2092, 2978]])->first();
+		if ($listadomonodrogaid) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public function agregarfalta($articulo_id, $cliente_id, $cantidad)

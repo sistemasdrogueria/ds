@@ -1,11 +1,11 @@
 <div>	
 <div id="tab1" class="tab_content">
-<div class="paginationtop">
+<div class="paginationtop" style="width: 450px;">
 <ul>
 <?php
-echo $this->Paginator->prev(__('Anterior'), array('tag' => 'li'), null, array('tag' => 'li','disabledTag' => 'a'));
+echo $this->Paginator->prev(__('Ant'), array('tag' => 'li'), null, array('tag' => 'li','disabledTag' => 'a'));
 echo $this->Paginator->numbers(array('separator' => '','currentTag' => 'a', 'currentClass' => 'active','tag' => 'li','first' => 1));
-echo $this->Paginator->next(__('Siguiente'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','disabledTag' => 'a'));?>
+echo $this->Paginator->next(__('Sig'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','disabledTag' => 'a'));?>
 </ul>
 <div class="total">
 <?php echo $this->Paginator->counter('{{count}} Total');?>
@@ -17,6 +17,7 @@ echo $this->Paginator->next(__('Siguiente'), array('tag' => 'li','currentClass' 
 <tr>
 <th><?= $this->Paginator->sort('id','Imagen') ?></th>
 <th><?= $this->Paginator->sort('nombre','Descripción') ?></th>
+<th><?= $this->Paginator->sort('Marcas.marcas_tipos_id','Categoria') ?></th>
 <th><?= $this->Paginator->sort('marca_id') ?></th>
 <th><?= $this->Paginator->sort('genero_id') ?></th>
 <th><?= $this->Paginator->sort('eliminado','Elimando') ?></th>
@@ -38,6 +39,9 @@ echo $this->Html->image($uploadPath.$fragancia['imagen'], ['alt' => str_replace(
 ?> 
 </td>
 <td><?= $fragancia->nombre ?></td>
+<td><?php  if ($fragancia->marca->marcas_tipos_id == 1) echo 'SELECTIVA' ;
+else
+if ($fragancia->marca->marcas_tipos_id == 18) echo 'SEMISELECTIVA';  ?></td>
 <td><?= $fragancia->has('marca') ? $fragancia->marca->nombre : '' ?></td>
 <td><?= $fragancia->has('genero') ? $fragancia->genero->nombre : '' ?></td>
 <td><?php //if($fragancia->eliminado==0)	echo "SI";			else			echo "NO";		?>

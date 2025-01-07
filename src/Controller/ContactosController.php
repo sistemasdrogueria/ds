@@ -6,6 +6,9 @@ use App\Controller\AppController;
 //use Cake\Network\Email\Email;
 use Cake\Mailer\Email;
 use Cake\Network\Request;
+use Cake\Event\Event;
+use Cake\Core\Configure;
+use Cake\Http\Client;
 /*
 Email::configTransport('gmail', [
     'host' => 'smtp.gmail.com',
@@ -27,18 +30,14 @@ Email::configTransport('gmail', [
  */
 class ContactosController extends AppController
 {
-    public function isAuthorized()
-    {
-        if (in_array($this->request->action, ['enviar_mail', 'sendContacto', 'add'])) {
-            return true;
-        } else {
-
-            $this->Flash->error(__('No tiene permisos para ingresar'), ['key' => 'changepass']);
-            return false;
-        }
-
-        return parent::isAuthorized($user);
-    }
+    public function beforeFilter(Event $event)
+	{
+		parent::beforeFilter($event);
+		// Allow users to register and logout.
+		// You should not add the "login" action to allow list. Doing so would
+		// cause problems with normal functioning of AuthComponent.
+		$this->Auth->allow(['enviar_mail', 'sendContacto', 'add']);
+	}
     /**
      * Index method
      *
@@ -106,7 +105,7 @@ class ContactosController extends AppController
         $responseData = json_decode($response->body(), true);
 
 
-        if (isset($responseData['success']) && $responseData['success'] === true) {
+        if (isset($responseData['success']) && $responseData['success'] === true && $responseData['score'] > 0.8 ) {
             return ['success' => true];
         } elseif (isset($responseData['error-codes']) && is_array($responseData['error-codes'])) {
             if (in_array('timeout-or-duplicate', $responseData['error-codes'])) {

@@ -10,7 +10,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 </style>
 <?php echo $this->Html->script('ckeditor/ckeditor');?>
 <div class="clear"></div>
-<article class="module width_full">
+<article class="module width_4_quarter">
 <header><h3 class="tabs_involved" id="titulobarra"><?= $titulo ?></h3>
 <div class="volveratras">
 <a href="<?= $previous ?>"><?php echo $this->Html->image('icn_volver.png');?></a>
@@ -32,10 +32,25 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 <fieldset style="width:98%;float:left;">
 <?php	echo $this->Form->input('tipo');?>
 </fieldset>
-<fieldset>		
-<?= $this->Form->input('fecha', ['label'=>'fecha:','id'=>'fechadesde','name'=>'fecha', 'type'=>'text','placeholder'=>'Fecha']);?>
+
+<fieldset>
+<div class="input select">
+<label class="">Categoria</label>
+<div class="">
+<?php
+echo $this->Form->select('categorias_novedades_id', $categorias, [
+'class' => 'select2_single form-control',
+'style' => '-moz-border-radius: 5px; border-radius: 5px; border: 1px solid #BBB; height: 25px; color: #666; box-shadow: inset 0 2px 2px #ccc, 0 1px 0 #fff; padding-left: 10px; background-position: 10px 6px; display: block; float: left; width: 96%; margin: 0 10px;',
+'empty' => 'Selecciona una categoría'
+]);
+?>
+</div>
+</div>
 </fieldset>
 <fieldset>	
+<fieldset>
+<?= $this->Form->input('fecha', ['label' => 'fecha:', 'id' => 'fechadesde', 'name' => 'fecha', 'type' => 'text', 'placeholder' => 'Fecha','value'=> date_format($novedade['fecha'],'d/m/Y')]); ?>
+</fieldset>
 <div class="input select">
 <?php
 echo $this->Form->input('file',['type' => 'file','label'=>'Portada']);

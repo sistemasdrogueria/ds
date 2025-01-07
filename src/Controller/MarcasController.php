@@ -139,7 +139,7 @@ class MarcasController extends AppController
         
             
         $this->set('titulo','Agregar Logo - Marca');
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $this->set('marcas', $marcas);
         $this->set('_serialize', ['marcas']);
         $this->loadModel('MarcasTipos');
@@ -202,7 +202,7 @@ class MarcasController extends AppController
     {
         $this->set('titulo','Editar Marca');
         
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $marca = $this->Marcas->get($id, [
             'contain' => []
         ]);
@@ -229,7 +229,7 @@ class MarcasController extends AppController
 		$laboratorios = $this->Laboratorios->find('list',['keyField' => 'id','valueField'=>'nombre'])->where(['eliminado=0'])->order(['nombre' => 'ASC']);
 		$this->set('laboratorios',$laboratorios->toArray());
 
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
        $marca = $this->Marcas->get($id, [
             'contain' => []
         ]);
@@ -308,7 +308,7 @@ class MarcasController extends AppController
 
     public function delete_admin($id = null)
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$id = $this->request->getData('id');
 		$this->request->allowMethod(['post', 'get', 'delete', 'ajax']);
 		$marca = $this->Marcas->get($id);
@@ -378,7 +378,7 @@ class MarcasController extends AppController
         }])->where(['eliminado=0'])->order(['nombre' => 'ASC']);
 		$this->set('laboratorios',$laboratorios->toArray());
 
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->set('titulo','Logos - Marcas');
         $marca = $this->Marcas->newEntity();
         if ($this->request->is('post')) {

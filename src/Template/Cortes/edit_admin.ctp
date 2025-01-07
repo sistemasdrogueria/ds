@@ -46,7 +46,7 @@ $previous = $_SERVER['HTTP_REFERER'];
 }
 ?>
 <div class="clear"></div>
-<article class="module width_full">
+<article class="module width_4_quarter">
 <header><h3 class="tabs_involved"><?= $titulo ?></h3>
 <div class="volveratras"><a href="<?= $previous ?>"><?= $this->Html->image('icn_volver.png');?></a></div>
 </header>

@@ -5,6 +5,9 @@ use App\Controller\AppController;
 use Cake\I18n\Time;
 use Cake\Filesystem\File;
 use Cake\Network\Request;
+use Cake\Collection\Collection;
+use Cake\Core\Configure;
+use Cake\Http\Client;
 /**
  * FacturasCabeceras Controller
  *
@@ -14,7 +17,7 @@ class EstadisticasController extends AppController
 {
 	public function isAuthorized()
     {
-		if (in_array($this->request->action, ['search','home','index','provincia'])) {
+		if (in_array($this->request->action, ['search','home','index','provincia', 'ranking', 'viewOfertsToLose', 'searchOfertsToLose', 'validateRecaptcha', 'excelToDownload'])) {
        
 				if($this->request->session()->read('Auth.User.role')=='admin') 
 				{				
@@ -24,7 +27,7 @@ class EstadisticasController extends AppController
 				{	
 					if($this->request->session()->read('Auth.User.role')=='client') 
 					{	
-						$tiene= $this->tienepermiso('esteticas',$this->request->action);
+						$tiene= $this->tienepermiso('estadisticas',$this->request->action);
 						if (!$tiene)
 							$this->Flash->error(__('No tiene permisos para ingresar'),['key' => 'changepass']);
 						return $tiene;		
@@ -573,7 +576,7 @@ class EstadisticasController extends AppController
 					->order(['NotasCabeceras.fecha' => 'ASC']);
 		
 		//$facturascabeceras->order(['FacturasCabeceras.fecha' => 'ASC']);
-		$clientes=Array();
+		$clientes=array();
 		if ($this->request->session()->read('Auth.User.cuentaprincipal')==1)
 		{
 			$this->loadModel('Clientes');
@@ -616,4 +619,349 @@ class EstadisticasController extends AppController
         $this->set('_serialize', ['facturasCabecera']);
     }
 
+	public function searchOfertsToLose()
+	{
+		$this->viewBuilder()->setLayout('store');
+		$this->loadModel('FacturasCabeceras');
+				$this->paginate = [
+			'limit' => 200,
+			'maxLimit' => 200,
+		];
+
+		$fechadesde = $this->request->getData('fechadesde') ?? $this->request->session()->read('fechadesde');
+		$fechahasta = $this->request->getData('fechahasta') ?? $this->request->session()->read('fechahasta');
+		$perdidas = $this->request->getData('perdidas') ?? $this->request->session()->read('perdidas');
+        $termsearch = $this->request->getData('terminobuscar') ?? $this->request->session()->read('termsearch');
+
+		// Validar si se recibieron fechas, de lo contrario asignar valores por defecto
+		if (empty($fechadesde)) {
+			$timeDesde = (new Time('-1 month'))->i18nFormat('yyyy-MM-dd');
+			$timeDesdeVariable = (new Time())->i18nFormat('dd-MM-yyyy');
+		} else {
+			$timeDesde = Time::createFromFormat('d/m/Y', $fechadesde)->i18nFormat('yyyy-MM-dd');
+			$timeDesdeVariable = $fechadesde;
+		}
+
+		if (empty($fechahasta)) {
+			$timeHasta = (new Time())->i18nFormat('yyyy-MM-dd');
+			$timeHastaVariable = (new Time())->i18nFormat('dd-MM-yyyy');
+		} else {
+			$timeHasta = Time::createFromFormat('d/m/Y', $fechahasta)->i18nFormat('yyyy-MM-dd');
+			$timeHastaVariable = $fechahasta;
+		}
+
+		// Guardar valores en la sesión
+		$this->request->getSession()->write('termsearch', $termsearch);
+		$this->request->getSession()->write('fechadesde', $timeDesdeVariable);
+		$this->request->getSession()->write('fechahasta', $timeHastaVariable);
+	    $this->request->getSession()->write('perdidas', $perdidas);
+		// Query
+		$query = $this->FacturasCabeceras->find('all')
+			->select([
+				'a.id',
+				'a.categoria_id',
+				'a.codigo_barras',
+				'a.descripcion_pag',
+				'd.dto_patagonia',
+				'd.dto_drogueria',
+				'fci.cantidad_facturada',
+				'd.uni_min',
+				'd.tipo_venta',
+			    'd.tipo_oferta',
+				'fci.creado',
+				'dd.id',
+				'dd.uni_min',
+				'dd.fecha_desde',
+				'dd.fecha_hasta',
+				'dd.dto_patagonia',
+				'dd.tipo_venta',
+				'dd.tipo_oferta',
+
+			])
+			->contain(['FacturasCuerposItems', 'FacturasCuerposItems.Articulos', 'FacturasCuerposItems.Articulos.Laboratorios'])
+			->join([
+				'fci' => [
+					'table' => 'facturas_cuerpos_items',
+					'type' => 'INNER',
+					'conditions' => 'FacturasCabeceras.id = fci.facturas_encabezados_id',
+				],
+				'a' => [
+					'table' => 'articulos',
+					'type' => 'INNER',
+					'conditions' => ['fci.articulo_id = a.id', 'categoria_id in (1,2,7,6)', 'a.eliminado = 0']
+				],
+				'd' => [
+					'table' => 'descuentos',
+					'type' => 'INNER',
+					'conditions' => [
+						'd.articulo_id = a.id',
+					'd.tipo_venta = "D"',
+					'd.tipo_oferta in ("RV","RR","OR","FR","TD","RL")'],
+				],
+				'dd' => [
+					'table' => 'descuentos_delete',
+					'type' => 'LEFT', // Puedes ajustar el tipo de join dependiendo de tus necesidades
+					'conditions' => [
+						'dd.articulo_id = a.id',
+						'fci.creado BETWEEN dd.fecha_desde AND dd.fecha_hasta',
+						'dd.tipo_venta = "D"',
+					    'dd.tipo_oferta in ("RV","RR","OR","FR","TD","RL")'
+					]
+				]
+			])
+			->where(['FacturasCabeceras.cliente_id' => $this->request->session()->read('Auth.User.cliente_id'), 'fci.cantidad_facturada > 0', 'a.eliminado'=>0])
+			->andWhere(["FacturasCabeceras.fecha BETWEEN '" . $timeDesde . "' AND '" . $timeHasta . "'"]);
+		if (isset($perdidas) && $perdidas == 'on') {
+			// Agregar la condición de "pérdidas" solo si el checkbox está marcado
+		 $query->andWhere(['fci.cantidad_facturada < d.uni_min']);
+		}
+		$query->group(['a.id', 'FacturasCabeceras.id'])
+			->order(['a.descripcion_pag' => 'ASC']);
+		$paginatedResults = $this->paginate($query);
+		$collection = new Collection($paginatedResults);
+
+		$articulsByGrade = $collection->groupBy('a.id');
+
+		$this->set('data', $articulsByGrade);
+	}
+	
+	public function excelToDownload()
+	{
+
+		$recaptchaToken = $this->request->getData('recaptcha');
+		$recaptchaValidation = $this->validateRecaptcha($recaptchaToken);
+		if ($recaptchaValidation['success']) {
+			if ($recaptchaValidation['score'] > 0.5) {
+
+				$this->viewBuilder()->setLayout('ajax');
+
+				$this->loadModel('FacturasCabeceras');
+
+				$fechadesde = $this->request->getData('fechadesde') ?? $this->request->session()->read('fechadesde');
+				$fechahasta = $this->request->getData('fechahasta') ?? $this->request->session()->read('fechahasta');
+				$termsearch = $this->request->getData('terminobuscar') ?? $this->request->session()->read('termsearch');
+				if (empty($fechadesde)) {
+					$fechadesde = (new Time('-1 month'))->i18nFormat('yyyy-MM-dd');
+				} else {
+
+					$timeDesde = Time::createFromFormat('d/m/Y', $fechadesde);
+				}
+				if (empty($fechahasta)) {
+					$fechahasta = (new Time())->i18nFormat('yyyy-MM-dd');
+				} else {
+					$timeHasta = Time::createFromFormat('d/m/Y', $fechahasta);
+				}
+				$this->request->getSession()->write('termsearch', $termsearch);
+				$this->request->getSession()->write('fechadesde', $fechadesde);
+				$this->request->getSession()->write('fechahasta', $fechahasta);
+
+				$query = $this->FacturasCabeceras->find('all')
+					->select([
+						'a.id',
+						'a.categoria_id',
+						'a.descripcion_pag',
+						'a.codigo_barras',
+						'd.dto_patagonia',
+						'd.dto_drogueria',
+						'fci.cantidad_facturada',
+						'd.uni_min',
+						'd.tipo_venta',
+			            'd.tipo_oferta',
+						'fci.creado',
+						'dd.id',
+						'dd.uni_min',
+						'dd.fecha_desde',
+						'dd.fecha_hasta',
+						'dd.dto_patagonia',
+						'dd.tipo_venta',
+				        'dd.tipo_oferta',
+					])
+					->contain(['FacturasCuerposItems', 'FacturasCuerposItems.Articulos', 'FacturasCuerposItems.Articulos.Laboratorios']) //,'Articulos'
+					->join([
+
+						'fci' => [
+							'table' => 'facturas_cuerpos_items',
+							'type' => 'INNER',
+							'conditions' => ['FacturasCabeceras.id = fci.facturas_encabezados_id'],
+						],
+						'a' => [
+							'table' => 'articulos',
+							'type' => 'INNER',
+							'conditions' => ['fci.articulo_id = a.id', 'categoria_id in (1,2,7,6)', 'a.eliminado =0']
+						],
+						'd' => [
+							'table' => 'descuentos',
+							'type' => 'INNER',
+							'conditions' => [
+								'd.articulo_id = a.id',
+								'd.tipo_venta = "D"',
+					            'd.tipo_oferta in ("RV","RR","OR","FR","TD","RL")']
+						],
+						'dd' => [
+							'table' => 'descuentos_delete',
+							'type' => 'LEFT', // Puedes ajustar el tipo de join dependiendo de tus necesidades
+							'conditions' => [
+								'dd.articulo_id = a.id',
+								'fci.creado BETWEEN dd.fecha_desde AND dd.fecha_hasta',
+								'dd.tipo_venta = "D"',
+					            'dd.tipo_oferta in ("RV","RR","OR","FR","TD","RL")'
+							]
+						]
+
+					])
+					->where(['FacturasCabeceras.cliente_id' => $this->request->session()->read('Auth.User.cliente_id'), 'fci.cantidad_facturada>0', 'd.uni_min>fci.cantidad_facturada','a.eliminado'=>0])
+					->andWhere(["FacturasCabeceras.fecha BETWEEN'" . $timeDesde->i18nFormat('yyyy-MM-dd') . "' AND '" . $timeHasta->i18nFormat('yyyy-MM-dd') . "'"])
+					->group('a.id','FacturasCabeceras.id')
+			        ->order(['a.descripcion_pag' => 'ASC']);
+
+
+				$collection = new Collection($query);
+				$articulsByGrade = $collection->groupBy('a.id');
+				$this->set('data', $articulsByGrade->toArray());
+
+
+				$this->response->withType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+			} else {
+				$this->Flash->error('Fallo el reCAPTCHA, recargue la pagina e intente nuevamente.');
+				$error = "";
+			}
+		} else {
+
+			$this->loadModel('LogsCatchaFaileds');
+			$logscatcha = $this->LogsCatchaFaileds->newEntity();
+			//debug(date('Y-m-d H:i:s'));
+			$logscatcha['codigo_cliente'] = $this->request->session()->read('Auth.User.codigo');
+			$logscatcha['ip'] = $this->request->clientIp();
+			$logscatcha['status'] = $recaptchaValidation['message'];
+			$logscatcha['host'] = "descargas";
+			if ($this->LogsCatchaFaileds->save($logscatcha)) {
+			}
+		}
+	}
+
+	private function validateRecaptcha($token)
+	{
+		$secretKey = Configure::read('Recaptcha.secret_key');
+		$client = new Client();
+
+		$response = $client->post('https://www.google.com/recaptcha/api/siteverify', [
+			'secret' => $secretKey,
+			'response' => $token
+		]);
+
+		if (!$response->isOk()) {
+			return ['success' => false, 'message' => 'Error al conectar con el servicio de reCAPTCHA.'];
+		}
+		$responseData = json_decode($response->body(), true);
+
+
+		if (isset($responseData['success']) && $responseData['success'] === true) {
+
+			// Verificar que la puntuación es mayor a 0.5
+			if (isset($responseData['score']) && $responseData['score'] > 0.5) {
+
+				return ['success' => true, 'score' => $responseData['score'], 'hostname' => $responseData['hostname'], 'action' => $responseData['action']];
+			} else {
+				// Si la puntuación es 0.5 o menos, asumir que podría ser un bot
+				return ['success' => false, 'message' => 'La puntuación de reCAPTCHA indica que podrías ser un bot.'];
+			}
+		} elseif (isset($responseData['error-codes']) && is_array($responseData['error-codes'])) {
+			if (in_array('timeout-or-duplicate', $responseData['error-codes'])) {
+				return ['success' => false, 'message' => 'El token de reCAPTCHA ha expirado o es duplicado. Por favor, inténtalo de nuevo.'];
+			}
+			// Aquí puedes añadir otros códigos de error específicos si es necesario
+			return ['success' => false, 'message' => 'Error de reCAPTCHA. Por favor, inténtalo de nuevo.'];
+		}
+
+		return ['success' => false, 'message' => 'Error desconocido al validar reCAPTCHA.'];
+	}
+	public function viewOfertsToLose()
+	{
+		$this->viewBuilder()->setLayout('store');
+		$this->loadModel('FacturasCabeceras');
+				$this->paginate = [
+			'limit' => 300,
+			'maxLimit' => 300,
+		];
+
+		$date = Time::now();
+
+		$day = $date->day;
+		if ($day == 1) {
+			$DateWithTheFirstDay = $date->i18nFormat('yyyy-MM-dd');
+			$DateWithTheFirstDayVariable = $date->i18nFormat('dd-MM-yyyy');
+		} else {
+
+			$DateWithTheFirstDay = $date->startOfMonth()->i18nFormat('yyyy-MM-dd');
+			$DateWithTheFirstDayVariable =  $date->startOfMonth()->i18nFormat('dd/MM/yyyy');
+		}
+
+		$today = Time::now()->i18nFormat('yyyy-MM-dd');
+
+		$this->request->getSession()->write('fechadesde', $DateWithTheFirstDayVariable);
+		$this->request->getSession()->write('fechahasta', Time::now()->i18nFormat('dd/MM/yyyy'));
+		$query = $this->FacturasCabeceras->find('all')
+			->select([
+				'a.id',
+				'a.categoria_id',
+				'a.codigo_barras',
+				'a.descripcion_pag',
+				'd.dto_patagonia',
+				'd.dto_drogueria',
+				'd.tipo_venta',
+			    'd.tipo_oferta',
+				'fci.cantidad_facturada',
+				 'fci.pedido_ds',
+				'd.uni_min',
+				'fci.creado',
+				'dd.id',
+				'dd.uni_min',
+				'dd.fecha_desde',
+				'dd.fecha_hasta',
+				'dd.dto_patagonia',
+				'dd.tipo_venta',
+			    'dd.tipo_oferta',
+			])
+			->contain(['FacturasCuerposItems', 'FacturasCuerposItems.Articulos', 'FacturasCuerposItems.Articulos.Laboratorios']) //,'Articulos'
+			->hydrate(false)
+			->join([
+
+				'fci' => [
+					'table' => 'facturas_cuerpos_items',
+					'type' => 'INNER',
+					'conditions' => 'FacturasCabeceras.id = fci.facturas_encabezados_id',
+				],
+				'a' => [
+					'table' => 'articulos',
+					'type' => 'INNER',
+					'conditions' => ['fci.articulo_id = a.id', 'categoria_id in (1,2,7,6)', 'a.eliminado =0']
+				],
+				'd' => [
+					'table' => 'descuentos',
+					'type' => 'INNER',
+					'conditions' => [
+					'd.articulo_id = a.id',
+					'd.tipo_venta = "D"',
+					'd.tipo_oferta in ("RV","RR","OR","FR","TD","RL")'],
+				],
+						'dd' => [
+							'table' => 'descuentos_delete',
+							'type' => 'LEFT', // Puedes ajustar el tipo de join dependiendo de tus necesidades
+							'conditions' => [
+								'dd.articulo_id = a.id',
+								'fci.creado BETWEEN dd.fecha_desde AND dd.fecha_hasta',
+								'dd.tipo_venta = "D"',
+					            'dd.tipo_oferta in ("RV","RR","OR","FR","TD","RL")'
+							]
+						]
+			])
+			->where(['FacturasCabeceras.cliente_id' => $this->request->session()->read('Auth.User.cliente_id'), 'fci.cantidad_facturada>0','a.eliminado'=>0])
+			->andWhere(["FacturasCabeceras.fecha BETWEEN '" . $DateWithTheFirstDay . "' AND '" . $today . "'"])
+			->group('a.id','FacturasCabeceras.id')
+			->order(['a.descripcion_pag' => 'ASC']);
+		$paginatedResults = $this->paginate($query);
+		$collection = new Collection($paginatedResults);
+		$articulsByGrade = $collection->groupBy('a.id');
+		$this->set('data', $articulsByGrade);
+	}
 }

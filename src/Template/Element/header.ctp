@@ -1,20 +1,18 @@
 <style>
-.simbDay{
-position: relative;display: inline-block;text-align: center;width: 100px;}
-.temps{position: absolute;top: 60%;left: 50%;transform: translate(-50%, -50%);color: #000000;font-weight: bold;font-size: 11px;}
-.temps60 {position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);color: #000000;font-weight: bold;font-size: 11px;}
-.centrado {z-index: 1;display: inline-flex;flex-direction: row;flex-wrap: nowrap;align-content: center;justify-content: space-evenly;align-items: center;}
-span.temps span.TMin {color: #111213ab;}
-span.temps60 span.TMin {color: #111213ab;}
-span.temps span.TMax {color: #a51010;}
-span.temps60 span.TMax {color: #a51010;}
-p.nomDayExt {top: -17%;transform: translate(-50%, -50%);left: 50%;position: absolute;white-space: pre;font-size: 10px;font-weight: 700;text-align: center;text-overflow: ellipsis;overflow: hidden;height: 16px;}
-p.nomDaySim {top: -17%;transform: translate(-50%, -50%);left: 50%;position: absolute;white-space: pre;font-size: 10px;font-weight: 700;text-align: center;text-overflow: ellipsis;overflow: hidden;height: 16px;}
-p.nomCiudad{white-space: pre;font-size: 10px;font-weight: 700;text-align: center;text-overflow: ellipsis;overflow: hidden;height: 16px;transform: translate(0%, 150%);position:absolute;}
-.new32 #wlink .fondo td span {/* width: 61px;*/}
-.centrado span img {margin-top:4px;}
-#logo_web{margin-top: 5px;}
-@media only screen and (min-width : 800px) and (max-width : 1198px) {.iconoslink{width: 41.66666667%;}.iconoclima{  width: 25%;}p.nomDaySim {transform: translate(-40%, -50%)!important;}}
+.simbDay{position:relative;display:inline-block;text-align:center;width:100px}
+.temps{position:absolute;top:60%;left:50%;transform:translate(-50%,-50%);color:#000;font-weight:bold;font-size:11px}
+.temps60{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#000;font-weight:bold;font-size:11px}
+.centrado{z-index:1;display:inline-flex;flex-direction:row;flex-wrap:nowrap;align-content:center;justify-content:space-evenly;align-items:center}
+span.temps span.TMin{color:#111213ab}
+span.temps60 span.TMin{color:#111213ab}
+span.temps span.TMax{color:#a51010}
+span.temps60 span.TMax{color:#a51010}
+p.nomDayExt{top:-17%;transform:translate(-50%,-50%);left:50%;position:absolute;white-space:pre;font-size:10px;font-weight:700;text-align:center;text-overflow:ellipsis;overflow:hidden;height:16px}
+p.nomDaySim{top:-17%;transform:translate(-50%,-50%);left:50%;position:absolute;white-space:pre;font-size:10px;font-weight:700;text-align:center;text-overflow:ellipsis;overflow:hidden;height:16px}
+p.nomCiudad{white-space:pre;font-size:10px;font-weight:700;text-align:center;text-overflow:ellipsis;overflow:hidden;height:16px;transform:translate(0%,150%);position:absolute}
+.centrado span img{margin-top:4px}
+#logo_web{margin-top: 5px}
+@media only screen and (min-width : 800px) and (max-width : 1198px) {.iconoslink{width:41.66666667%}.iconoclima{width: 25%}p.nomDaySim {transform: translate(-40%, -50%)!important}}
 </style>
 <div class="col-md-4 col-sm-3 col-xs-3" id="logodsmovil">
 <div class=logods>
@@ -82,12 +80,12 @@ echo '
 <ul class=menu>
 <li style='float: right;  height:40px; margin:0 5px 0 5px;'> <?php echo $this->Html->image('icono_salir.png', ['url'=>['controller' => 'Users', 'action' => 'logout']],['alt' => 'Cerrar Sesión','class'=>'codrops-icon codrops-icon-back']);?></li>
 <li style='float: right;  height:40px; margin:0 5px 0 5px;'> <?php echo $this->Html->image('icono_configurar.png', ['url'=>['controller'=>'Clientes','action'=>'view']],['alt' => 'Ver Evento']);?></li>
-<li style="float: right;  height:40px; margin:0 5px 0 5px;"> <?php echo $this->Html->image('logo_cs.png', ['url'=>['controller' => 'ComunidadSur', 'action' => 'index']], ['alt' => 'Comunidad Sur']);?></li>
-<?php if ($this->request->session()->read('Auth.User.farmapoint')==1) 
-if ($this->request->session()->read('Auth.User.tufarmapoint')==1) 
+<?php 
+if ($this->request->session()->read('Auth.User.beneficio_comunidadsur')==1) 
+echo '<li style="float: right;  height:40px; margin:0 5px 0 5px;">'. $this->Html->image('logo_cs.png', ['url'=>['controller' => 'ComunidadSur', 'action' => 'index']], ['alt' => 'Comunidad Sur']).'</li>';
+if ($this->request->session()->read('Auth.User.farmapoint')==1) 
 echo '<li style="float: right;  height:40px; margin:0 5px 0 10px;">'.$this->Html->image('logo_TFP.png', ['url'=>['controller' => 'Carritos', 'action' => 'tufarmapoint']]).'</li>';
-else
-echo '<li style="float: right;  height:40px; margin:0 5px 0 10px;">'.$this->Html->image('logo_TFP.png', ['url'=>['controller' => 'Carritos', 'action' => 'farmapoint']]).'</li>';?>
+?>
 <li style='float: right; width: 40px; margin:0 5px 0 10px;'> <?php echo $this->Html->image('icono_carro.png', ['alt' => 'Ver carro','id'=>'opener']);?></li>
 <?php if($this->request->session()->read('totalunidades')<99){echo "<div class='carro_unidades_ico'   id='openert'><div>";echo "<div class='carro_unidades_nro' id='openerts'  data-value=".$this->request->session()->read('totalunidades')." value=".$this->request->session()->read('totalunidades').">".$this->request->session()->read('totalunidades')."</div>";}?>
 <?php if($this->request->session()->read('totalunidades')>=99){echo "<div class='carro_unidades_ico'  id='openert'><div>";echo "<div class='carro_unidades_nro'  id='openerts' data-value=".$this->request->session()->read('totalunidades')." value=".$this->request->session()->read('totalunidades').">+99</div>";}?>

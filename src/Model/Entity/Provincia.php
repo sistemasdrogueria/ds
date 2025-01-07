@@ -20,5 +20,6 @@ class Provincia extends Entity
         'clientes' => true,
         'proveedors' => true,
         'sucursals' => true,
+        'envio'=>true,
     ];
 }

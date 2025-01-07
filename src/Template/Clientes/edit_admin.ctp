@@ -6,7 +6,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 ?>
 
 <div class="clear"></div>
-<article class="module width_full">
+<article class="module width_4_quarter">
 <?= $this->Form->create($clientesCredito, ['url'=>['controller'=>'Clientes','action'=>'edit_credito_admin',$cliente_id],'type' => 'file']) ?>
 <header>
 <legend><h3><?= __('Editar Credito del Cliente') ?></h3>
@@ -38,7 +38,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 </div>
 </footer>
 </article><!-- end of post new article -->
-<article class="module width_full">
+<article class="module width_4_quarter">
 <?= $this->Form->create($cliente, ['url'=>['controller'=>'Clientes','action'=>'edit_cliente_admin',$cliente_id],'type' => 'file']) ?>
 <header>
 <legend><h3><?= __('Editar datos del Cliente') ?></h3></legend>
@@ -64,13 +64,18 @@ echo $this->Form->radio('habilitado',[
 </fieldset>
 <fieldset >
 <?php echo $this->Form->radio('comunidadsur',[
-['value' => '1', 'text' => 'En Comunidad Sur', 'style' => 'color:red;'],
+['value' => '1', 'text' => 'Pagina www.comunidadsur.com.ar', 'style' => 'color:red;'],
 ['value' => '0', 'text' => 'No participa', 'style' => 'color:blue;']],['value' =>$cliente['comunidadsur']]);?>
 </fieldset>
 <fieldset >
+<?php echo $this->Form->radio('beneficio_comunidadsur',[
+['value' => '1', 'text' => 'Beneficio Comunidad Sur', 'style' => 'color:red;'],
+['value' => '0', 'text' => 'No participa', 'style' => 'color:blue;']],['value' =>$cliente['beneficio_comunidadsur']]);?>
+</fieldset>
+<fieldset >
 <?php	
-echo $this->Form->radio('tufarmapoint',[
-['value' => '1', 'text' => 'En Tu farmapoint', 'style' => 'color:red;'],['value' => '0', 'text' => 'No participa', 'style' => 'color:blue;']],['value' =>$cliente['tufarmapoint']]);?>
+echo $this->Form->radio('farmapoint',[
+['value' => '1', 'text' => 'Dctos en Tu Farmapoint', 'style' => 'color:red;'],['value' => '0', 'text' => 'No participa', 'style' => 'color:blue;']],['value' =>$cliente['farmapoint']]);?>
 </fieldset>
 <fieldset >
 <?php	

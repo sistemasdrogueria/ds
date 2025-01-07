@@ -5,12 +5,10 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 }
 ?>
 
-
-
-<article class="module width_3_quarter">
+<article class="module width_4_quarter">
 		<header><h3 class="tabs_involved"><?= $titulo ?></h3>
 		<div class="volveratras">
-		<a href="<?= $previous ?>">Volver atras</a>
+		<a href="<?= $previous ?>"><?php echo $this->Html->image('icn_volver.png');?></a>
 		</div>
 		</header>
 		<div> 
@@ -39,7 +37,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 				$nota = $nota.$fecha;
 			
 			$nombre_fichero = 'temp'. DS .'Comprobantes'. DS .$nombreArchivo.$nota.'.pdf';
-		    echo '<iframe src="http://docs.google.com/gview?url=http://200.117.237.178/ds/webroot/'.$nombre_fichero.'&embedded=true" style="width:95%; min-height:550px;" frameborder="0"></iframe>';
+		    echo '<iframe src="https://docs.google.com/gview?url=https://www.drogueriasur.com.ar/ds/webroot/'.$nombre_fichero.'&embedded=true" style="width:95%; min-height:550px;" frameborder="0"></iframe>';
 
 			
 			?>

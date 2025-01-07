@@ -92,7 +92,7 @@ class FraganciasController extends AppController
 	 */
 	public function index_admin()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->paginate = [
 			'limit' => 200,
 			'maxLimit' => 200,
@@ -109,19 +109,40 @@ class FraganciasController extends AppController
 			if ($this->request->data['marcas_tipo_id'] != null) {
 				$marcas_tipo_id = $this->request->data['marcas_tipo_id'];
 			}
+			if ($this->request->data['marca_id'] != null) {
+				$marcas_id = $this->request->data['marca_id'];
+			}
 		} else {
 			$termsearch = "";
 			$marcas_tipo_id = 0;
+			$marca_id = 0;
 		}
 
 		$fragancias = $this->Fragancias->find('all');
 
 		//marcas_tipo_id
-		if ($marcas_tipo_id > 0 || $termsearch != "") {
-			if ($marcas_tipo_id > 0)
-				$fragancias->where(['Fragancias.marca_id' => $marcas_tipo_id]);
+		if ($marcas_tipo_id > 0 || $termsearch != "" || $marca_id>0) {
+			if ($marca_id > 0)
+				$fragancias->where(['Fragancias.marca_id' => $marca_id]);
 			if ($termsearch != "")
 				$fragancias->where(['Fragancias.nombre LIKE' => $termsearch]);
+
+				if ($marcas_tipo_id > 0)
+				{
+				$fragancias->join(
+					[
+						'table' => 'marcas',
+						'alias' => 'm',
+						'type' => 'inner',
+						'conditions' => [
+
+							'marca_id = m.id',
+							'm.marcas_tipos_id' => $marcas_tipo_id
+						]
+					]
+
+						); 
+					}
 			$fraganciasa = $this->paginate($fragancias);
 		} else {
 			$fraganciasa = $this->paginate($fragancias);
@@ -132,9 +153,22 @@ class FraganciasController extends AppController
 		$this->set('titulo', 'Lista de fragancias');
 
 		$this->loadModel('Marcas');
-		$marcas = $this->Marcas->find('list', ['keyField' => 'id', 'valueField' => 'nombre'])->where(['marcas_tipos_id=1']);
+		if ($marcas_tipo_id ==0)
+		$marcas = $this->Marcas->find('list', ['keyField' => 'id', 'valueField' => 'nombre'])
+		->andWhere([
+			'OR' => [
+				['marcas_tipos_id' => 1],
+				['marcas_tipos_id' => 18]]]);
+		else
+		$marcas = $this->Marcas->find('list', ['keyField' => 'id', 'valueField' => 'nombre'])
+		->andWhere(['marcas_tipos_id' => $marcas_tipo_id]);
+		
+		$this->loadModel('MarcasTipos');
+		$marcas_tipos = $this->MarcasTipos->find('list', ['keyField' => 'id', 'valueField' => 'nombre'])->where(['id in(1,18)']);
 		$this->set('marcas', $marcas->toArray());
 		$this->set('_serialize', ['marcas']);
+		$this->set('marcas_tipos', $marcas_tipos->toArray());
+		$this->set('_serialize', ['marcas_tipos']);
 	}
 
 	public function excel()
@@ -172,7 +206,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 	 */
 	public function view_admin($id = null)
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$fragancia = $this->Fragancias->get($id, [
 			'contain' => []
 		]);
@@ -223,7 +257,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 
 	public function search_admin()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->paginate = [
 			'contain' => ['Marcas', 'Generos']
 		];
@@ -259,7 +293,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 
 	public function add_admin()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->set('titulo', 'Fragancias Importadas');
 		$fragancia = $this->Fragancias->newEntity();
 		if ($this->request->is('post')) {
@@ -357,7 +391,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 	{
 		$this->loadModel('Articulos');
 		$this->set('titulo', 'Fragancias Importadas');
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		if ($this->request->is('post')) {
 			if ($this->request->data['terminobuscar'] != null) {
 				$termsearch = '%' . $this->request->data['terminobuscar'] . '%';
@@ -394,7 +428,9 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 					['Articulos.laboratorio_id' => 629],
 					['Articulos.laboratorio_id' => 362],
 					['Articulos.laboratorio_id' => 4],
-					['Articulos.laboratorio_id' => 479]
+					['Articulos.laboratorio_id' => 479],
+					['Articulos.laboratorio_id' => 428],
+					
 					
 					
 				]
@@ -444,7 +480,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 	 */
 	public function edit_admin($id = null)
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$fragancia = $this->Fragancias->get($id, [
 			'contain' => []
 		]);
@@ -534,7 +570,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 	{
 
 		$this->set('titulo', 'Fragancias Importadas');
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		if ($this->request->is('post')) {
 
 
@@ -572,7 +608,8 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 					['Articulos.laboratorio_id' => 629],
 					['Articulos.laboratorio_id' => 362],
 					['Articulos.laboratorio_id' => 4],
-					['Articulos.laboratorio_id' => 479]
+					['Articulos.laboratorio_id' => 479],
+					['Articulos.laboratorio_id' => 428]
 				]
 			]);
 
@@ -620,7 +657,7 @@ SELECT fp.id, f.nombre, fp.detalle, a.troquel, a.descripcion_sist, a.categoria_i
 	 */
 	public function delete_admin($id = null)
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$id = $this->request->getData('id');
 		$this->request->allowMethod(['post', 'get', 'delete', 'ajax']);
 		$fragancia = $this->Fragancias->get($id);

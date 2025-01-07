@@ -3,11 +3,13 @@
 		<table class="tablesorter" cellspacing="0"> 
 		<thead> 
         <tr>
-            <th class="header"><?= $this->Paginator->sort('codigo') ?></th>
-            <th class="header"><?= $this->Paginator->sort('razon_social') ?></th>
-			<th class="header"><?= $this->Paginator->sort('habilitado') ?></th>
-            <th class="header"><?= $this->Paginator->sort('ClientesCreditos.compra_minima','Compra Minima') ?></th>
-            <th class="header">Crédito Disponible</th>
+            <th class="centrado"><?= $this->Paginator->sort('codigo') ?></th>
+            <th class="centrado"><?= $this->Paginator->sort('razon_social') ?></th>
+			<th class="centrado"><?= $this->Paginator->sort('localidad') ?></th>
+			<th class="centrado"><?= $this->Paginator->sort('codigo_postal') ?></th>
+			<th class="centrado"><?= $this->Paginator->sort('habilitado') ?></th>
+            <th class="centrado"><?= $this->Paginator->sort('ClientesCreditos.compra_minima','Compra Minima') ?></th>
+            <th class="centrado">Crédito Disponible</th>
             
 			<th class="actions"><?= __('') ?></th>
         </tr>
@@ -15,37 +17,48 @@
     <tbody>
     <?php foreach ($clientes as $cliente): ?>
         <tr>
-            <td><?= h($cliente->codigo) ?></td>
+		<td class=centrado><?= h($cliente->codigo) ?></td>
             <td><?= h($cliente->razon_social) ?></td>
-            
-			<td><?php if ($cliente->habilitado==1) 
+            <td><?= h($cliente['localidad']['nombre']) ?></td>
+			<td class=centrado><?= h($cliente->codigo_postal) ?></td>
+			<td class=centrado><?php if ($cliente->habilitado==1) 
 						echo "SI";
 					else
 						echo "NO";
 				?></td>
-           <td> 
+           <td style="text-align: right; margin-right: 5px;"> 
 		    <?php 
 					if ($cliente['clientes_creditos']!=null)
-					echo $cliente['clientes_creditos'][0]['compra_minima']; ?>
+					{
+					
+					
+					$precio =  $cliente['clientes_creditos'][0]['compra_minima'];
+					echo '$ ' . number_format($precio, 2, ',', '.');
+					}
+					?>
+
+
 		   </td>
-		   <td> 
+		   <td style="text-align: right; margin-right: 5px;"> 
 		    <?php 
 					if ($cliente['clientes_creditos']!=null)
-					echo $cliente['clientes_creditos'][0]['credito_maximo']-$cliente['clientes_creditos'][0]['credito_consumo']; ?>
+
+					{
+						$precio =  $cliente['clientes_creditos'][0]['credito_maximo']-$cliente['clientes_creditos'][0]['credito_consumo'];
+					echo '$ ' . number_format($precio, 2, ',', '.');
+					}
+					?>
 		   </td>
 
-            <td class="actions">
-			<?=
-				$this->Html->image("admin/icn_edit.png", array(
-				"alt" => "Edit",
-				'url' => array('controller' => 'clientes', 'action' => 'edit_admin',  $cliente->id)
-				));
-                ?>
-				<?=
-				$this->Html->image("admin/icn_view.png", array(
-				"alt" => "Ver",
-				'url' => array('controller' => 'clientes', 'action' => 'view_admin',  $cliente->id)
-				));?>
+		   <td class=centrado >
+			<?php
+			echo $this->Html->image("admin/admin_edit.png", ["alt" => "Edit",'url' => ['controller' => 'clientes', 'action' => 'edit_admin',  $cliente->id],
+			'data-static'=>'../img/admin/admin_edit.png','data-hover'=>'../img/admin/admin_edit.gif','class'=>'hover-gif','style'=>'width=50px']);
+			echo $this->Html->image("admin/admin_view.png", ["alt" => "Edit",'url' => ['controller' => 'clientes', 'action' => 'view_admin',  $cliente->id],
+			'data-static'=>'../img/admin/admin_view.png','data-hover'=>'../img/admin/admin_view.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+			
+			
                
             </td>
         </tr>

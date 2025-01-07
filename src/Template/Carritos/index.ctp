@@ -1,22 +1,22 @@
 <style>
-#la div { hyphens: auto;text-align: justify;margin: 0;white-space: pre-wrap;text-align: justify;}
-#la .title-conditions {text-decoration: underline;margin: 0;}
-.custom-style-title {text-decoration: underline;margin: 0;font-weight: 800;}
-#la p {hyphens: auto;text-align: justify;white-space: pre-wrap;margin-top: 0cm;margin-right: 0cm;margin-bottom: 0cm;margin-left: 17.85pt;text-align: justify;text-indent: -17.85pt;line-height: 115%;}
-#la h5 {margin: 0;}
-.button-enabled {background-color: #3498db;color: #ffffff;opacity: 1;transform: scale(1);border-radius: 5px;}
-.custom-style{background-color: #f2f2f2; color: #999999; opacity: 0.5; cursor: not-allowed;transform: scale(0.9);border-radius: 5px;}
-#contador{width:100%;    padding-bottom: 30px;}
-.contador_fondo{width: 100%; overflow: hidden; }
-.contador_num{box-sizing: border-box; margin: 0;  padding: 0;  text-align:center ; width: 60%; color: #000; float:right ;} 
-.contador_num_logo{box-sizing: border-box; z-index: 100 !important; margin: 0;  padding: 0;  text-align:center ; width: 40%; color: #000 ; float: left; }
-.contador_num h1{font-weight: normal;}
-.contador_num li{display: inline-block;  font-size: 1.4em;  list-style-type: none;  padding: 1.1em;  text-transform: uppercase;}
-.contador_num li span {  display: block; font-size: 4.5rem;}
-.contador_num li span2 {  margin-top:20px;     display: block;}
-.my-fixed-item{position: fixed; z-index:99;top:88%;left: 95%; }
-.my-fixed-item img{/*position:absolute;*/margin-right: 15px;}
-.dialog-message2{overflow: hidden  !important; padding: 0; }
+#la div{hyphens:auto;text-align:justify;margin:0;white-space:pre-wrap;text-align:justify}
+#la .title-conditions{text-decoration:underline;margin:0}
+.custom-style-title{text-decoration:underline;margin:0;font-weight:800}
+#la p{hyphens:auto;text-align:justify;white-space:pre-wrap;text-align:justify;text-indent:-17.85pt;line-height:115%;margin:0 0 0 17.85pt}
+#la h5{margin:0}
+.button-enabled{background-color:#3498db;color:#fff;opacity:1;transform:scale(1);border-radius:5px}
+.custom-style{background-color:#f2f2f2;color:#999;opacity:.5;cursor:not-allowed;transform:scale(0.9);border-radius:5px}
+#contador{width:100%;padding-bottom:30px}
+.contador_fondo{width:100%;overflow:hidden}
+.contador_num{box-sizing:border-box;margin:0;padding:0;text-align:center;width:60%;color:#000;float:right}
+.contador_num_logo{box-sizing:border-box;z-index:100!important;margin:0;padding:0;text-align:center;width:40%;color:#000;float:left}
+.contador_num h1{font-weight:400}
+.contador_num li{display:inline-block;font-size:1.4em;list-style-type:none;padding:1.1em;text-transform:uppercase}
+.contador_num li span{display:block;font-size:4.5rem}
+.contador_num li span2{margin-top:20px;display:block}
+.my-fixed-item{position:fixed;z-index:99;top:88%;left:95%}
+.my-fixed-item img{margin-right:15px}
+.dialog-message2{overflow:hidden!important;padding:0}
 .eliminarbordes{border:0!important;background:#f8f9fc00!important;color:#f8f9fc0f!important}
 .eliminarbordesbar{border:0!important;background:#f8f9fc00!important;color:#f8f9fc0f!important;top:35px!important;z-index:300}
 .eliminarbordesbar .ui-dialog-title{display:none}
@@ -28,11 +28,27 @@
 .ui-widget-content img:hover{color:inherit}
 .eliminarbordes .ui-dialog-buttonset button{display:none}
 #container{width:100%}
-.header{display:flex;flex-direction:row;justify-content:space-between;background-color: white; margin-top: -130px;}
-.background-image { width: 100%;  height: 100%; overflow: hidden;}
-@media (max-width: 1300px) {.contador_num{  width: 60%;} .contador_num_logo { width: 40%; }.header{   margin-top: -110px;}}
-@media (max-width: 1100px) {.contador_num{  width: 60%;} .contador_num_logo { width: 40%; }.contador_num li{font-size:1em;padding:0.9em}.contador_num li span {  font-size: 3rem;}.header{   margin-top: -90px;}.contador_num li span2 {  margin-top:10px;}}
-@media (max-width: 1000px) {.contador_num{  width: 70%;} .contador_num_logo { width: 30%; }.contador_num li{font-size:0.9em}.contador_num li span{font-size: 2.5rem;}.contador_num li span2 {  margin-top:10px;}.header{   margin-top: -80px;}}
+.header{display:flex;flex-direction:row;justify-content:space-between;background-color:#fff;margin-top:-130px}
+.background-image{width:100%;height:100%;overflow:hidden}
+@media (max-width:1300px) {.contador_num{width:60%}
+.contador_num_logo{width:40%}
+.header{margin-top:-110px}
+}
+@media (max-width: 1100px) {
+.contador_num{width:60%}
+.contador_num_logo{width:40%}
+.contador_num li{font-size:1em;padding:.9em}
+.contador_num li span{font-size:3rem}
+.header{margin-top:-90px}
+.contador_num li span2{margin-top:10px}
+}
+@media (max-width: 1000px) {
+.contador_num{width:70%}
+.contador_num_logo{width:30%}
+.contador_num li{font-size:.9em}
+.contador_num li span{font-size:2.5rem}
+.contador_num li span2{margin-top:10px}
+.header{margin-top:-80px}}
 </style>
 <div class=my-fixed-item align="center">
 <?php echo $this->Html->image('icon_whatsapp.png',['url'=>'https://api.whatsapp.com/send?phone=5492914254968'],['target' => '_blank','_full'=> true,'escape' => true,'alt'=>'WHATSAPP']);?></div>
@@ -41,9 +57,9 @@
 <div class="product-thumb" id="search-backf">
 <?php echo $this->element('search'); ?>
 </div> 
-<!--div  class="product-thumb" id="container">
+<!-- div  class="product-thumb" id="container">
 <div class="background-image">
-<?php //echo $this->Html->link($this->Html->image('EXPO12-YA-COMENZO-OFERTAS.jpg', ['alt' => 'EXPOVIRTUAL 12.' ]),'https://www.exposurvirtual.com.ar',['target' => '_blank','escape' => false]);?>
+<?php //echo $this->Html->image('EXPO12-FONDO-CUENTA-REGRESIVA.jpg',['alt'=>'EXPOVIRTUAL 12.','url'=>'https://www.exposurvirtual.com.ar',['target' => '_blank','_full'=> true,'escape' => true]]); ?> 
 </div>
 <div class="header">
 <div class="contador_num_logo"></div>
@@ -70,9 +86,9 @@
 if ($seccioninit==1) $seccioninit=0; ?>
 </div>
 <?php endforeach;?>
-<div class="modal fade"  style="background:repeating-linear-gradient(135deg, rgb(151 151 151 / 44%), rgb(151 151 151 / 19%) 1%, rgba(151, 151, 151, 0.32) 1%);display: flex;flex-direction: row;flex-wrap: nowrap;align-content: center;justify-content: center;align-items: center;"data-keyboard="false" data-backdrop="static" 
+<div class="modal fade" style="background:repeating-linear-gradient(135deg, rgb(151 151 151 / 44%), rgb(151 151 151 / 19%) 1%, rgba(151, 151, 151, 0.32) 1%);display: flex;flex-direction: row;flex-wrap: nowrap;align-content: center;justify-content: center;align-items: center;"data-keyboard="false" data-backdrop="static" 
 id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog"  style="width:100%;max-width:1100px;" role="document">
+<div class="modal-dialog" style="width:100%;max-width:1100px;" role="document">
 <div class="modal-content">
 <!-- Modal heading -->
 <div class="modal-header-intro"> <button type="button" class="close-intro" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
@@ -80,15 +96,19 @@ id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel
 </div>
 <!-- Modal body with image -->
 <div class="modal-body-intro">                      
-<?php if(!is_null($sursale))
-{
+<?php if(!is_null($sursale)) {
 if ($sursale['url_campo']!='' && $sursale['url_campo2']!='')
 {
-if ($sursale['url_campo']!='preventa')
-{
-if ($sursale['url_controlador']=="URL")
-{
-echo '<a href="'.$sursale['url_campo'].'" target ="_blank">'.$this->Html->image('publicaciones/'.$sursale['imagen'], ['alt' => 'LINK','width'=>'100%']) .'</a>';
+if ($sursale['url_campo']!='preventa') {
+if ($sursale2['url_controlador'] == "URL" || $sursale2['url_controlador'] == "video" ) {
+if($sursale2['url_controlador'] == "video" ){
+echo '<video id="videoElement" width="100%" controls>';
+echo '<source src="webroot/img/publicaciones/'.$sursale['imagen'].'" type="video/mp4">';
+echo 'Tu navegador no soporta la reproducción de video.';
+echo '</video>'; 
+}else{
+echo '<a href="' . $sursale2['url_campo'] . '" target ="_blank">' . $this->Html->image('publicaciones/' . $sursale2['imagen'], ['alt' => 'LINK', 'width' => '100%']) . '</a>';
+}
 }
 else
 echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller'=>$sursale['url_controlador'],'action'=>$sursale['url_metodo'],$sursale['url_campo'],$sursale['url_campo2']],'id'=>'conf_img1','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
@@ -128,7 +148,7 @@ echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller
  </div>
 
 <div class="moda-footer-intro">
-<button class="btn-continuar"onclick="closedivbutton(1)"  >Continuar</button>
+<button class="btn-continuar" onclick="closedivbutton(1)">Continuar</button>
 </div>
 </div>
 </div>
@@ -144,14 +164,20 @@ echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller
 </div>
 <!-- Modal body with image -->
 <div class="modal-body-intro" onclick="closediv()">
-<?php if(!is_null($sursale2))
-{ 
+<?php if(!is_null($sursale2)) { 
 if ($sursale2['url_campo']!='' && $sursale2['url_campo2']!='')
 {
 if ($sursale2['url_campo']!='preventa')
-if ($sursale2['url_controlador']=="URL")
-{
-echo '<a href="'.$sursale2['url_campo'].'" target ="_blank">'.$this->Html->image('publicaciones/'.$sursale2['imagen'], ['alt' => 'LINK','width'=>'100%']) .'</a>';
+if ($sursale2['url_controlador'] == "URL" || $sursale2['url_controlador'] == "video" ) {
+  if($sursale2['url_controlador'] == "video" ){
+	echo '<video id="videoElement" width="100%" controls>';
+    echo '<source src="webroot/img/publicaciones/'.$sursale2['imagen'].'" type="video/mp4">';
+    echo 'Tu navegador no soporta la reproducción de video.';
+    echo '</video>';    
+
+  }else{
+    echo '<a href="' . $sursale2['url_campo'] . '" target ="_blank">' . $this->Html->image('publicaciones/' . $sursale2['imagen'], ['alt' => 'LINK', 'width' => '100%']) . '</a>';
+  }
 }
 else
 echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controller'=>$sursale2['url_controlador'],'action'=>$sursale2['url_metodo'],$sursale2['url_campo'],$sursale2['url_campo2']],'id'=>'conf_img2','alt'=>'Drogueria Sur S.A.','width'=>'100%']);
@@ -189,14 +215,14 @@ echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controlle
 ?>
 </div>
 <div class="moda-footer-intro">
-<button class="btn-continuar"onclick="closedivbutton(2)"  >Continuar</button>
+<button class="btn-continuar"onclick="closedivbutton(2)">Continuar</button>
 </div>
 </div>
 </div>
 </div>
 
 <div class="modal fade" style="background:repeating-linear-gradient(135deg, rgb(151 151 151 / 44%), rgb(151 151 151 / 19%) 1%, rgba(151, 151, 151, 0.32) 1%);display: flex;flex-direction: row;flex-wrap: nowrap;align-content: center;justify-content: center;align-items: center;" data-keyboard="false" data-backdrop="static" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog"  style="width:100%;max-width:1100px;" role="document">
+<div class="modal-dialog" style="width:100%;max-width:1100px;" role="document">
 <div class="modal-content">
 <!-- Modal heading -->
 <div class="modal-header-intro">
@@ -211,11 +237,9 @@ echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controlle
 <?php foreach($novedades as $novedade):?>
 <?php if(!is_null($noticiaimportante)&&($novedade['img_file']!="")) 
 {
-	if ($novedade['archivopdf']>0)
-	{
+	if ($novedade['archivopdf']>0){
 	echo '<iframe  onclick="closediv()" src="https://docs.google.com/gview?url=https://200.117.237.178/ds/webroot/img/novedades/'.$novedade['img_file'].'&embedded=true" style="width:100%; min-height:550px;" frameborder="0"></iframe>';						
-	}														
-	else
+	} else
 		echo $this->Html->image('novedades/'.$novedade['img_file'], ["alt" => "COMUNIDADO", 'style'=>"width:100%;"]);
 }
 ?>

@@ -37,6 +37,9 @@ class ReclamosTable extends Table
             'foreignKey' => 'reclamo_id',
             'dependent' => true,
         ]);
+        $this->hasMany('ReclamosMensajes', [
+            'foreignKey' => 'reclamo_id',
+        ]);
     }
 
     /**

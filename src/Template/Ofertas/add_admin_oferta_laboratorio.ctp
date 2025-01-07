@@ -3,9 +3,18 @@
    .busqueda_name{ width: 400px;}
    #busqueda_sect{ width: 400px;}
 </style>
-<div class="clear"></div>
-<article class="module width_full">
-<header><h3 class="tabs_involved"><?= $titulo ?></h3></header>
+<?php //><script type="text/javascript">
+$previous = "javascript:history.go(-1)";
+if(isset($_SERVER['HTTP_REFERER'])) {
+$previous = $_SERVER['HTTP_REFERER'];
+}
+?>
+<article class="module width_4_quarter">
+<header>
+    <h3 class="tabs_involved"><?= $titulo ?></h3>
+    <div class="tabs_bt_nuevo">
+    <?php echo $this->Html->image('admin/icn_volver.png', ['url' => $previous]);?>	</div>
+  </header>
 <?= $this->Form->create('Ofertas', ['url'=>['controller'=>'Ofertas','action'=>'add_admin_oferta_laboratorio'],'type' => 'file']) ?>
 <div class="module_content">
 <fieldset>
@@ -93,4 +102,27 @@
    }
 
 };
+  document.getElementById('file').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const validExtensions = ['jpg', 'jpeg', 'png', 'mp3', 'mp4'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            // Validar extensión
+            if (!validExtensions.includes(fileExtension)) {
+                 alertify.alert('Alerta archivo Incorrecto','<span style="color: orange;">El archivo debe ser una imagen (.jpg, .jpeg, .png) o un audio/video (.mp3, .mp4).</span>');
+                event.target.value = ''; // Restablecer el valor del input
+                return;
+            }
+
+            // Validar tamaño
+            if (file.size > 524288) { // 1 MB en bytes
+            alertify.alert('Alerta Imagen pesada','<span style="color: red;">El archivo no debe pesar más de 500kb.</span>', function(){ //alertify.success('Ok');
+              }
+             );
+             
+                event.target.value = ''; // Restablecer el valor del input
+            }
+        }
+    });
 </script>

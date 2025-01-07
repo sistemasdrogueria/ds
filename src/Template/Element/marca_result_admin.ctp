@@ -4,6 +4,9 @@
   height: 75px;
   object-fit: contain;
 }
+
+#scrollToTopBtn { display: none; position: fixed; bottom: 20px; right: 20px; font-size: 24px; padding: 10px 15px; text-align: center; cursor: pointer; z-index: 1000; text-decoration: none; }
+
 </style>
 
 <div>	
@@ -50,10 +53,16 @@ else
 <?php echo $marca->orden?>
 </td>
 <td class="actions">
-<?=	$this->Html->image("admin/icn_edit.png", array( "alt" => "Edit",'url' => array('controller' => 'marcas', 'action' => 'edit_admin',  $marca->id))); ?>
-<a href="#" onclick="preguntarSiNo(<?php echo $marca->id ?>)"><?php echo $this->Html->image('admin/icn_trash.png');?></a>
-<?php 
+<?php
+echo $this->Html->image("admin/admin_edit.png", ["alt" => "Edit",'url' => ['controller' => 'marcas', 'action' => 'edit_admin',  $marca->id],
+'data-static'=>'../img/admin/admin_edit.png','data-hover'=>'../img/admin/admin_edit.gif','class'=>'hover-gif','style'=>'width=50px']);
 ?>
+  <a href="#" onclick="preguntarSiNo(<?php echo $marca->id ?>)"><?php 
+  echo $this->Html->image("admin/admin_delete.png", ["alt" => "imagen_reset",'data-static'=>'../img/admin/admin_delete.png','data-hover'=>'../img/admin/admin_delete.gif','class'=>'hover-gif','style'=>'width=50px']);
+  ?>
+</a>
+
+
 </td>
 </tr>
 <?php endforeach; ?>
@@ -77,7 +86,32 @@ echo $this->Paginator->next(__('Siguiente'), array('tag' => 'li','currentClass' 
 </div>
 </div>
 </div>		
-<script>		
+<?php 
+echo $this->Html->image("admin/admin_up.png", ["alt" => "Edit",'id'=>'scrollToTopBtn',/*'class'=>'scroll-to-top',*/
+'data-static'=>'../img/admin/admin_up.png','data-hover'=>'../img/admin/admin_up.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+
+<script>
+let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// Muestra el botón cuando el usuario se desplaza hacia abajo
+window.onscroll = function() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// Cuando el usuario hace clic en el botón, lo lleva a la parte superior
+scrollToTopBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+	
 var myBaseUrlsdelete = '';
 function eliminarDatos(id) {
   

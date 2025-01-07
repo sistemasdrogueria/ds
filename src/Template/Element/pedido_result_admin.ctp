@@ -1,3 +1,11 @@
+<style>
+.tablesorter td { border-left: 1px dotted #ccc;}
+.header{ text-align: center;}
+.colcenter{ text-align: center;}
+
+#scrollToTopBtn { display: none; position: fixed; bottom: 20px; right: 20px; font-size: 24px; padding: 10px 15px; text-align: center; cursor: pointer; z-index: 1000; text-decoration: none; }
+
+</style>
 <div>		
 <div id="tab1" class="tab_content">
 <table class="tablesorter" cellspacing="0"> 
@@ -20,7 +28,7 @@
 if ($pedido['estado_id'] == 1) 
 {
 $esisla = 0;
-if (( $pedido['c']['codigo']>79000 && $pedido['c']['codigo']<79999 )||( $pedido['c']['codigo']>70000 && $pedido['c']['codigo']<70999 ) )
+if ( $pedido['c']['codigo']>79000 && $pedido['c']['codigo']<79999 )
 {
 if ($pedido['c']['codigo']!=70051 &&$pedido['c']['codigo']!=70122&& $pedido['c']['codigo']!=70319) $esisla = 1;
 }
@@ -43,7 +51,7 @@ else
 if ($pedido['estado_id'] == 2) $colorfondo = '#cccccc';
 else $colorfondo = '#FFFFFF';
 $esisla = 0;
-if (( $pedido['c']['codigo']>79000 && $pedido['c']['codigo']<79999 )||( $pedido['c']['codigo']>70000 && $pedido['c']['codigo']<70999 ) )
+if ( $pedido['c']['codigo']>79000 && $pedido['c']['codigo']<79999 )
 {
 if ($pedido['c']['codigo']!=70051 &&$pedido['c']['codigo']!=70122&& $pedido['c']['codigo']!=70319)
 $esisla = 1;
@@ -62,30 +70,39 @@ break;
 }
 }           
 echo '<tr bgcolor='.$colorfondo.'>';?>
-<td><?php echo $pedido['id']; ?></td>
-<td><?php echo $pedido['c']['codigo']; ?></td>
+<td class=colcenter><?php echo $pedido['id']; ?></td>
+<td class=colcenter><?php echo $pedido['c']['codigo']; ?></td>
 <td><?php echo $pedido['c']['razon_social'];?></td>
-<td><?php echo date_format($pedido['creado'],'d-m-Y H:i:s');?></td>
-<td><?php echo $pedido['tipo_fact']; ?></td>
-<td><?php echo $estados[$pedido['estado_id']-1]['nombre']; ?></td>
-<td><?php echo $pedido['nro_pedido_ds']; ?></td>
-<td><?php if ($pedido['comentario']!=null )	
+<td class=colcenter><?php echo date_format($pedido['creado'],'d-m-Y H:i:s');?></td>
+<td class=colcenter><?php echo $pedido['tipo_fact']; ?></td>
+<td class=colcenter><?php echo $estados[$pedido['estado_id']-1]['nombre']; ?></td>
+<td class=colcenter><?php echo $pedido['nro_pedido_ds']; ?></td>
+<td class=colcenter><?php if ($pedido['comentario']!=null )	
 switch ($pedido['comentario']) {
     case 'TRANSFER':echo 'TRANSFER L'; break;
     case 'P.PAMI ': echo 'PAÑALES P';   break;
     case 'PA.PAMI ': echo 'PAÑALES P';   break;
     case 'Avion M': echo 'MED. X AEREO';   break;
     case 'Tierra M': echo 'MED. X TIERRA';   break;
-    
+    case 'TRANSFER T': echo 'TRANSFER T';break;
+    case 'TFP': echo '<strong> >>RETIRA TFP<< </strong>';   break;
     case 'Tierra AP': echo 'AyP. X TIERRA';   break;
     case 'Avion AP': echo 'AyP. X TIERRA';   break;
-   
     default: echo 'TIENE';
     }  
  ?></td>
 <td class="actions">
 <?php 
-echo $this->Html->link($this->Html->image("admin/icn_view.png", ["alt" => "Ver"]),['controller' => 'pedidos', 'action' => 'view_admin',  $pedido['id']],['escape' => false,'target'=>'_blank']);
+
+
+    echo $this->Html->link(
+        $this->Html->image("admin/admin_view.png", ["alt" => "ver",'escape' => false,'target'=>'_blank', 
+        'data-static' => $this->Url->build("/img/admin/admin_view.png", true),
+        'data-hover' => $this->Url->build("/img/admin/admin_view.gif", true),
+        /*
+        'data-static'=>'img/admin/admin_view.png','data-hover'=>'img/admin/admin_view_i.gif',*/
+        'class'=>'hover-gif','style'=>'width=50px']),    
+        ['controller' => 'pedidos', 'action' => 'view_admin',  $pedido['id']],['escape' => false,'target'=>'_blank']);
 $mensaje='';
 switch ($pedido['pedidos_status_id']) {
 case 1: $mensaje = 'No Habilitada';break;
@@ -97,13 +114,49 @@ case 8: $mensaje = 'Anulado'; break;
 case 9: $mensaje = 'Pos. Duplicado';break;
 case 10: $mensaje = 'Sin NC PAMI'; break;
 }
-echo  '<span style=" color:red;">'.$mensaje.'</span>';
+switch ($pedido['pedidos_status_id']) {
+    case 3: 
+        //echo $this->Html->image("admin/admin_pos_duplicado.png", ["alt" => "View",'data-static'=>'../img/admin/admin_pos_duplicado.png','data-hover'=>'../img/admin/admin_pos_duplicado.gif','class'=>'hover-gif','style'=>'width=50px']);
+        
+        echo $this->Html->link(
+            $this->Html->image("admin/admin_pos_duplicado.png", ["alt" => "DUPLICADO",'escape' => false,'target'=>'_blank', 
+            'data-static' => $this->Url->build("/img/admin/admin_pos_duplicado.png", true),
+            'data-hover' => $this->Url->build("/img/admin/admin_pos_duplicado.gif", true),            
+            'class'=>'hover-gif','style'=>'width=50px']),            
+            ['controller' => 'pedidos', 'action' => 'duplicate_admin',  $pedido['tipo_fact'],$pedido['cliente_id']],['escape' => false,'target'=>'_blank']);
+    
+    
+        $mensaje = 'Posible Duplicado';
+        
+        break;
+    case 4: $mensaje = 'Cod. Cliente Incorrecto';
+    echo $this->Html->image("admin/admin_codigo_incorrecto.png", ["alt" => "View",'data-static'=>'../img/admin/admin_codigo_incorrecto.png','data-hover'=>'../img/admin/admin_codigo_incorrecto.gif','class'=>'hover-gif','style'=>'width=50px']);
+    break;
+    case 9: $mensaje = 'Pos. Duplicado';
+
+
+    echo $this->Html->link(
+        $this->Html->image("admin/admin_pos_duplicado.png", ["alt" => "DUPLICADO",'escape' => false,'target'=>'_blank', 'data-static'=>'../img/admin/admin_pos_duplicado.png','data-hover'=>'../img/admin/admin_pos_duplicado.gif','class'=>'hover-gif','style'=>'width=50px']),    
+        
+        ['controller' => 'pedidos', 'action' => 'duplicate_admin',  $pedido['tipo_fact'],$pedido['cliente_id']],['escape' => false,'target'=>'_blank']);
+
+
+    //echo $this->Html->image("admin/admin_pos_duplicado.png", ["alt" => "View",'data-static'=>'../img/admin/admin_pos_duplicado.png','data-hover'=>'../img/admin/admin_pos_duplicado.gif','class'=>'hover-gif','style'=>'width=50px']);
+break;
+    default :
+    echo  '<span style=" color:red;">'.$mensaje.'</span>';
+}
+
 if ($pedido['forma_envio']==99)
-echo $this->Html->image('admin/retira.png',['title' => 'Retira Cadete'] );
-if (( $pedido['c']['codigo']>79000 && $pedido['c']['codigo']<79999 )||( $pedido['c']['codigo']>70000 && $pedido['c']['codigo']<70999 ) )
+echo $this->Html->image("admin/admin_retiro.png", ["alt" => "Retira Cadete",
+'data-static'=>'../img/admin/admin_retiro.png','data-hover'=>'../img/admin/admin_retiro.gif','class'=>'hover-gif','style'=>'width=50px']);
+
+//echo $this->Html->image('admin/retira.png',['title' => 'Retira Cadete'] );
+if (( $pedido['c']['codigo']>79000 && $pedido['c']['codigo']<79999 ))
 {
-if ($pedido['c']['codigo']!=70051 &&$pedido['c']['codigo']!=70122&& $pedido['c']['codigo']!=70319)
-echo $this->Html->image('admin/export.png',['title' => 'Tierra del Fuego'] );
+echo $this->Html->image("admin/admin_avion.png", ["alt" => "Tierra del Fuego",
+'data-static'=>'../img/admin/admin_avion.png','data-hover'=>'../img/admin/admin_avion.gif','class'=>'hover-gif','style'=>'width=50px']);
+
 if ($pedido['impreso'])
 echo $this->Html->image('admin/impreso.png',['title' => 'impreso'] );
 }
@@ -133,3 +186,29 @@ echo $this->Paginator->counter('{{count}} Total');
 </div>
 </div>
 	
+<?php 
+echo $this->Html->image("admin/admin_up.png", ["alt" => "Edit",'id'=>'scrollToTopBtn',/*'class'=>'scroll-to-top',*/
+'data-static'=>'../img/admin/admin_up.png','data-hover'=>'../img/admin/admin_up.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+
+<script>
+let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// Muestra el botón cuando el usuario se desplaza hacia abajo
+window.onscroll = function() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// Cuando el usuario hace clic en el botón, lo lleva a la parte superior
+scrollToTopBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+</script>

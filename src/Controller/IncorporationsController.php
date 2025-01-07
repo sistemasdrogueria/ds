@@ -190,7 +190,7 @@ public function initialize(){
 		}
 		$this->loadModel('IncorporationsTipos');
 		$IncorporationsTipos =  $this->IncorporationsTipos->find('list', ['keyField' => 'id','valueField' => 'nombre'])->order(['nombre'=>'ASC']);
-		$this->set('incorporationstipos2',$IncorporationsTipos ->toArray());
+		$this->set('incorporationstipos2',$IncorporationsTipos->toArray());
 				
 		$this->set('incorporationstipos',$this->IncorporationsTipos->find()->toArray());
         $this->set('incorporations', $incorporations);
@@ -374,7 +374,7 @@ public function initialize(){
 */
    public function add_admin()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->set('titulo','Incorporación');
         $incorporation = $this->Incorporations->newEntity();
         if ($this->request->is('post')) {
@@ -465,14 +465,14 @@ public function initialize(){
         }
 		$this->loadModel('IncorporationsTipos');
         $IncorporationsTipos =  $this->IncorporationsTipos->find('list', ['keyField' => 'id','valueField' => 'nombre']);
-		$this->set('incorporationstipos',$IncorporationsTipos ->toArray());
-        $this->set(compact('incorporation','incorporationstipos'));
+		$this->set('incorporationstipos',$IncorporationsTipos->toArray());
+        $this->set(compact('incorporation'));
         $this->set('_serialize', ['incorporation']);
     }
   
     public function edit_admin($id = null)
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
        $incorporation = $this->Incorporations->get($id, [
             'contain' => []
         ]);
@@ -582,7 +582,7 @@ public function initialize(){
 
 	public function delete_admin($id = null)
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$id = $this->request->getData('id');
 		$this->request->allowMethod(['post', 'get', 'delete', 'ajax']);
 		$incorporation = $this->Incorporations->get($id);

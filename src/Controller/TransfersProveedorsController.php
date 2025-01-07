@@ -17,6 +17,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Helper;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Cake\Routing\Router;
+use Cake\Collection\Collection;
 //require ROOT.DS.'vendor' .DS. 'phpoffice/phpspreadsheet/src/Bootstrap.php';
 /**
  * TransfersProveedors Controller
@@ -540,7 +541,7 @@ class TransfersProveedorsController extends AppController
                    
                     $this->request->session()->write('pedido_id',$pedido_id) ;
                     $cantidad_item =0;
-        
+           $suma_total_pedido =0;
                     foreach ($carritosA as $carrito): 
 
                         $result = $this->PedidosTransfersItems->find('all')->where(['pedidos_transfer_id'=>$pedido_id,'articulo_id'=>$carrito['articulo_id']])->first([]);
@@ -549,6 +550,33 @@ class TransfersProveedorsController extends AppController
                         IN  cantidad DOUBLE ,IN  precio_publico DOUBLE ,IN  descuento DOUBLE ,IN  unidad_minima SMALLINT(6) ,IN  tipo_precio VARCHAR(1) ,IN  plazoley_dcto VARCHAR(10) ,
                         IN  combo_id INT(11) ,	IN  tipo_oferta VARCHAR(2) ,IN  tipo_oferta_elegida VARCHAR(2) ,IN  tipo_fact VARCHAR(2) , IN posicion_transfer VARCHAR(16)
                         */
+                        if ($carrito['categoria_id'] !=2 &&  $carrito['categoria_id'] !=3 && $carrito['categoria_id'] !=4  && $carrito['categoria_id'] !=5)
+                        $subtotal_item = $carrito['cantidad'] *($carrito['precio_publico'] - ($carrito['precio_publico'] * $carrito['descuento'] /100));
+                        else
+                        $subtotal_item = $carrito['cantidad'] *($carrito['precio_publico'] - ($carrito['precio_publico'] * $carrito['descuento'] /100))*1.21;
+                        if ($suma_total_pedido+$subtotal_item >90000000)
+                        {
+                            $pedidoUpMaxPrice = $this->PedidosTransfers->newEntity();
+                            $pedidoUpMaxPrice['creado']= $fecha;
+                            $pedidoUpMaxPrice['cliente_id']= $cliente_id;
+                            $pedidoUpMaxPrice['tipo_fact']= $tipo_fact;
+                            $pedidoUpMaxPrice['oferta_plazo']= $plazo;
+                            $pedidoUpMaxPrice['forma_envio']= 0;
+                            $pedidoUpMaxPrice['comentario']= $comentario;
+                            $pedidoUpMaxPrice['transfer']= $transfer;
+                            $pedidoUpMaxPrice['transfers_import_id']= $transferimport_id;
+                            $pedidoUpMaxPrice['transfer_numero']= $transfer_numero;
+
+                            if ($this->PedidosTransfers->save($pedidoUpMaxPrice)) {
+                                $pedido_id = $pedidoUpMaxPrice->id;
+                                $suma_total_pedido=0;
+                            }
+
+                        }   
+                        else
+                        {
+                            $suma_total_pedido+=$subtotal_item;
+                        }
                     if (empty($result) )
                     //.$cliente_id.','.$cliente_id.','.$envio.','.$envio.',"'.$fecha.'","TR","'.$comentario .'","'.$plazo.'",0,0);');
                             $conn->query('CALL InsertarPedidoTransferItem("'.$fecha.'",'.$pedido_id.','.$carrito['articulo_id'].','. $carrito['cantidad'].','. $carrito['precio_publico']
@@ -636,17 +664,28 @@ class TransfersProveedorsController extends AppController
                     $this->request->session()->write('carritosA',$carritosA->toArray()) ;
                     $this->request->session()->write('pedido_id',$pedido_id) ;
                     $cantidad_item =0;
-        
-                    foreach ($carritosA as $carrito): 
+                    $suma_total_pedido =0;
+                   foreach ($carritosA as $carrito):
 
-                        $result = $this->PedidosTransfersItems->find('all')->where(['pedidos_transfer_id'=>$pedido_id,'articulo_id'=>$carrito['articulo_id']])->first([]);
-                        /*
+                $result = $this->PedidosTransfersItems->find('all')->where(['pedidos_transfer_id' => $pedido_id, 'articulo_id' => $carrito['articulo_id']])->first([]);
+                /*
                         IN  agregado DATETIME,IN  pedido_id INT(11) ,IN  articulo_id INT(11) ,
                         IN  cantidad DOUBLE ,IN  precio_publico DOUBLE ,IN  descuento DOUBLE ,IN  unidad_minima SMALLINT(6) ,IN  tipo_precio VARCHAR(1) ,IN  plazoley_dcto VARCHAR(10) ,
                         IN  combo_id INT(11) ,	IN  tipo_oferta VARCHAR(2) ,IN  tipo_oferta_elegida VARCHAR(2) ,IN  tipo_fact VARCHAR(2) , IN posicion_transfer VARCHAR(16)
                         */
-                    if (empty($result) )     
-                        {
+                if ($carrito['categoria_id'] != 2 &&  $carrito['categoria_id'] != 3 && $carrito['categoria_id'] != 4  && $carrito['categoria_id'] != 5)
+                    $subtotal_item = $carrito['cantidad'] * ($carrito['precio_publico'] - ($carrito['precio_publico'] * $carrito['descuento'] / 100));
+                else
+                    $subtotal_item = $carrito['cantidad'] * ($carrito['precio_publico'] - ($carrito['precio_publico'] * $carrito['descuento'] / 100)) * 1.21;
+                if ($suma_total_pedido + $subtotal_item > 90000000) {
+                    if ($this->PedidosTransfers->save($pedido)) {
+                        $pedido_id = $pedido->id;
+                        $suma_total_pedido = 0;
+                    }
+                } else {
+                    $suma_total_pedido += $subtotal_item;
+                }
+                if (empty($result)) {
                         if ($carrito['articulo']['exportacion_avion'])
                         {
                             $conn->query('CALL InsertarPedidoTransferItem("'.$fecha.'",'.$pedido_id.','.$carrito['articulo_id'].','. $carrito['cantidad'].','. $carrito['precio_publico']
@@ -682,9 +721,7 @@ class TransfersProveedorsController extends AppController
                                 }
                               
                             $conn->query('CALL ActualizarPedidoTransferFin('.$pedido3_id.',1);');
-
                         }
-
                         }
                         else
                         {
@@ -1899,6 +1936,15 @@ class TransfersProveedorsController extends AppController
 			}
             return $this->redirect(['action' => 'import_result_admin',$transfersimport_id]);
 	}
+     public function searchTransfersProveedors($indices)
+    {
+        $transferIndate =  $this->TransfersProveedors->find('all')->select(['proveedor_id', 'cliente', 'transfer', 'ean', 'unidades'])->where([
+            'transfer in' => $indices
+        ])->toArray();
+        if (!empty($transferIndate)) {
+            return $transferIndate;
+        }
+    }
 
     public function import_linea_excel($row,$tfl, $transfersimport_id , $tfl_id )
     {
@@ -1922,11 +1968,10 @@ class TransfersProveedorsController extends AppController
                 $fecha = Time::createFromFormat($format, $fecha_s,'America/Argentina/Buenos_Aires');
                 $transfer['fecha_factura'] = $fecha;
             }
-            if (!is_null($tfl['drogueria'] )) $transfer['drogueria']= $row[$tfl['drogueria']];
+            if (!is_null($tfl['drogueria'])) $transfer['drogueria']= $row[$tfl['drogueria']];
 
-            if (!is_null($tfl['lab'] )) $transfer['lab']= $row[$tfl['lab']];
-            if (!is_null($tfl['numero_pedido'] )) 
-            {
+            if (!is_null($tfl['lab'])) $transfer['lab']= $row[$tfl['lab']];
+            if (!is_null($tfl['numero_pedido'])) {
                 $transfer['numero_pedido']= $row[$tfl['numero_pedido']];
                 $transfer['numero_pedido'] = str_replace( "'", "",$transfer['numero_pedido']);
             }
@@ -1968,7 +2013,12 @@ class TransfersProveedorsController extends AppController
             if (!is_null($tfl['codigo_postal'] ))   $transfer['codigo_postal']  = $row[$tfl['codigo_postal']];
             if (!is_null($tfl['localidad'] ))   $transfer['localidad']  = $row[$tfl['localidad']];
             if (!is_null($tfl['provincia'] ))   $transfer['provincia']  = $row[$tfl['provincia']];
-            if (!is_null($tfl['transfer'] ))   $transfer['transfer']  = $row[$tfl['transfer']];
+            if (!is_null($tfl['transfer'] ))   {
+
+                $transferValue = (int)$row[$tfl['transfer']]; 
+                
+                $transfer['transfer'] = $transferValue % 1000000000;   
+            }
             
             
             if (!is_null($tfl['plazo'] ))  { 
@@ -1987,6 +2037,12 @@ class TransfersProveedorsController extends AppController
                     }
                 }
                 }
+            if (!is_null($tfl['cliente'] )) {
+               
+                if  ($codigo_cliente == 51225 ) {
+                    $transfer['plazo']  = "45 DIAS";
+                }
+            }    
             if (!is_null($tfl['nro_lote'] ))   $transfer['nro_lote']  = $row[$tfl['nro_lote']];
             if (!is_null($tfl['descuento_especial'] ))   {$transfer['descuento_especial']  = strlen($row[$tfl['descuento_especial']])>0;}
             //$transfer['descuento_especial']=0;
@@ -2148,7 +2204,28 @@ class TransfersProveedorsController extends AppController
 
 
                     $listaarray=array();
+                    $contadorDuplicados = 0;
+                    $duplicados = [];
                     $inicio =0;
+                      $searchIndices = [];
+                    $contadorIndices = 0;
+                     if (!empty($tfl) && !empty($dataArray)) {
+
+                        $arrayItems = new Collection($dataArray);
+                        $grouped = $arrayItems->groupBy($tfl['numero_pedido_proveedor'])->toArray();
+                        $indices = array_keys($grouped);
+                        foreach ($indices as $indice) {
+                             $contadorIndices++;
+                            if ($contadorIndices > 0) {
+                                array_push($searchIndices, $indice);
+                            }
+                           
+                        }
+
+                        // Verifica las claves
+                    }
+                 $acuerdoTotales = $this->searchTransfersProveedors($searchIndices);
+
                     foreach ($dataArray  as $row) {
                         if ($inicio< $ffirst)
                             {
@@ -2159,15 +2236,50 @@ class TransfersProveedorsController extends AppController
                                 //$leeryguardar($row);
                                 $inicio++;
                             
-                        
-                        $transfer = $this->import_linea_excel($row,$tfl,$transfersimport_id, $tfl_id );
+                        if (!empty($acuerdoTotales)) {
+
+                                if (!is_null($tfl['cliente'])) {
+
+                                    $codigo_cliente_validate = str_replace("/", "", $row[$tfl['cliente']]);
+
+                                    $codigo_cliente = str_replace("'", "", $codigo_cliente_validate);
+                                }
+
+
+                                // Buscar si el registro ya existe en $acuerdoTotales
+                                $existe = array_filter($acuerdoTotales, function ($acuerdo) use ($row, $tfl, $codigo_cliente) {
+                                    return
+                                        $acuerdo['proveedor_id'] == $tfl['proveedor_id'] &&
+                                        $acuerdo['cliente'] == $codigo_cliente &&
+                                        $acuerdo['transfer'] == $row[$tfl['numero_pedido_proveedor']] &&
+                                        $acuerdo['ean'] == $row[$tfl['ean']] &&
+                                        $acuerdo['unidades'] == $row[$tfl['unidades']];
+                                });
+
+                                // Si ya existe, omitir este registro
+                                if (!empty($existe)) {
+                                    $contadorDuplicados++;
+                                    continue;
+                                }
+                            }
+                        $transfer = $this->import_linea_excel($row,$tfl,$transfersimport_id, $tfl_id);
                         array_push($listaarray,$transfer);
-                    }
-				
+                    }		
 				}
-				
+				if ($contadorDuplicados > 0) {
+                        //  dd(['contador'=> $inicio, 'duplicados'=> $contadorDuplicados]);
+                        if ($inicio - 1 == $contadorDuplicados) {
+                            $this->Flash->error('Este tranfer contiene todos los "ITEMS DUPLICADOS" ', ['key' => 'changepass']);
+
+                            $this->delete_import_admin($transfersImport->id);
+                            $this->request->session()->write('eanDuplicados', $duplicados);
+                        } else {
+                            $this->Flash->error('Este tranfer contiene algunos "ITEMS DUPLICADOS" ', ['key' => 'changepass']);
+                        }
+                        }
+                    
 				$this->request->session()->write('listaarray',$listaarray);
-				
+				return $this->redirect(['action' => 'import_result_admin', $transfersimport_id]);
             }
 			}
 			else
@@ -2176,7 +2288,7 @@ class TransfersProveedorsController extends AppController
 				 return $this->redirect($this->referer());
 			}
 		}
-		return $this->redirect(['action' => 'import_result_admin',$transfersimport_id]);
+	//	return $this->redirect(['action' => 'import_result_admin',$transfersimport_id]);
 	}
 
     /**

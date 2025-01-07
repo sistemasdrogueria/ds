@@ -394,7 +394,7 @@ class OfertasController extends AppController
      */
     public function add_admin_search()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		if ($this->request->session()->read('Categorias')== null)
 		{
 			$this->loadModel('Categorias');
@@ -445,14 +445,14 @@ class OfertasController extends AppController
 	
 	public function add()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$categoriaid = 0;
 		$laboratorioid = 0;
 		$termsearch = "";
 		$tipoofertas = 0;	
 		
 		if ($this->request->is('post')) {
-           if  ($this->request->data['terminobuscar']!=null || $this->request->data['categoria_id']!=null  ||
+           if  ($this->request->data['terminosearch']!=null || $this->request->data['categoria_id']!=null  ||
 		   $this->request->data['laboratorio_id']!=null  || $this->request->data['tipoofertas']!=null)
 		    {
 				
@@ -473,9 +473,9 @@ class OfertasController extends AppController
 			}	
 			
 			
-			if ($this->request->data['terminobuscar']!= null)
+			if ($this->request->data['terminosearch']!= null)
 			{
-				$termsearch = '%'.$this->request->data['terminobuscar'].'%';
+				$termsearch = '%'.$this->request->data['terminosearch'].'%';
 			}	
 
 			$this->request->session()->write('tipoofertas',$tipoofertas);
@@ -670,7 +670,7 @@ class OfertasController extends AppController
 
 	public function add_admin_oferta_laboratorio()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->set('titulo','Perfumeria');
 		$this->loadModel('Laboratorios');
 		$laboratorios =$this->Laboratorios->find('list',['keyField' => 'id',
@@ -760,8 +760,8 @@ class OfertasController extends AppController
         }
 		$this->loadModel('OfertasTipos');
         $OfertasTipos =  $this->OfertasTipos->find('list', ['keyField' => 'id','valueField' => 'nombre']);
-		$this->set('ofertastipos',$OfertasTipos ->toArray());
-        $this->set(compact('oferta','ofertastipos'));
+		$this->set('ofertastipos',$OfertasTipos->toArray());
+        $this->set(compact('oferta'));
         $this->set('_serialize', ['oferta']);
     }
 

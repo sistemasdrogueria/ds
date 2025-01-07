@@ -441,7 +441,7 @@ public function isAuthorized()
 					
 					'maxLimit' => 1000,
 					'offset' => 0, 
-					'order' => ['Articulos.descripcion_pag' => 'asc']];
+					'order' => ['Articulos.stock_fisico' => 'desc']];
 						
 					$articulos = $this->paginate($articulosA);
 				}

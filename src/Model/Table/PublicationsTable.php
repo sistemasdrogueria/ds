@@ -63,11 +63,6 @@ class PublicationsTable extends Table
             ->allowEmpty('url_metodo');
 
         $validator
-            ->scalar('url_campo')
-            ->maxLength('url_campo', 100)
-            ->allowEmpty('url_campo');
-
-        $validator
             ->date('fecha_desde')
             ->allowEmpty('fecha_desde');
 

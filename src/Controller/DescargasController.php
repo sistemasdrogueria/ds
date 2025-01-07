@@ -413,7 +413,7 @@ private function validateRecaptcha($token)
 	
 	public function edit_admin($id = null)
  {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $file = $this->Files->get($id, [
             'contain' => []
         ]);
@@ -453,7 +453,7 @@ private function validateRecaptcha($token)
 	
 	public function delete_admin($id = null)
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $this->request->allowMethod(['post', 'delete']);
         $file = $this->Files->get($id);
         if ($this->Files->delete($file)) {
@@ -468,13 +468,13 @@ private function validateRecaptcha($token)
 	
 	public function add_admin()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->set('titulo','Subir archivos de Descargas');
 	}
 	
 	public function index_admin()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->paginate = [
 			'limit' => 100,
 		];

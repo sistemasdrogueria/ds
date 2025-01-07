@@ -39,9 +39,18 @@ var myBaseUrleditacliente ='<?php echo \Cake\Routing\Router::url(array('controll
 var myBaseUrldeletefalta = '<?php echo \Cake\Routing\Router::url(array('controller' => 'Carritos', 'action' => 'deletefalta')); ?>';
 var myBaseUrlsUpdateFalta ='<?php echo \Cake\Routing\Router::url(array('controller' => 'Carritos', 'action' => 'updatefaltas')); ?>';
 var myBaseUrlsaveconditions ='<?php echo \Cake\Routing\Router::url(array('controller' => 'Clientes', 'action' => 'saveconditions')); ?>';
+ var saveSessionPregunta = '<?php echo \Cake\Routing\Router::url(array('controller' => 'Sorteos', 'action' => 'saveSessionPregunta')); ?>';
+    var validarParticipacion = '<?php echo \Cake\Routing\Router::url(array('controller' => 'Sorteos', 'action' => 'validarParticipacion')); ?>';
+    var participandoEnd = '<?php echo \Cake\Routing\Router::url(array('controller' => 'Sorteos', 'action' => 'participando')); ?>';
 </script>
 <?php echo $this->fetch('meta');echo $this->Html->meta('favicon.ico','/favicon.ico',['type'=>'icon']);echo $this->Html->css('jquery-ui.min');echo $this->Html->script('jquery-1.11.3.min');echo $this->Html->script('bootstrap');	echo $this->Html->script('select2.min');echo $this->Html->script('jquery-ui-1.10.4.custom.min');echo $this->Html->css('bootstrap');echo $this->Html->css('normalize.min');echo $this->Html->css('font-awesome.min');/*echo $this->Html->css('animate.min');*/echo $this->Html->css('templatemo-misc.min');
-echo $this->Html->css('templatemo-style.min.css?'.$filever2= filesize('css/templatemo-style.min.css'));echo $this->Html->css('stylebar2024.min');echo $this->Html->script('modernizr-2.6.2.min');echo $this->Html->script('jquery.quick.pagination.min');	echo $this->Html->css('alertify/alertify');echo $this->Html->script('alertify/alertify');echo $this->Html->script('functionsadd.js?'.$filever= filesize('js/functionsadd.js'));?>
+echo $this->Html->css('templatemo-style.min.css?'.$filever2= filesize('css/templatemo-style.min.css'));echo $this->Html->css('stylebar.min');echo $this->Html->script('modernizr-2.6.2.min');echo $this->Html->script('jquery.quick.pagination.min');	echo $this->Html->css('alertify/alertify');echo $this->Html->script('alertify/alertify');echo $this->Html->script('functionsadd.js?'.$filever= filesize('js/functionsadd.js')); 
+echo $this->Html->script('sweetalert2.all.min'); 	
+//echo $this->Html->script('marquee3k.js'); ?>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <script>$(function(){$("#fechahasta, #fechadesde, #fecha_recepcion").datepicker({dateFormat:"dd/mm/yy",dayNames:["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"],dayNamesMin:["Do","Lu","Ma","Mi","Ju","Vi","Sa"],firstDay:1,gotoCurrent:true,monthNames:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]});$(".main-menu ul.menu li a").click(function(){$(this).addClass("active")})});</script>
 <!-- link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel=stylesheet -->
 </head>
@@ -51,9 +60,9 @@ echo $this->Html->css('templatemo-style.min.css?'.$filever2= filesize('css/templ
 <![endif]-->
 <header class=site-header>
 <div class=main-header>
-<div  class=container>
+<div class=container>
 <div class=row>
-<?php echo $this->element('header'); ?>
+<?php echo $this->element('header_fiesta'); ?>
 </div>
 </div>
 </div>
@@ -102,6 +111,7 @@ echo '</div>';
 </ul>
 </li>
 <li><?=$this->Html->link(__('Estadisticas'),['controller'=>'Estadisticas','action'=>'index'])?></li>
+<li><?=$this->Html->link(__('Ofertas perdidas'),['controller'=>'Estadisticas','action'=>'viewOfertsToLose'])?></li>
 </ul>
 </li>
 <li class='active has-sub'>
@@ -124,7 +134,7 @@ echo '</div>';
 <li><?=$this->Html->link(__('Transfers Vigentes'),['controller'=>'PatagoniaMed','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Descargar'),['controller'=>'PatagoniaMed','action'=>'consolidado'])?></li>
 <li><?=$this->Html->link(__('Estado Transfer LAB Solicitado'),['controller'=>'Facturas','action'=>'transfer'])?></li>
-<li><?=$this->Html->link(__('EXPOSUR VIRTUAL12'), ['controller' => 'Pedidos', 'action' => 'expo']) ?></li>
+<!-- li><?=$this->Html->link(__('EXPOSUR VIRTUAL12'), ['controller' => 'Pedidos', 'action' => 'expo']) ?></li -->
 </ul>
 </li>
 <li class='active has-sub'>
@@ -147,21 +157,47 @@ echo '</div>';
 <!-- li><?=$this->Html->link(__('Oferta Venc.Cercano'),['controller'=>'Carritos','action'=>'ofertavc'])?></li -->
 </ul>
 </li>
-<li><?=$this->Html->link(__('Bienestar'),['controller'=>'Bienestar','action'=>'index'])?></li>
-<li><?=$this->Html->link(__('Nutrición'),['controller'=>'NutricionYDeportes','action'=>'index'])?></li>
+<li class='active has-sub'>
+<?=$this->Html->link(__('Bienestar'), ['controller' => 'Bienestar', 'action' => 'index']) ?>
+<ul>
+<li><?=$this->Html->link(__('Almohadilla/Manta'), ['controller' => 'Bienestar', 'action' => 'search',55]) ?></li>
+<li><?=$this->Html->link(__('Balanza'), ['controller' => 'Bienestar', 'action' => 'search',56]) ?></li>
+<li><?=$this->Html->link(__('Ejercicio'), ['controller' => 'Bienestar', 'action' => 'search',60]) ?></li>
+<li><?=$this->Html->link(__('Masajeador'), ['controller' => 'Bienestar', 'action' => 'search',59]) ?></li>
+<li><?=$this->Html->link(__('Nebulizador'), ['controller' => 'Bienestar', 'action' => 'search',53]) ?></li>
+<li><?=$this->Html->link(__('Oximetro'), ['controller' => 'Bienestar', 'action' => 'search',79]) ?></li>
+<li><?=$this->Html->link(__('Tensiometro'), ['controller' => 'Bienestar', 'action' => 'search',58]) ?></li>
+<li><?=$this->Html->link(__('Termometro'), ['controller' => 'Bienestar', 'action' => 'search',57]) ?></li>
+<li><?=$this->Html->link(__('Yoga'), ['controller' => 'Bienestar', 'action' => 'search',61]) ?></li>
+</ul>
+</li>
+<li class='active has-sub'>
+<?=$this->Html->link(__('Nutrición'), ['controller' => 'Nutricion', 'action' => 'index']) ?>
+<ul>
+<li><?=$this->Html->link(__('Alimentos Saludables'), ['controller' => 'Nutricion', 'action' => 'search',0,80]) ?></li>
+<li><?=$this->Html->link(__('Leches Maternizadas'), ['controller' => 'Nutricion', 'action' => 'search',0,81]) ?></li>
+<li><?=$this->Html->link(__('Soportes Nutricionales'), ['controller' => 'Nutricion', 'action' => 'search',0,19]) ?></li>
+<li><?=$this->Html->link(__('Suplementos Dietarios'), ['controller' => 'Nutricion', 'action' => 'search',0,83]) ?></li>
+<li><?=$this->Html->link(__('Otros Alimentos'), ['controller' => 'Nutricion', 'action' => 'search',0,82]) ?></li>
+
+</ul>
+</li>
+
 <li><?=$this->Html->link(__('Ortopedia'),['controller'=>'Ortopedias','action'=>'index'])?></li>
 <li><?=$this->Html->link(__('Acc y Prod Médico'), ['controller' => 'AccesoriosYProductosMedicos', 'action' => 'index']) ?></li>
 <li class='active has-sub'>
 <?=$this->Html->link(__('Home & Deco'), ['controller' => 'HomeYDecos', 'action' => 'index']) ?>
 <ul>
-<li><?=$this->Html->link(__('Difusores'), ['controller' => 'HomeYDecos', 'action' => 'search',44]) ?></li>
-<li><?=$this->Html->link(__('Humificador'), ['controller' => 'HomeYDecos', 'action' => 'search',45]) ?></li>
-<li><?=$this->Html->link(__('Home Spray'), ['controller' => 'HomeYDecos', 'action' => 'search',46]) ?></li>
-<li><?=$this->Html->link(__('Bolsos y Mochilas'), ['controller' => 'HomeYDecos', 'action' => 'search',47]) ?></li>
-<li><?=$this->Html->link(__('Pilas y Baterias'), ['controller' => 'HomeYDecos', 'action' => 'search',48]) ?></li>
-<li><?=$this->Html->link(__('Bazar'), ['controller' => 'HomeYDecos', 'action' => 'search',49]) ?></li>
-<li><?=$this->Html->link(__('Entretenimiento'), ['controller' => 'HomeYDecos', 'action' => 'search',51]) ?></li>
-<li><?=$this->Html->link(__('Limpieza'), ['controller' => 'HomeYDecos', 'action' => 'search',72]) ?></li>
+<li><?=$this->Html->link(__('Bazar'), ['controller' => 'HomeYDecos', 'action' => 'search',0,49]) ?></li>
+<li><?=$this->Html->link(__('Bolsos y Mochilas'), ['controller' => 'HomeYDecos', 'action' => 'search',0,47]) ?></li>
+<li><?=$this->Html->link(__('Difusores'), ['controller' => 'HomeYDecos', 'action' => 'search',0,44]) ?></li>
+<li><?=$this->Html->link(__('Entretenimiento'), ['controller' => 'HomeYDecos', 'action' => 'search',0,51]) ?></li>
+<li><?=$this->Html->link(__('Esencias'), ['controller' => 'HomeYDecos', 'action' => 'search',0,84]) ?></li>
+<li><?=$this->Html->link(__('Home Spray'), ['controller' => 'HomeYDecos', 'action' => 'search',0,46]) ?></li>
+<li><?=$this->Html->link(__('Humidificadores'), ['controller' => 'HomeYDecos', 'action' => 'search',0,45]) ?></li>
+<li><?=$this->Html->link(__('Limpieza'), ['controller' => 'HomeYDecos', 'action' => 'search',0,72]) ?></li>
+<li><?=$this->Html->link(__('Pilas y Baterias'), ['controller' => 'HomeYDecos', 'action' => 'search',0,48]) ?></li>
+<li><?=$this->Html->link(__('Sahumerios'), ['controller' => 'HomeYDecos', 'action' => 'search',0,85]) ?></li>
 </ul>
 </li>
 <li class='active has-sub' id=novedades>
@@ -191,6 +227,9 @@ echo '</div>';
 </div>
 </div>
 </div>
+<!-- div class="marquee3k" data-speed="1" date-reverse="true" >
+<div ><div class= marquee3k-texto>•    CYBER MONDAY 2024    •</div><div class=marquee3k-fecha> 4, 5 Y 6 DE NOVIEMBRE</div></div>
+</div -->
 </header>
 <div class=content-section>
 <div class=container>
@@ -223,7 +262,7 @@ echo '</div>';
 
 </div>
 </div>
-
+<div class="stars" aria-hidden="true"></div>
 <footer class=site-footer>
 <div class=bottom-footer>
 <div class=container>
@@ -249,9 +288,49 @@ echo '</div>';
 //(window,document,"script","https://www.google-analytics.com/analytics.js","ga");
 
 //ga("create","UA-54312928-1","auto"); ga('require', 'GTM-W56XFP5');ga("send","pageview");</script>
+<style>
+.stars {opacity: 60%;position: fixed;top: 0;left: 0;z-index: 5;width: 120%;height: 100%;pointer-events: none;}
+.star {position: absolute;color: transparent;text-shadow:-1px -1px 0 rgb(255, 224, 67),1px -1px 0 rgba(240, 191, 61, 0.596),-1px 1px 0 rgba(248, 191, 35, 0.596),1px 1px 0 rgba(255, 242, 109, 0.596);animation: fall linear infinite;}
+</style>
 
+<script>
+    const starsContainer = document.querySelector('.stars');
+    const starCount = 50;
+    const starIcons = ['fa-star'];
+
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('i');
+        star.classList.add('star', 'fas', starIcons[Math.floor(Math.random() * starIcons.length)]);
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${Math.random() * 10 + 10}s`;
+        star.style.animationDelay = `-${Math.random() * 10}s`;
+
+        const opacity = Math.random() * 0.3 + 0.1;
+        star.style.textShadow = `
+            -1px -1px 0 rgba(255, 224, 67, ${opacity}),
+            1px -1px 0 rgba(240, 191, 61, ${opacity}),
+            -1px 1px 0 rgba(248, 191, 35, ${opacity}),
+            1px 1px 0 rgba(255, 242, 109, ${opacity})
+        `;
+        star.style.fontSize = `${Math.random() * 20 + 10}px`;
+
+        starsContainer.appendChild(star);
+
+        // Establecer temporizador para eliminar la estrella después de 5 segundos
+        setTimeout(() => {
+            star.style.opacity = '0';
+            star.style.transition = 'opacity 1s ease'; // Transición suave de opacidad
+            setTimeout(() => star.remove(), 1000); // Eliminar el elemento después de la transición
+        }, 7000); // 5 segundos
+    }
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54312928-1"></script>
 <script>
+/*
+document.addEventListener('DOMContentLoaded', function() {
+    Marquee3k.init();
+    //console.log(Marquee3k.t);
+  }); */
 window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
@@ -266,5 +345,6 @@ window.dataLayer = window.dataLayer || [];
 
   gtag('config', 'G-2WQX5TKEVP');
 </script>
+
 </body>
 </html>

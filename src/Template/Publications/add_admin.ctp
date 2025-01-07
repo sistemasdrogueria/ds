@@ -1,5 +1,18 @@
-<article class="module width_3_quarter">
-<header><h3 class="tabs_involved"><?= $titulo ?></h3></header>
+
+<style>
+.header_icon{ float: right; margin-right: 10px;	margin-top: 5px;}
+.header_icon_delete{float: left;margin-top: 5px;margin-left: 5px;margin-right: 5px;}
+.header_icon_return{ float: left;}
+</style>
+<?php //><script type="text/javascript">
+$previous = "javascript:history.go(-1)";
+if(isset($_SERVER['HTTP_REFERER'])) {
+    $previous = $_SERVER['HTTP_REFERER'];
+}
+?>
+<article class="module width_4_quarter">
+<header><h3 class="tabs_involved"><?= $titulo ?></h3><div class = header_icon><div class="header_icon_return"><?php echo $this->Html->image('admin/icn_volver.png', ['url' => $previous]);?></div></div>    
+</header>
 <?= $this->Form->create('Publications', ['url'=>['controller'=>'Publications','action'=>'add_admin'],'type' => 'file']) ?>
 <fieldset>	
 <?php echo $this->Form->input('descripcion'); ?>
@@ -19,6 +32,7 @@
 <?php echo $this->Form->input('url_campo'); ?>
 <?php echo $this->Form->input('url_campo2'); ?>
 <?php echo $this->Form->input('localidad'); ?> 
+<?php echo $this->Form->input('provincia_id',['options' =>$provincias,'value'=>0]); ?> 
 </div>
 <div style="width: 60% ; float: left">
 <h1>INFO</h1>
@@ -45,7 +59,7 @@ echo $this->Form->input('ubicacion', ['options' =>$publicationsTipos, 'value'=>2
 </fieldset>	
 <fieldset>	
 <div style="width: 60% ; float: left;  margin-right: 20px;">	
-<?php echo $this->Form->input('file',['type' => 'file']);?>
+<?php echo $this->Form->input('file',['type' => 'file','accept' => '.jpg, .png, .jpeg, .mp3, .mp4']);?>
 <div>Tamaño de la imagen tiene debe ser 1000 x 765. El tipo debe ser .jpg </div>
 </div>
 
@@ -63,3 +77,28 @@ echo $this->Form->input('ubicacion', ['options' =>$publicationsTipos, 'value'=>2
 <?= $this->Form->end() ?>
 </fieldset>
 </article> 
+<script>
+    document.getElementById('file').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const validExtensions = ['jpg', 'jpeg', 'png', 'mp3', 'mp4'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            // Validar extensión
+            if (!validExtensions.includes(fileExtension)) {
+                 alertify.alert('Alerta archivo Incorrecto','<span style="color: orange;">El archivo debe ser una imagen (.jpg, .jpeg, .png) o un audio/video (.mp3, .mp4).</span>');
+                event.target.value = ''; // Restablecer el valor del input
+                return;
+            }
+
+            // Validar tamaño
+            if (file.size > 1048576) { // 1 MB en bytes
+            alertify.alert('Alerta Imagen pesada','<span style="color: red;">El archivo no debe pesar más de 1 MB.</span>', function(){ //alertify.success('Ok');
+              }
+             );
+             
+                event.target.value = ''; // Restablecer el valor del input
+            }
+        }
+    });
+</script>

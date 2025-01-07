@@ -511,7 +511,7 @@ class DeliaPerfumeriasController extends AppController
 							'contain' => ['Carritos'],
 							'limit' => $limit,
 							'offset' => 0,
-							'order' => ['Articulos.descripcion_pag' => 'asc']
+							'order' => ['Articulos.stock_fisico' => 'desc']
 						];
 		$this->set('makeup',$this->paginate($makeup) );
 		
@@ -633,7 +633,7 @@ class DeliaPerfumeriasController extends AppController
 							'contain' => ['Carritos'],
 							'limit' => $limit,
 							'offset' => 0,
-							'order' => ['Articulos.descripcion_pag' => 'asc']
+							'order' => ['Articulos.stock_fisico' => 'desc']
 						];
 		$this->set('solares',$this->paginate($solares) );
 		
@@ -755,7 +755,7 @@ class DeliaPerfumeriasController extends AppController
 							'contain' => ['Carritos'],
 							'limit' => $limit,
 							'offset' => 0,
-							'order' => ['Articulos.descripcion_pag' => 'asc']
+							'order' => ['Articulos.stock_fisico' => 'desc']
 						];
 		$this->set('dermos',$this->paginate($dermo) );
 		
@@ -881,7 +881,7 @@ class DeliaPerfumeriasController extends AppController
 							'contain' => ['Carritos'],
 							'limit' => $limit,
 							'offset' => 0,
-							'order' => ['Articulos.descripcion_pag' => 'asc']
+							'order' => ['Articulos.stock_fisico' => 'desc']
 						];
 		$this->set('result',$this->paginate($result) );
 		

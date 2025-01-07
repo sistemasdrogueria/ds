@@ -1,0 +1,422 @@
+/*Estilo de tabla Oculta*/
+#dvContainer-print {
+    display: none;
+}
+
+/* Estilo del MainHeader */
+.header_icon {
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+
+
+}
+
+.header_icon_print {
+    float: left;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.header_icon_mail {
+    float: left;
+
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.header_icon_return {
+    float: left;
+}
+
+.module {
+    margin-bottom: 20px;
+}
+
+
+/* Estilos de Container Info y Productos */
+.main-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0 auto;
+}
+
+.container-data,
+.container-products,
+.container-messages {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container-messages {
+    margin-top: 20px;
+}
+
+.title {
+    text-align: center;
+    color: #2a80b9;
+    /* margin-bottom: 20px; */
+    /* border-bottom: 1px solid #ccc; */
+    margin-block-end: 0.3em;
+}
+
+.reclamo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.articulos-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.detail-item {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 5px;
+    border: 2px solid #007bff;
+    /* Color del borde */
+    border-radius: 30px;
+    /* Bordes redondeados */
+    background-color: #f8f9fa;
+    /* Fondo claro */
+    color: #495057;
+    /* Texto oscuro */
+    font-size: 16px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    transition: all 0.3s ease;
+}
+
+.articulo-card {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 4px;
+    min-width: 200px;
+    min-height: 100px;
+    max-width: 400px;
+}
+
+.product-title {
+    margin: revert !important;
+}
+
+
+.detail-label,
+.articulo-label {
+    font-weight: bold;
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.detail-value,
+.articulo-detail {
+    color: #7f8c8d;
+}
+
+.articulo-detail {
+    margin-bottom: 10px;
+}
+
+.articulo-card h3 {
+    margin-top: 0;
+    color: #34495e;
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .container-data,
+    .container-products {
+        flex: 1 1 100%;
+    }
+
+    .reclamo-grid,
+    .articulos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos del Chat */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.container {
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    background-image: url(https://www.shutterstock.com/image-vector/social-media-sketch-vector-seamless-600nw-1660950727.jpg);
+    min-height: 400px;
+}
+
+.message-box {
+    padding: 15px;
+    display: inline-block;
+    max-width: 40%;
+    font-size: 1em;
+    line-height: 1.5;
+    word-wrap: break-word;
+    margin-bottom: 25px;
+    align-self: flex-start;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .message-box {
+        max-width: 100%;
+    }
+}
+
+.message-box.user-ticket {
+    border-left: 4px solid #007bff;
+    border-bottom-right-radius: 50px 50px;
+    background-color: #1f2933e6;
+}
+
+.message-box.admin {
+    align-self: flex-end;
+    background-color: #1b3621e8;
+    border-right: 4px solid #28a745;
+    border-bottom-left-radius: 50px 50px;
+}
+
+.system-message {
+    background-color: rgb(0 0 0 / 61%);
+    place-self: center;
+    padding: 10px;
+    border: 5px solid #399e50;
+    margin-bottom: 10px;
+    border-radius: 50px;
+}
+
+.message-box.new {
+    margin-top: 10px;
+    align-self: normal;
+}
+
+.message-box h2 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+.message-box.admin h2 {
+    color: #28a745;
+}
+
+.message-info {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.message-box p:last-child {
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+button {
+    display: inline-block;
+    background: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+#responseStatus {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.asunto-mensaje {
+    font-size: 20px !important;
+    color: white !important;
+}
+
+#imageModal {
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#modalImage {
+    max-width: 90%;
+    max-height: 80%;
+}
+
+#closeModal {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* Estilos del DropZone */
+.input-img {
+    max-width: 190px;
+    display: none;
+}
+
+.labelFile {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 250px;
+    height: 190px;
+    border: 2px dashed #ccc;
+    align-items: center;
+    text-align: center;
+    padding: 5px;
+    color: #404040;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* CSS para la informacion de productos */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.4);
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.imagen-modal {
+    width: 500px;
+    height: 500px;
+}
+
+@media (max-width: 768px) {
+    .imagen-modal {
+        width: 200px;
+        height: 200px;
+    }
+
+    .modal-content {
+        width: 70% !important;
+    }
+}
+
+.linea-divisor {
+    margin-block-end: 0px;
+    margin-block-start: 0px;
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, #f0f0f0, #00b9ff, #59d941, #f0f0f0);
+    margin-bottom: 20px;
+}
+
+
+.modal-content {
+    background-color: #fff;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 8px;
+    transform: scale(0.7);
+    transition: transform 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.modal-informacion {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}

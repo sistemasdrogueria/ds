@@ -1,3 +1,6 @@
+<style>.content-section {margin: 0;}
+  </style>
+<?php echo $this->element('banner_slider_homeydeco'); ?>
 <div class=container>
 <div class="col-md-12" >
 <div class="product-item-3">
@@ -6,7 +9,7 @@
 echo '<div class=row >'.$this->element('homeydeco_search').'</div>';
 echo '<div class=hide   id =farmaydeco_div_grupos_search> '.'</div>';
 echo '<div class=row    id = farmaydeco_row_grupos ><br>'. $this->element('homeydeco_grupos');
-echo $this->element('homeydeco_sin_result'); 
+//echo $this->element('homeydeco_sin_result'); 
 echo '</div>';
 ?>
 </div> 
@@ -56,14 +59,12 @@ echo $this->Html->image('publicaciones/'.$sursale['imagen'],['url'=>['controller
 }
 ?>
 </div>
-
 <div class="moda-footer-intro">
 <button class="btn-continuar"onclick="closedivbutton(1)"  >Continuar</button>
 </div>
 </div>
 </div>
 </div><!-- /.product-content -->
-
 <div class="modal fade" style="background:repeating-linear-gradient(135deg, rgb(151 151 151 / 44%), rgb(151 151 151 / 19%) 1%, rgba(151, 151, 151, 0.32) 1%);display: flex;flex-direction: row;flex-wrap: nowrap;align-content: center;justify-content: center;align-items: center;" data-keyboard="false" data-backdrop="static"
 id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 <div class="modal-dialog"  style="width:100%;max-width:1100px;" role="document">
@@ -74,7 +75,6 @@ id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabe
 <span aria-hidden="true">×</span>
 </button>
 </div>
-
 <!-- Modal body with image -->
 <div class="modal-body-intro" onclick="closediv()">
 <?php if(!is_null($sursale2))
@@ -110,20 +110,19 @@ echo $this->Html->image('publicaciones/'.$sursale2['imagen'],['url'=>['controlle
 }
 ?>
 </div>
-
 <div class="moda-footer-intro">
 <button class="btn-continuar"onclick="closedivbutton(2)"  >Continuar</button>
 </div>
 </div>
 </div>
 </div>
-</div> <!-- /.product-item -->
-</div> <!-- /.col-md-3 -->
+</div> 
+</div> 
 <!--div class="col-md-3">
 <?php //echo $this->element('carro'); ?>
 </div> <!-- /.row -->
-</div--> <!-- /.product-content -->
-<?php echo $this->Html->script('paginacion'); ?>
+</div-->
+<?php echo $this->Html->script('paginacion');?>
 <script>
 var $ingreson=0;
 var $ingreson2=0;
@@ -156,4 +155,52 @@ if($ingreson2<1 && $confirmY<1)
 backdrop: false
 },'show');}
 });
+</script>
+<?php echo $this->Html->script('jssor.slider.min');?>
+<script>
+jQuery(document).ready(function($) {
+var options = {
+$FillMode: 2,
+$AutoPlay: 1,
+$Idle: 1500,
+$PauseOnHover: 1,
+$ArrowKeyNavigation: 1,
+$SlideEasing: $Jease$.$OutQuint,
+$SlideDuration: 1500,
+$MinDragOffsetToSlide: 20,
+$SlideSpacing: 0,
+$UISearchMode: 1,
+$PlayOrientation: 1,
+$DragOrientation: 1,
+$BulletNavigatorOptions: {
+$Class: $JssorBulletNavigator$,
+$ChanceToShow: 2,
+$SpacingX: 8,
+$Orientation: 1
+},
+$ArrowNavigatorOptions: {
+$Class: $JssorArrowNavigator$,
+$ChanceToShow: 2
+}
+};
+var jssor_sliderZ = new $JssorSlider$("slider2_container", options);
+
+function ScaleSliderZocalo() {
+var bodyWidth = document.body.clientWidth;
+jssor_sliderZ.$scale
+jssor_sliderZ.$ScaleWidth($("#slider_contenedor").width());
+}
+ScaleSliderZocalo();
+$(window).bind("load", ScaleSliderZocalo);
+$(window).bind("resize", ScaleSliderZocalo);
+$(window).bind("orientationchange", ScaleSliderZocalo);
+});
+
+
+
+// Si trabajas con eventos táctiles (en caso de deslizamiento en dispositivos móviles), añade {passive: false}
+$(window).on("touchstart", function(e) {
+  e.preventDefault();  // Esto previene el error si realmente necesitas evitar el comportamiento por defecto
+}, { passive: false });
+
 </script>

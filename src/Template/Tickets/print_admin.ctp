@@ -11,7 +11,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
   });
   </script>
 <div class="clear"></div>
- <?php $reclamo= 
+ <?php $reclamo= ?>
 <article class="module width_full">
 	
 	<header id="titulo_header"><h3><?= $titulo ?></h3>

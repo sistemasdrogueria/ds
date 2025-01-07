@@ -26,9 +26,9 @@
 #cssmenu.align-right > ul > li:hover > ul{left:auto;right:0;opacity:1}
 #cssmenu ul ul li:hover > ul{left:170px;top:0;opacity:1}
 #cssmenu.align-right ul ul li:hover > ul{left:auto;right:170px;top:0;opacity:1;padding-right:5px}
-#cssmenu ul ul li a{background: linear-gradient(to right, #8e7dfa 50%, #56c6f4 100%); width:160px;border-bottom:1px solid #eee;padding:10px;font-size:13px;color: #fff;;-webkit-transition:all .35s ease;-moz-transition:all .35s ease;-ms-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease}
+#cssmenu ul ul li a{background: linear-gradient(to right, #1e1f21 50%, #18191b 100%); width:160px;border-bottom:1px solid #eee;padding:10px;font-size:13px;color: #fff;;-webkit-transition:all .35s ease;-moz-transition:all .35s ease;-ms-transition:all .35s ease;-o-transition:all .35s ease;transition:all .35s ease}
 #cssmenu.align-right ul ul li a{text-align:right}
-#cssmenu ul ul li:hover > a{color:#2e2e2e}
+#cssmenu ul ul li:hover > a{background:#f2f2f2;color:#e8ff21}
 #cssmenu ul ul li:last-child > a,#cssmenu ul ul li.last > a{border-bottom:0}
 #cssmenu > ul > li > ul::after{content:'';border:6px solid transparent;width:0;height:0;border-bottom-color:#fff;position:absolute;top:-12px;left:30px}
 #cssmenu.align-right > ul > li > ul::after{left:auto;right:30px}
@@ -38,10 +38,9 @@
 #cssmenu.align-right ul ul li.has-sub:hover::after{border-right-color:#fff;border-left-color:transparent;left:-5px;-webkit-transform:rotateY(180deg);-ms-transform:rotateY(180deg);-moz-transform:rotateY(180deg);-o-transform:rotateY(180deg);transform:rotateY(180deg)}
 @media all and (max-width: 996px),only screen and (-webkit-min-device-pixel-ratio: 2) and (max-width: 1024px),only screen and (min--moz-device-pixel-ratio: 2) and (max-width: 1024px),only screen and (-o-min-device-pixel-ratio: 21) and (max-width: 1024px),only screen and (min-device-pixel-ratio: 2) and (max-width: 1024px),only screen and (min-resolution: 192dpi) and (max-width: 1024px),only screen and (min-resolution: 2dppx) and (max-width: 1024px) {
 #cssmenu > ul > li{color:#000; background: linear-gradient(to right, #56c6f4 0%, #8e7dfa 53%, #56c6f4 100%);}
- 
-#cssmenu > ul{display:block;z-index:500;width:100%} 
+#cssmenu > ul{display:block;width:100%;z-index:500} 
 #cssmenu > ul > li{color:#000; background: linear-gradient(to right, #56c6f4 0%, #8e7dfa 53%, #56c6f4 100%);}
-#cssmenu{ display:inline-flex; width:auto}
+#cssmenu{display:inline-flex;width:auto}
 #cssmenu.align-center ul{text-align:left}
 #cssmenu.align-right > ul > li{float:none}
 #cssmenu ul{width:auto}
@@ -52,14 +51,14 @@
 #cssmenu ul ul,#cssmenu ul ul ul,#cssmenu ul > li:hover > ul,#cssmenu ul ul > li:hover > ul,#cssmenu.align-right ul ul,#cssmenu.align-right ul ul ul,#cssmenu.align-right ul > li:hover > ul,#cssmenu.align-right ul ul > li:hover > ul{position:relative;left:auto;top:auto;opacity:1;padding-left:0;padding-right:0;right:auto}
 #cssmenu ul .has-sub::after{display:none}
 #cssmenu ul li a{padding:12px 20px}
-#cssmenu ul ul li a{border:0;background:#2A80B9;width:auto;padding:8px 35px}
+#cssmenu ul ul li a{border:0;background:#1e1f21;width:auto;padding:8px 35px}
 #cssmenu.align-right ul ul li a{text-align:left}
 #cssmenu ul ul li:hover > a{background:none;color:#8c9195}
 #cssmenu ul ul ul a{padding:8px 50px}
 #cssmenu ul ul ul ul a{padding:8px 65px}
 #cssmenu ul ul ul ul ul a{padding:8px 80px}
 #cssmenu ul ul ul ul ul ul a{padding:8px 95px}
-#cssmenu > ul > #menu-button{display:block;cursor:pointer}
+#cssmenu > ul > #menu-button{display:block;cursor:pointer;z-index: 1;}
 #cssmenu #menu-button > a{width: 400px; float: left;}
 #cssmenu ul.open li,#cssmenu > ul.open > li{display:block}
 #cssmenu > ul.open > li#menu-button > a{color:#fff;border-bottom:1px solid rgba(150,150,150,0.1)}

@@ -21,6 +21,7 @@ $previous = $_SERVER['HTTP_REFERER'];
 <?php echo $this->Form->input('url_campo'); ?>
 <?php echo $this->Form->input('url_campo2'); ?>
 <?php echo $this->Form->input('localidad',['maxlength'=>255]); ?> 
+<?php echo $this->Form->input('provincia_id',['options' =>$provincias,'value'=>$publication['provincia_id']]); ?> 
 </fieldset>	
 
 <fieldset>				
@@ -67,3 +68,28 @@ echo $this->Form->input('ubicacion', ['options' =>$publicationsTipos, 'value'=>$
 
 
 </div>
+<script>
+    document.getElementById('file').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const validExtensions = ['jpg', 'jpeg', 'png', 'mp3', 'mp4'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            // Validar extensión
+            if (!validExtensions.includes(fileExtension)) {
+                 alertify.alert('Alerta archivo Incorrecto','<span style="color: orange;">El archivo debe ser una imagen (.jpg, .jpeg, .png) o un audio/video (.mp3, .mp4).</span>');
+                event.target.value = ''; // Restablecer el valor del input
+                return;
+            }
+
+            // Validar tamaño
+            if (file.size > 1048576) { // 1 MB en bytes
+            alertify.alert('Alerta Imagen pesada','<span style="color: red;">El archivo no debe pesar más de 1 MB.</span>', function(){ //alertify.success('Ok');
+              }
+             );
+             
+                event.target.value = ''; // Restablecer el valor del input
+            }
+        }
+    });
+</script>

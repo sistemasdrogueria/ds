@@ -217,7 +217,7 @@ class ComprobantesController extends AppController
 	
 	public function index_admin()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $this->paginate = [
 			'limit'=>100,
             'contain'=>['Clientes','ComprobantesTipos']
@@ -578,7 +578,7 @@ class ComprobantesController extends AppController
 		if ($fechahasta!=0)
 		{
 			$fechahasta2 = Time::createFromFormat('d/m/Y',$fechahasta,'America/Argentina/Buenos_Aires');
-			$fechahasta2->modify('+1 days');
+			//$fechahasta2->modify('+1 days');
 			$fechahasta2->i18nFormat('yyyy-MM-dd');
 		} else {
 			$fechahasta2 = Time::now();
@@ -702,7 +702,7 @@ class ComprobantesController extends AppController
 			$recibo = $this->request->session()->read('recibo');
 		}
 		
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         
 		$this->paginate = [
 			'limit'=>100,
@@ -1320,7 +1320,7 @@ class ComprobantesController extends AppController
 	public function view_admin($id = null, $fecha=null)
     {
 		$this->set('fecha', $fecha);
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $comprobante = $this->Comprobantes->get($id,[
             'contain'=>['Clientes','ComprobantesTipos']
         ]);
@@ -1474,8 +1474,8 @@ class ComprobantesController extends AppController
 			$this->Flash->error(__('Momentaneamente no disponible, intente mas tarde.'),['key'=>'changepass']);
 			$this->redirect($this->referer());
 		} else {
-			$client = $this->request->session()->read('client');
-			$nombreArchivo= 'TRAZA'.str_pad($comprobante->nota, 6, "0", STR_PAD_LEFT).str_pad($client['codigo'], 6, "0", STR_PAD_LEFT);
+			 $codigo = $this->request->session()->read('Auth.User.codigo');
+			$nombreArchivo= 'TRAZA'.str_pad($comprobante->nota, 6, "0", STR_PAD_LEFT).str_pad($codigo, 6, "0", STR_PAD_LEFT);
 			$file = new File('temp'. DS .'Comprobantes'. DS .$nombreArchivo.'.TXT', true, 0777);
 			
 			$line = "\r\n".'PRODUCTO                       GTIN           SERIE                LOTE                 VENC'."\r\n";
@@ -1784,8 +1784,19 @@ class ComprobantesController extends AppController
 				
 				$itemart .= $espacio. str_pad($fci['cantidad_facturada'], 6, "0", STR_PAD_LEFT).$espacio;
 				//$imp = $fci['precio_unitario'];
-				$imp = $fci['precio_unitario']*100;// number_format($fci['precio_unitario'],2,'.','');
-				$itemart .= str_pad($imp, 13, "0", STR_PAD_LEFT).$espacio;
+
+
+				if ($fci['precio_unitario'] == $fci['precio_publico'] && $fci['descuento']>0)
+				{
+					 
+					$imppu = number_format(round($fci['precio_publico'] - (($fci['precio_publico']*$fci['descuento'])/100), 3),2,'.','') *100;
+				
+					
+				}
+				else
+					$imppu = $fci['precio_unitario']*100;// number_format($fci['precio_unitario'],2,'.','');
+				
+				$itemart .= str_pad($imppu, 13, "0", STR_PAD_LEFT).$espacio;
 				$precio_publico = $fci['precio_publico'];
 				if ($this->request->session()->read('Auth.User.provincia_id') ==23)
                 {
@@ -1799,12 +1810,23 @@ class ComprobantesController extends AppController
                 }	
 				
 				$imp = $precio_publico*100;//$imp = number_format($fci['precio_publico'],2,'.','');
+				if ($fci['iva'] && ($fci['articulo']['categoria_id'] !=1 && $fci['articulo']['categoria_id'] !=6 && $fci['articulo']['categoria_id'] !=7) )
+				{
+					$imp = $fci['precio_unitario']*100;//*1.21)*100;
+				}
+
 				//$imp = $fci['precio_publico'];
 				$itemart .= str_pad($imp, 11, "0", STR_PAD_LEFT).$espacio;
-				
-				$imp = $fci['precio_total']*100;//number_format($fci['precio_total'],2,'.','');
+				if ($fci['precio_unitario'] == $fci['precio_publico'] && $fci['descuento']>0)
+				{
+					$imppt = number_format(round($fci['precio_total'] - (($fci['precio_total']*$fci['descuento'])/100), 3),2,'.','') *100;
+					//$imppt = $imppu * $fci['cantidad_facturada'];
+					
+				}
+				else
+				$imppt = $fci['precio_total']*100;//number_format($fci['precio_total'],2,'.','');
 				//$imp = $fci['precio_total'];
-				$itemart .= str_pad($imp, 15, "0", STR_PAD_LEFT).$espacio;
+				$itemart .= str_pad($imppt, 15, "0", STR_PAD_LEFT).$espacio;
 				
 				$descuento = $fci['descuento']*100;
 				$itemart .= str_pad($descuento, 5, "0", STR_PAD_LEFT).$espacio;
@@ -2007,9 +2029,6 @@ class ComprobantesController extends AppController
 	
 		$this->loadModel('FacturasCabeceras');
 		$this->loadModel('FacturasCuerposItems');
-		/*$this->paginate = [
-            'contain'=>['Comprobantes'],
-        ];*/
 		
 		if (!empty($listaarray))
 		{
@@ -2027,8 +2046,7 @@ class ComprobantesController extends AppController
 						'table'=>'facturas_cuerpos_items',
 						'type'=>'INNER',
 						'conditions'=>'FacturasCabeceras.id = ci.facturas_encabezados_id',
-					],
-				
+					],			
 					])
 					->where(['FacturasCabeceras.cliente_id'=>$this->request->session()->read('cliente_id'),'c.id in '=>$listaarray])
 					->order(['FacturasCabeceras.fecha'=>'ASC'])
@@ -2036,8 +2054,7 @@ class ComprobantesController extends AppController
 		$this->request->session()->write('facturascabeceras3',$query->toArray());
 		if ($query!=null)
 		{
-			$facturascabeceras = $query->toArray();
-			//$this->request->session()->write('facturascabeceras3',$facturascabeceras);
+			$facturascabeceras = $query->toArray();	
 		}
 		else
 			$facturascabeceras = null;
@@ -2048,7 +2065,6 @@ class ComprobantesController extends AppController
 			$this->Flash->error(__('Seleccione algun comprobante'),['key'=>'changepass']);
 			$this->redirect($this->referer());
 		}
-			
 		
 		$this->request->session()->write('facturascabeceras2',$facturascabeceras);
 		$nombrearhivodirectorio = 'temp'. DS;
@@ -2059,25 +2075,24 @@ class ComprobantesController extends AppController
 			$client = $this->Clientes->get($this->request->session()->read('cliente_id'));		
 			$codigo = str_pad($client['codigo'], 6, "0", STR_PAD_LEFT);
 			$nombre = $client['nombre'];
-
 		}
 		else
 		{
 			$codigo = str_pad($this->request->session()->read('Auth.User.codigo'), 6, "0", STR_PAD_LEFT);
 			$nombre = $this->request->session()->read('Auth.User.razon');
 		}
-		$nombrearhivodirectorio = 'temp'. DS;
-		$nombrearhivo = 'DETFAC'.$codigo.'.TXT';
-		
-		
+	
+		$nombrearhivo= 'DETFAC'.$codigo.'.TXT';
 		$file = new File($nombrearhivodirectorio.$nombrearhivo, true, 0777);
 		
-		 
+		$descuento_pf = $this->request->session()->read('Auth.User.pf_dcto');
+        $condicion = $this->request->session()->read('Auth.User.condicion');
+        $condiciongeneral = (1-($descuento_pf * (1-$condicion/100)));
+	
 		if (is_null($facturascabeceras))
 		{
 			$this->Flash->error(__('Seleccione una opcion'),['key'=>'changepass']);
 			$this->redirect($this->referer());
-			
 		}
 		else
 		{
@@ -2123,10 +2138,7 @@ class ComprobantesController extends AppController
 					$itemart .= str_pad($fc['comprobante']['numero'], 8, "0", STR_PAD_LEFT).$espacio;
 						
 					$itemart .= str_pad('0'.$fci['articulo']['categoria_id'], 2, "0", STR_PAD_LEFT).$espacio;
-					
-					$itemart .= str_pad($fci['codigo_barra'], 13, "0", STR_PAD_LEFT).$espacio;
-					//$itemart .= str_pad($fci['articulo']['codigo_barras'], 13, "0", STR_PAD_LEFT).$espacio;
-					
+					$itemart .= str_pad($fci['codigo_barra'], 13, "0", STR_PAD_LEFT).$espacio;					
 					$itemart .= str_pad($fci['descripcion'], 30, " ", STR_PAD_RIGHT).$espacio;
 					
 					if ($fci['iva'])
@@ -2136,15 +2148,42 @@ class ComprobantesController extends AppController
 					
 					$itemart .= $espacio. str_pad($fci['cantidad_facturada'], 6, "0", STR_PAD_LEFT).$espacio;
 					//$imp = $fci['precio_unitario'];
-					$imp = (int)($fci['precio_unitario']*100);// number_format($fci['precio_unitario'],2,'.','');
-					$itemart .= str_pad($imp, 13, "0", STR_PAD_LEFT).$espacio;
-					$imp = (int)($fci['precio_publico']*100);//$imp = number_format($fci['precio_publico'],2,'.','');
-					//$imp = $fci['precio_publico'];
-					$itemart .= str_pad($imp, 11, "0", STR_PAD_LEFT).$espacio;
+					if ($fci['precio_unitario'] == $fci['precio_publico'] && $fci['descuento']>0)
+					{
+						$imppu = number_format(round($fci['precio_publico'] - (($fci['precio_publico']*$fci['descuento'])/100), 3),2,'.','') *100;
+					}
+					else
+					$imppu = (int)($fci['precio_unitario']*100);// number_format($fci['precio_unitario'],2,'.','');
+					$itemart .= str_pad($imppu, 13, "0", STR_PAD_LEFT).$espacio;
+					$precio_publico = $fci['precio_publico'];
+					if ($this->request->session()->read('Auth.User.provincia_id') ==23)
+					{
+						if ($fci['descuento']>0)
+							$descuentoI = $fci['descuento']/100;
+							else
+							{
+								$descuentoI = $condiciongeneral;                    
+								$precio_publico = round($fci['precio_unitario']/(1 - $descuentoI),2);
+							}
+					}	
 					
-					$imp = (int)($fci['precio_total']*100);//number_format($fci['precio_total'],2,'.','');
+					$imp = $precio_publico*100;//$imp = number_format($fci['precio_publico'],2,'.','');
+					if ($fci['iva'] && ($fci['articulo']['categoria_id'] !=1 && $fci['articulo']['categoria_id'] !=6 && $fci['articulo']['categoria_id'] !=7) )
+					{
+						$imp = $fci['precio_unitario']*100;//*1.21)*100;
+					}
+						//$imp = $fci['precio_publico'];
+					$itemart .= str_pad($imp, 11, "0", STR_PAD_LEFT).$espacio;
+					if ($fci['precio_unitario'] == $fci['precio_publico'] && $fci['descuento']>0)
+					{
+						$imppt = number_format(round($fci['precio_total'] - (($fci['precio_total']*$fci['descuento'])/100), 3),2,'.','') *100;
+						//$imppt = $imppu * $fci['cantidad_facturada'];
+						
+					}
+					else
+					$imppt = (int)($fci['precio_total']*100);//number_format($fci['precio_total'],2,'.','');
 					//$imp = $fci['precio_total'];
-					$itemart .= str_pad($imp, 15, "0", STR_PAD_LEFT).$espacio;
+					$itemart .= str_pad($imppt, 15, "0", STR_PAD_LEFT).$espacio;
 
 					$descuento = $fci['descuento']*100;
 					$itemart .= str_pad($descuento, 5, "0", STR_PAD_LEFT).$espacio;
@@ -2152,9 +2191,8 @@ class ComprobantesController extends AppController
 					$file->write($itemart."\r\n");
 				endforeach; 
 				//$file->append(utf8_encode($string));
-				//$file->create('I am overwriting the contents of this file');
-				
-				
+				//$file->create('I am overwriting the contents of this file');				
+			
 			endforeach; 
 			
 			// $file->append('I am adding to the bottom of this file.');

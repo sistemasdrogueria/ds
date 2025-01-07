@@ -471,7 +471,7 @@ public function isAuthorized()
 		'contain' => ['Descuentos','Carritos'],
 		'limit' => 11,
 		'offset' => 0, 
-        'order' => ['Articulos.descripcion_pag' => 'asc']];
+        'order' => ['Articulos.stock' => 'asc','Articulos.descripcion_pag' => 'asc']];
 		$this->loadModel('Articulos');
 		$this->clientecredito();
 		$this->sumacarrito();
@@ -499,7 +499,7 @@ public function isAuthorized()
 						]		
 					]
 					)
-					->where(['Articulos.subcategoria_id'=>12]);
+					->where(['Articulos.subcategoria_id'=>12, 'Articulos.stock <>'=>'D']);
 					
 					
 		if ($articulosA!=null)
@@ -518,7 +518,7 @@ public function isAuthorized()
 			'contain' => ['Descuentos','Carritos'],
 			'limit' => $limit,
 			'offset' => 0, 
-			'order' => ['Articulos.descripcion_pag' => 'asc']];
+			'order' => ['Articulos.stock_fisico' => 'desc','Articulos.descripcion_pag' => 'asc']];
 									
 			$articulosA->andWhere(['eliminado'=>0])->group(['Articulos.id']);
 			$articulos = $this->paginate($articulosA);

@@ -22,7 +22,7 @@ header("Expires: $expire_time"); */
 <meta name="facebook-domain-verification" content="jz3sw0qxjwjo7dorjuu5iguwb12aiq" />
 <meta property="og:title" content="DROGUERIA SUR SA" />
 <meta property="og:description" content="DROGUERIA SUR SA" />
-<meta property="og:image" content="https://www.drogueriasur.com.ar/ds/img/logo_ds_simple.png" />
+<meta property="og:image" content="https://www.drogueriasur.com.ar/ds/img/logoDsMujer.png" />
 <meta property="og:url" content="https://www.drogueriasur.com.ar/ds" />
 
 <title>DROGUERIA SUR</title>
@@ -113,7 +113,8 @@ echo $this->Html->script('html5element');
 <div class="container">
 <div class="header_box">
 <div style="float: left">
-<div class="logo" style="margin-top: 25px "> <?php echo $this->Html->image('logo_ds.png', ['url' => ['controller' => 'pages', 'action' => 'display']], ['alt' => 'Drogueria Sur S.A.']); ?> </div>
+<div class="logo" style="margin-top: 25px "> <?php //logo_ds.png
+echo $this->Html->image('logo_ds.png', ['url' => ['controller' => 'pages', 'action' => 'display']], ['alt' => 'Drogueria Sur S.A.']); ?> </div>
 </div>
 <div style="float: right">
 <nav class="navbar navbar-inverse" role="navigation">
@@ -307,7 +308,7 @@ Buenos Aires, La Pampa, Neuquén, Rio Negro, Chubut, Santa Cruz y Tierra del Fue
 <div class="row">
 <div class="col-lg-12 wow fadeInLeft delay-06s">
 <?php
-echo $this->Form->create('contacto', ['url' => ['controller' => 'contactos', 'action' => 'enviar_mail'], 'id' => "contactanos"]);
+echo $this->Form->create('contacto', ['url' => ['controller' => 'contactos', 'action' => 'enviar_mail'], 'onsubmit' => "return false", 'id' => "contactanos"]);
 $opciones = ['Departamento de Cobranzas', 'Departamento de Ventas', 'Departamento de Compras', 'Departamento de Patagonia Med', 'Departamento de Perfumeria', 'Departamento de Sistemas'];
 echo $this->Form->input('departamento', ['class' => 'input-text', 'type' => 'hidden']);
 echo $this->Form->input('nombre', ['class' => 'input-text', 'placeholder' => 'Nombre *']);

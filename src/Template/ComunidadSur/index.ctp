@@ -9,8 +9,17 @@ echo '<div style="float: left;min-height: 100px;	width: 100%;height: 100%; margi
 echo '<div style="margin: auto; width: 250px;">';
 echo $this->Html->image('COMUNIDAD-SUR.png',['width'=>'250px']).'</div>';
 if ($this->request->session()->read('Auth.User.comunidadsur')>0)	
-echo '<div style="margin: auto; width: 250px;">'.$this->Html->image('Consulta-CSur.png', ['width'=>'250px','alt' => 'Comunidad Sur','url'=>'https://www.drogueriasur.com.ar/cs/']).'</div>';
-//echo '<div style="margin: auto; width: 250px;">'.$this->Html->image('Consulta-CSur.png', ['width'=>'250px','alt' => 'Comunidad Sur','url'=>'https://www.comunidadsur.com.ar/']).'</div>';
+//echo '<div style="margin: auto; width: 250px;">'.$this->Html->image('Consulta-CSur.png', ['width'=>'250px','alt' => 'Comunidad Sur','url'=>'https://www.drogueriasur.com.ar/cs/']).'</div>';
+echo '<div style="margin: auto; width: 250px;">' . 
+    $this->Html->link(
+        $this->Html->image('Consulta-CSur.png', ['width' => '250px', 'alt' => 'Comunidad Sur']),
+        'https://www.comunidadsur.com.ar/',
+        ['escape' => false, 'target' => '_blank']
+    ) 
+. '</div>';
+
+
+
 echo '</div>';
 echo $this->element('partner_marcas');
 echo $this->element('partner_sin_result'); 

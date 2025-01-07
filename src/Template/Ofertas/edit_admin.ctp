@@ -123,7 +123,7 @@ echo $this->Form->input('descuento_producto',['label'=>'DESCUENTO', 'type'=>'tex
 </fieldset>		
 <fieldset>	
 	<div class="ofertainputfile">
-<?php echo $this->Form->input('file',['type' => 'file','label'=>'Imagen']);  ?>
+<?php echo $this->Form->input('file',['type' => 'file','label'=>'Imagen','accept' => '.jpg, .png, .jpeg, .mp3, .mp4']);  ?>
 
 </div>
 <div>Tamaño de la imagen 200px x 200px. Tipo .jpg </div>
@@ -174,5 +174,30 @@ echo $this->Form->input('descuento_producto',['label'=>'DESCUENTO', 'type'=>'tex
    }
 
 };
+
+
+    document.getElementById('file').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const validExtensions = ['jpg', 'jpeg', 'png', 'mp3', 'mp4'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+
+            // Validar extensión
+            if (!validExtensions.includes(fileExtension)) {
+                 alertify.alert('Alerta archivo Incorrecto','<span style="color: orange;">El archivo debe ser una imagen (.jpg, .jpeg, .png) o un audio/video (.mp3, .mp4).</span>');
+                event.target.value = ''; // Restablecer el valor del input
+                return;
+            }
+
+            // Validar tamaño
+            if (file.size > 524288) { // 1 MB en bytes
+
+                   alertify.alert('Alerta Imagen pesada','<span style="color: red;">El archivo no debe pesar más de 500 KB.</span>', function(){ //alertify.success('Ok');
+              }
+             );
+                event.target.value = ''; // Restablecer el valor del input
+            }
+        }
+    });
 
    </script>

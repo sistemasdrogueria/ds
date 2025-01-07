@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="https://www.drogueriasur.com.ar/ds/css/stylepdf.css">
 </head>
 <body>
-<div class=cabecera>
+<div class=cabecera_r>
 <hr></hr>
 <div class=logo>
 <img src="https://www.drogueriasur.com.ar/ds/img/logo.png"></img>

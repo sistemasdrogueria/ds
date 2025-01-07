@@ -4,7 +4,7 @@ img{vertical-align:middle}
 fieldset{border:0;margin:0;padding:0}
 textarea{resize:vertical}
 .top-header .social-icons ul,.main-nav .list-menu ul,ul.product-buttons,ul.follow-us{padding:0;margin:0;list-style:none}
-.main-header .main-menu ul.menu{padding:0;margin:0;list-style:block;     margin-right: 10px;}
+.main-header .main-menu ul.menu{padding:0;margin:0;list-style:block; margin-right: 10px;}
 .ir{background-color:transparent;border:0;overflow:hidden;*text-indent:-9999px}
 .ir:before{content:"";display:block;width:0;height:150%}
 .hidden{display:none!important;visibility:hidden}
@@ -100,7 +100,7 @@ h6{font-size:.8em}
 .product-content4 span.descripcion{margin:0;font-size:12px;color:#FFF}
 .product-content4 span.vigencia{margin:0;font-size:12px;color:#8ea800}
 .product-thumb img{width:100%;height:100%}
-.product-thumb-cm {margin-bottom:-40px;overflow:hidden;text-align:center;}
+.product-thumb-cm{margin-bottom:-40px;overflow:hidden;text-align:center}
 .product-thumb-cm img{width:100%;height:100%;}
 .product-item-1{margin-bottom:30px}
 .product-item-1 .product-content{border-top:0;padding:20px 20px 15px}
@@ -460,7 +460,7 @@ input.sendbtn:hover{color:#fff}
 #searchform3 input[type="text"]{width:20%;float:left;min-width:75px;max-width:150px;float:left}
 #searchform3 select{background:#fff;padding:10px 10px 8px 8px;margin-left:20px}
 #searchform3 label{display:none}
-#searchform3 input.mainBtn{border:0;outline:0;padding:12px;color:#fff;background:#2a80b9;margin-left:10px;float:right;border-radius: 4px;}
+#searchform3 input.mainBtn{border:0;outline:0;padding:12px;color:#fff;background:#2a80b9;margin-left:10px;float:right;border-radius:4px;}
 #searchform4 select{margin-left:10px;background:#fff;margin-bottom:5px;padding:10px 10px 8px 8px}
 #searchform4 input{margin-bottom:5px;margin-left:5px;min-width:75px;max-width:140px;display:block;width:50%}
 #searchform4 input[type="text"]{display:block}
@@ -469,13 +469,13 @@ input.sendbtn:hover{color:#fff}
 #searchform4 #form_reclamos_tipo_id{margin-bottom:15px}
 .cliente_info input[type="checkbox"]{display:block;padding-left:5px}
 #searchform4 label{float:left;margin-left:10px;margin-top:5px;width:40%;min-width:120px;max-width:250px}
-#searchform4 input.mainBtn{border:0;outline:0;padding:12px;color:#fff;background:#2a80b9;margin-left:10px;margin-top:5px;display:block;border-radius: 5px;}
-#searchform5 input.mainBtn{border:0;outline:0;padding:10px;color:#fff;background:#8EA800;margin:0 2px;min-width:125px; font-size: 18px;border-radius: 5px; }
-#searchform5 input[type="text"]{border: 2px solid #C4C4C4;float:left;min-width:150px;margin:2px 2px 0;-webkit-margin-before:0; border-radius: 5px;}
-#searchform5 input[type="select"]{border: 2px solid #C4C4C4;background:#fff;padding:10px 10px 9px 8px;float:left;margin:2px}
-#searchform6 input.mainBtn{ background:#8c8a8d ; border-radius: 5px}
+#searchform4 input.mainBtn{border:0;outline:0;padding:12px;color:#fff;background:#2a80b9;margin-left:10px;margin-top:5px;display:block;border-radius:5px;}
+#searchform5 input.mainBtn{border:0;outline:0;padding:10px;color:#fff;background:#8EA800;margin:0 2px;min-width:125px;font-size:18px;border-radius:5px;}
+#searchform5 input[type="text"]{border:2px solid #C4C4C4;float:left;min-width:150px;margin:2px 2px 0;-webkit-margin-before:0;border-radius:5px;}
+#searchform5 input[type="select"]{border:2px solid #C4C4C4;background:#fff;padding:10px 10px 9px 8px;float:left;margin:2px}
+#searchform6 input.mainBtn{background:#8c8a8d;border-radius:5px}
 #searchform5 label{display:none}
-#searchform5 select{background:#fff;padding:10px 10px 10px 8px;float:left;/*margin:2px*/}
+#searchform5 select{background:#fff;padding:10px 10px 10px 8px;float:left;}
 #cbarras{width:30px;height:17px;margin-left:5px}
 #form_observaciones{width:90%;margin-left:10px;margin-right:5px;min-height:100px;height:100px}
 #form_reclamos_tipo_id{width:90%;margin-left:10px;margin-right:5px}
@@ -484,9 +484,9 @@ input.sendbtn:hover{color:#fff}
 .fileUpload input.upload{position:absolute;top:0;right:0;margin:0;padding:0;font-size:20px;cursor:pointer;opacity:0;float:left}
 #selectsemanaresumen label{display:none;margin-bottom:15px;padding-bottom:15px}
 #selectsemanaresumen{margin-top:15px;margin-bottom:15px;padding-bottom:15px}
-.importconfirm{display:inline-block;/*float:right;*/width:100px;height:30px;margin-left:10px}
+.importconfirm{display:inline-block;width:100px;height:30px;margin-left:10px}
 .importconfirm2{display:inline-block;float:right}
-#terminobuscar{border:2px solid #C4C4C4;color:#000;border-radius: 5px}
+#terminobuscar{border:2px solid #C4C4C4;color:#000;border-radius:5px}
 ::-webkit-input-placeholder{color:#000}
 :-moz-placeholder{color:#000;opacity:1}
 ::-moz-placeholder{color:#000;opacity:1}
@@ -495,7 +495,7 @@ input.sendbtn:hover{color:#fff}
 .cliente_info_class2{color:#999999;display:block;font-size:16px;margin-top:10px}
 .cliente_info_class3{float:left;color:#999999;display:block;font-size:16px;margin-top:10px;margin-right:20px}
 .tachado{text-decoration:line-through;color:#999999}
-#buttonsearch{border:0;outline:0;padding:12px;color:#fff;background:#2a80b9;border-radius: 4px;margin-left:10px;margin-top:5px;display:block;margin-bottom:5px;margin-left:5px;min-width:75px;max-width:140px;width:50%}
+#buttonsearch{border:0;outline:0;padding:12px;color:#fff;background:#2a80b9;border-radius:4px;margin-left:10px;margin-top:5px;display:block;margin-bottom:5px;margin-left:5px;min-width:75px;max-width:140px;width:50%}
 #buttonexcel{border:0;outline:0;padding:12px;color:#fff;background:#8EA800;margin-left:10px;margin-top:5px;display:block;margin-bottom:5px;margin-left:5px;min-width:75px;max-width:140px;width:50%}
 .product-content-oferta1{position:absolute}
 .product-content-oferta2{position:absolute;margin-top:150px;margin-left:70px}
@@ -513,12 +513,12 @@ input.sendbtn:hover{color:#fff}
 #farmacia_image{max-width:100%;max-height:90%;max-height:490px;margin:0 auto;margin-bottom:20px;text-align:center}
 .farmacia_img{margin:0 auto;text-align:center}
 #novedades_ico{float:right;margin-right:6px;background-image:url(../img/novedades.png);margin-top:-43px;z-index:100;width:15px;height:15px;text-align:center}
-.btn_agregarvarios{	margin: 8px 4px 8px 0px;padding:8px 8px 8px 8px; border:0;outline:0;color:#fff;/*height:28px;*/text-align:center;background-color:#8EA800;margin:0 auto;display:block;float:right}
+.btn_agregarvarios{margin:8px 4px 8px 0px;padding:8px;border:0;outline:0;color:#fff;text-align:center;background-color:#8EA800;margin:0 auto;display:block;float:right}
 .compra_semanal_fecha{text-align:center;font-size:14px}
 #imagen_especial img{max-width:100%}
 .farmapfizer{width:90%;height:90%}
 .botones_info_span{margin-bottom:10px}
-.product-item-3 .button-holder5{width:100%;height:28px;text-align:center;/*background-color:#8EA800*/;margin:0 auto;display:inline-block;margin-top:20px;margin-bottom:0;margin-right:5px;margin-left:5px;-webkit-backface-visibility:hidden;backface-visibility:hidden;font-size:18px}
+.product-item-3 .button-holder5{width:100%;height:28px;text-align:center;margin:0 auto;display:inline-block;margin-top:20px;margin-bottom:0;margin-right:5px;margin-left:5px;-webkit-backface-visibility:hidden;backface-visibility:hidden;font-size:18px}
 .product-item-3 .button-holder5 a{color:#fff;display:inline-block;width:100%;height:100%;line-height:26px;font-size:18px}
 .promoespecial{margin-bottom:15px}
 .fraganciadiv{width:160px;min-height:250px;float:left;margin-left:5px;margin-right:5px;margin-top:10px;border-style:solid;border-width:0 0 1px;border-color:#ddd}
@@ -575,7 +575,7 @@ input.sendbtn:hover{color:#fff}
 .middle-f .descripcion_label{float: left;white-space: normal;word-wrap: break-word;margin: 0 auto;text-align: center;border: none;padding: 0; background: none; color: #E84C3D;width: 200px;margin-top:8px;height: 45px;}
 .nutriciondiv{width:160px;min-height:250px;float:left;margin-left:5px;margin-right:5px;margin-top:10px;border-style:solid;border-width:0 0 1px;border-color:#ddd}
 #nutricion_row_marcas{text-align: center;}
-.nutricionmarcadiv{ margin:0 15px 15px 0;	width: 210px; height: 210px; border: 5px solid #008f39;	padding: 0px; display: inline-block; border-radius: 4px; } /**/
+.nutricionmarcadiv{ margin:0 15px 15px 0; width: 210px; height: 210px; border: 5px solid #bdd367;  padding: 0px; display: inline-flex; justify-content: center;  align-items: center;  border-radius: 4px;}
 .nutricioncontenedor{min-height:300px;width:100%;height:100%;  margin: 0px auto;} /**/
 .nutricionmarcaimagen img{width:125px}
 .nutricionpresentaciondiv input{width:20px}
@@ -600,7 +600,7 @@ input.sendbtn:hover{color:#fff}
 .partnerpresentaciondiv .fragpre{text-align:right;padding-right:5px;width:80px;font-size:90%}
 .partnerpresentaciondiv .fragstock{padding-left:5px;width:15px}
 .ui-dialog .ui-dialog-title { background-image: url('../img/ofertaagregarcarro.png'); background-repeat: no-repeat; padding-left: 40px; text-align: center; font-size: 16px;} 
-.carro_unidades_ico {    float: right;    margin-right: -48px;    color: #000;/*background-color: #Fff;*/  /* margin-top: 7px; */ margin-top: 9px;  z-index: 100;    width: 30px;        text-align: center;}
+.carro_unidades_ico {    float: right;    margin-right: -48px;    color: #000;/*background-color: #Fff;*/ /* margin-top: 7px; */ margin-top: 9px;  z-index: 100;    width: 30px;        text-align: center;}
 .carro_unidades_nro{font-weight:bold ;	color: #000; cursor:pointer;}
 .carrito_search_form2{display:flex;justify-content:center;flex-flow:row wrap}
 .carrito_search_form{display:flex;justify-content:center;flex-flow:row wrap}
@@ -790,3 +790,19 @@ p.nomDaySim{transform:translate(-40%,-50%)!important}
 .bienestarpresentaciondiv .fragpre{text-align:right;padding-right:5px;width:80px;font-size:90%}
 .bienestarpresentaciondiv .fragstock{padding-left:5px;width:15px}
 .dflxcenter{ display: inline-flex;justify-content: space-evenly;flex-direction: row;width: 100%;align-items: center;}
+.marquee3k{width:100%;overflow:hidden;background:linear-gradient(to right,#56c6f4 0%,#8e7dfa 60%,#56c6f4 100%);color:#fff;position:relative}
+.marquee3k__copy{display:inline-block;white-space:nowrap;color:#fff;padding-left:10%;font-size:14px;display:flex;gap:200px;white-space:nowrap}
+.marquee3k-texto,.marquee3k-fecha{margin-left:30px;margin-right:15px;display:inline-block}
+.marquee3k-fecha{font-weight:bold;font-size:15px}
+.marquee3k_wrapper{animation:deslizamiento-rtl 20s linear infinite}@keyframes deslizamiento-rtl {0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.stars {opacity: 60%;position: fixed;top: 0;left: 0;z-index: 5;width: 120%;height: 100%;pointer-events: none;}
+.star {position: absolute;color: transparent;text-shadow:-1px -1px 0 rgb(255, 224, 67),1px -1px 0 rgba(240, 191, 61, 0.596),-1px 1px 0 rgba(248, 191, 35, 0.596),1px 1px 0 rgba(255, 242, 109, 0.596);animation: fall linear infinite;}
+@keyframes fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+    }
+
+    100% {
+        transform: translateY(100vh) rotate(360deg);
+    }
+}

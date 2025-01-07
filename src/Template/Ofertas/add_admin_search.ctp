@@ -1,6 +1,15 @@
-<article class="module width_3_quarter">
-<header><h3 class="tabs_involved"><?= $titulo ?></h3>
-</header>
+<?php //><script type="text/javascript">
+$previous = "javascript:history.go(-1)";
+if(isset($_SERVER['HTTP_REFERER'])) {
+$previous = $_SERVER['HTTP_REFERER'];
+}
+?>
+<article class="module width_4_quarter">
+<header>
+    <h3 class="tabs_involved"><?= $titulo ?></h3>
+    <div class="tabs_bt_nuevo">
+    <?php echo $this->Html->image('admin/icn_volver.png', ['url' => $previous]);?>	</div>
+  </header>
 <?= $this->Form->create('Ofertas', ['url'=>['controller'=>'Ofertas','action'=>'add_admin_oferta'],'type' => 'file']) ?>
 <fieldset>	
 <div class=ofertainputdescripcion>
@@ -47,7 +56,7 @@ echo $this->Form->input('descuento_producto',['value'=>$dto_drogueria,'label'=>'
 <div class="ofertainputdescuento">
 <?php echo $this->Form->input('unidades_maximas',['value'=>$uni_max, 'label'=>'Unid. Maximas']); ?>
 </div>
-<div class="ofertainputaplica">
+<div class="ofertainputdescuento">
 <?php echo $this->Form->input('aplicaen',['value'=>1,'label'=>'APLICA EN']); ?>
 </div>
 <div class="ofertainputfecha">
@@ -56,7 +65,7 @@ echo $this->Form->input('descuento_producto',['value'=>$dto_drogueria,'label'=>'
 <div class="ofertainputfecha">
 <?=	$this->Form->input('fecha_hasta', ['label'=>'Hasta:','id'=>'fecha_hasta','value'=>$fecha_hasta,'name'=>'fecha_hasta', 'type'=>'text','placeholder'=>'Fecha Hasta:']);?>
 </div>
-<div class="ofertainputaplica">
+<div class="ofertainputdescuento">
 <?php	echo $this->Form->input('plazos',['value'=>$plazo]);?>
 </div>
 </fieldset>		

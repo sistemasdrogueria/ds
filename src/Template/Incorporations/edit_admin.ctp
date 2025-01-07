@@ -22,7 +22,7 @@ margin-right: 5px;
 </style>
 
 <div class="ofertas form large-10 medium-9 columns">
-    <article class="module width_3_quarter">
+    <article class="module width_4_quarter">
 	<header><h3 class="tabs_involved"><?= $titulo ?></h3>
 		<div class = header_icon> 
 <div class="header_icon_delete">

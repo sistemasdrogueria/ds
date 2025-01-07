@@ -1035,7 +1035,7 @@ public function imagenesreset($id = null)
     public function edit_admin($id = null)
     {
 		$this->set('titulo','Modificar Articulo - IMAGEN Y VC');
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $articulo = $this->Articulos->get($id, [
 			'contain' => ['Categorias',  'Laboratorios','Subcategorias','Proveedors'] 
         ]);

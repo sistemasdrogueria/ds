@@ -28,7 +28,8 @@ class ReclamosItemsTable extends Table
             'foreignKey' => 'reclamo_id'
         ]);
         $this->belongsTo('Articulos', [
-            'foreignKey' => 'articulo_id'
+            'foreignKey' => 'articulo_id',
+            'joinType' => 'INNER',
         ]);
     }
 

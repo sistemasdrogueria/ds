@@ -1,45 +1,76 @@
 @media print {
+  #dvContainer{
+    display: none;
+    visibility: inherit;
+  }
+
+  #dvContainer-print{
+    display: block;
+  }
+
   #sidebar {
-	  display:none;
-	  visibility :inherit;
+    display: none;
+    visibility: inherit;
   }
-   #header
-   {
-	  display:none;
-	  visibility :inherit;
+
+  #header {
+    display: none;
+    visibility: inherit;
   }
-   
-   #secondary_bar 
-   {
-	  display:none;
-	  visibility :inherit;
-   }
-   
-  
-    #buttonprint
-   {
-	  display:none;
-	  visibility :inherit;
-   }
-   #titulo_header
-     {
-	  display:none;
-	  visibility :inherit;
-   }
-    section#secondary_bar
-    {
-	  display:none;
-	  visibility :inherit;
-   }
-   
-   .tabs_involved
-   {
-	    display:none;
-	  visibility :inherit;
-   }
-    .volveratras
-   {
-	    display:none;
-	  visibility :inherit;
-   }
+
+  #secondary_bar {
+    display: none;
+    visibility: inherit;
+  }
+
+  #titulo {
+    display: none;
+    visibility: inherit;
+  }
+
+  #reclamoDetails {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #product-image{
+    display: none;
+    visibility: inherit;
+  }
+
+  .detail-item {
+    display: flex;
+    gap: 100px;
+  }
+
+  .container-messages {
+    display: none;
+    visibility: inherit;
+  }
+
+
+  #buttonprint {
+    display: none;
+    visibility: inherit;
+  }
+
+  #titulo_header {
+    display: none;
+    visibility: inherit;
+  }
+
+  section#secondary_bar {
+    display: none;
+    visibility: inherit;
+  }
+
+  .tabs_involved {
+    display: none;
+    visibility: inherit;
+  }
+
+  .volveratras {
+    display: none;
+    visibility: inherit;
+  }
 }

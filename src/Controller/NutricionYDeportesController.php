@@ -269,14 +269,15 @@ class NutricionYDeportesController extends AppController
 		$this->request->session()->write('termsearch2',"");
 		$this->request->session()->write('marcaid',0);		
 		$this->loadModel('Marcas');
-		//$this->loadModel('Generos');
+		$this->loadModel('Grupos');
+		
 		
 		$marcas = $this->Marcas->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['marcas_tipos_id'=>5])->order(['nombre' => 'ASC']);
-        //$generos = $this->Generos->find('list', ['keyField' => 'id','valueField' => 'nombre']);
+		$grupos = $this->Grupos->find('list', ['keyField' => 'id','valueField' => 'descripcion'])->where(['grupos_tipos_id'=>5])->order(['descripcion' => 'ASC']);
 		$marcas->toArray();
 		//$generos->toArray();
 		$this->set(compact('marcas'));
-		
+		$this->set(compact('grupos'));		
 		$this->viewBuilder()->layout('store');
         $this->paginate = ['limit' => 5];
 		
@@ -291,6 +292,8 @@ class NutricionYDeportesController extends AppController
 
 		$marcas2 = $this->Marcas->find('all')->where(['marcas_tipos_id'=>5])->order(['nombre'=>'ASC']);
 		$marcas2->toArray();
+		$grupos2 = $this->Grupos->find('all')->where(['grupos_tipos_id'=>5])->order(['nombre'=>'ASC']);
+		$grupos2->toArray();
 
 			$this->loadModel('Publications');
 
@@ -303,19 +306,23 @@ class NutricionYDeportesController extends AppController
 		$this->set('sursale',$publication_con->skip(1)->first());
 		
 		$this->set(compact('marcas2'));
+		$this->set(compact('grupos2'));
 
 
 		$publications = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()','habilitada' =>'1','ubicacion'=>'8'])->order(['id' => 'DESC'])->all();
 		$this->set('publications_nutricion',$publications->toArray());
 		
-		$this->request->session()->write('publications_nutricion',$publications->toArray());
+		$this->request->session()->write('publications_nutricion',$publications->toArray());		
+		$publicationzocalon = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '21'])->order(['orden' => 'ASC'])->all();
+		$this->set('banner_slider_n', $publicationzocalon->toArray());
+		$this->request->session()->write('banner_slider_n', $publicationzocalon->toArray());
 		
 
 	  //$this->Flash->warning('Nos encontramos actualizado la seccion, intente mas tarde',['key' => 'changepass']);     
        //$this->redirect($this->referer());
 	}
 	
-	public function search($marcaid =null, $generoid=null)
+	public function search($marcaid =null, $grupoid=null)
     {
 		
 		if ($this->request->is('post'))
@@ -340,6 +347,11 @@ class NutricionYDeportesController extends AppController
 				$marcaid = $this->request->data['marca_id'];
 				
 			}	
+			if ($this->request->data['grupo_id']!= null)
+			{
+				$grupoid = $this->request->data['grupo_id'];
+				
+			}	
 		
 	 
 
@@ -350,23 +362,32 @@ class NutricionYDeportesController extends AppController
 		{
 			$termsearch2 = $this->request->session()->read('termsearch2');
 		}
-		IF (is_null($marcaid))
+		if (is_null($marcaid))
 		{
-			if (!is_null($this->request->session()->read('marcaid'))) 
-			$marcaid = $this->request->session()->read('marcaid');
-			else
+			//if (!is_null($this->request->session()->read('marcaid'))) 
+			//$marcaid = $this->request->session()->read('marcaid');
+			//else
 			$marcaid=0;
 		}
 		else
 			$this->request->session()->write('marcaid',$marcaid);
-			
+					
+		if (is_null($grupoid))
+		{
+			$grupoid=0;
+		}
+		else
+			$this->request->session()->write('grupoid',$grupoid);
+		
 
 
 		$this->loadModel('Marcas');
-		
+		$this->loadModel('Grupos');
 		$marcas = $this->Marcas->find('list', ['keyField' => 'id','valueField' => 'nombre'])->where(['marcas_tipos_id'=>5])->order(['nombre' => 'ASC']);
+		$grupos = $this->Grupos->find('list', ['keyField' => 'id','valueField' => 'descripcion'])->where(['grupos_tipos_id'=>5])->order(['descripcion' => 'ASC']);
 		$marcas->toArray();
 		$this->set(compact('marcas'));
+		$this->set(compact('grupos'));
 		
 		$this->viewBuilder()->layout('store');
         //$this->paginate = [	'limit' => 15];
@@ -403,22 +424,18 @@ class NutricionYDeportesController extends AppController
 				{
 						  $articulosA->where(['Articulos.marca_id'=>$marcaid]);
 				}
-				else
+				if ($grupoid !=0)
+				{
+						  $articulosA->where(['Articulos.grupo_id'=>$grupoid]);
+				}
+				if ($grupoid ==0 && $marcaid ==0)
 				$articulosA->where(['Articulos.marca_id in (select id from marcas where marcas_tipos_id=5)']);
 	
 		 
 				if ($articulosA!=null)
 				{
 					$articulosA->andWhere(['Articulos.eliminado'=>0,'Articulos.stock<>"D"'])->group(['Articulos.id']);
-					$limit =50;
-					if ($articulosA->count()<100 && $articulosA->count()>50 )
-					{
-						$limit = 70;
-					}
-					if ($articulosA->count()>100 )
-					{
-						$limit= 70;
-					}
+					$limit =1000;
 					
 					$this->paginate = [		
 					'contain' => ['Carritos'],
@@ -426,14 +443,58 @@ class NutricionYDeportesController extends AppController
 					
 					'maxLimit' => 1000,
 					'offset' => 0, 
-					'order' => ['Articulos.descripcion_pag' => 'asc']];
+					'order' => ['Articulos.stock_fisico' => 'DESC','Articulos.descripcion_pag' => 'asc']];
 						
 					$articulos = $this->paginate($articulosA);
 				}
 				else
 					$articulos = null;
 				$this->set(compact('articulos'));
-		
+				if ($grupoid != null || $grupoid !=0)
+				{
+				$articulosMarcasGrupo = $this->Articulos->find('all')
+				->contain(['Marcas'])
+				->hydrate(false)
+				
+				->where([
+					'Articulos.grupo_id' => $grupoid,
+					'Articulos.eliminado' => 0,
+					'Articulos.stock <>' => 'D'
+				])
+				->group(['Marcas.id'])
+				->order(['Marcas.nombre' => 'ASC'])
+				->select(['Marcas.id','Marcas.nombre','Marcas.imagen','Articulos.grupo_id']); 
+
+				}
+				else
+				{
+					if ($grupoid ==0 && $marcaid ==0)
+					{
+						return $this->redirect(['action' => 'index']);
+					}
+					else
+					{
+					$articulosMarcasGrupo = $this->Articulos->find('all')
+					->contain(['Marcas'])
+					->hydrate(false)
+					
+					->where([
+						'Articulos.subcategoria_id'=> 13, 
+						'Articulos.eliminado' => 0,
+						'Articulos.stock <>' => 'D'
+					])
+					->group(['Marcas.id'])
+					->order(['Marcas.nombre' => 'ASC'])
+					->select(['Marcas.id','Marcas.nombre','Marcas.imagen','Articulos.grupo_id']); 
+
+					}
+				}
+				$this->set('marcas2',$articulosMarcasGrupo->toArray());
+
+				$this->loadModel('Publications');
+				$publicationzocalon = $this->Publications->find('all')->where(['fecha_hasta >=CURRENT_DATE()', 'habilitada' => '1', 'ubicacion' => '21'])->order(['orden' => 'ASC'])->all();
+				$this->set('banner_slider_n', $publicationzocalon->toArray());
+				$this->request->session()->write('banner_slider_n', $publicationzocalon->toArray());
 
 	}
 

@@ -56,5 +56,6 @@ class Cliente extends Entity
         'coef_pyf'=>true,
          'conditions'=>true,
          'tufarmapoint'=>true,
+         'beneficio_comunidadsur'=>true,
     ];
 }

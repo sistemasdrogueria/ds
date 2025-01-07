@@ -65,7 +65,7 @@ class OfertasTiposController extends AppController
 
     public function index_admin()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $this->paginate = [
 			'limit' => 100,
 			'contain'=>[]
@@ -147,7 +147,7 @@ class OfertasTiposController extends AppController
      */
     public function add_admin()
     {
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $ofertasTipo = $this->OfertasTipos->newEntity();
         if ($this->request->is('post')) {
             $ofertasTipo = $this->OfertasTipos->patchEntity($ofertasTipo, $this->request->data);
@@ -172,7 +172,7 @@ class OfertasTiposController extends AppController
      */
     public function edit_admin($id = null)
     {
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $ofertasTipo = $this->OfertasTipos->get($id, [
             'contain' => []
         ]);
@@ -199,7 +199,7 @@ class OfertasTiposController extends AppController
      */
     public function delete_admin($id = null)
     {
-        $this->viewBuilder()->layout('admin');
+        $this->viewBuilder()->layout('admin2');
         $this->request->allowMethod(['post', 'delete','ajax']);
         $id = $this->request->getData('id');
         

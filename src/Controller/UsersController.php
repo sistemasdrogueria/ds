@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 use Cake\Event\Event;
-use Cake\Http\Client;
+ 
 use Cake\Core\Configure;
 use Cake\Mailer\Email;
 
@@ -137,6 +137,7 @@ class UsersController extends AppController
 					$this->request->session()->write('Auth.User.grupo', $cliente['grupo_id']);
 					$this->request->session()->write('Auth.User.pf_dcto', $cliente['preciofarmacia_descuento']);
 					$this->request->session()->write('Auth.User.comunidadsur', $cliente['comunidadsur']);
+					$this->request->session()->write('Auth.User.beneficio_comunidadsur', $cliente['beneficio_comunidadsur']);
 					$this->request->session()->write('Auth.User.farmapoint', $cliente['farmapoint']);
 					$this->request->session()->write('Auth.User.tufarmapoint', $cliente['tufarmapoint']);
 					$this->request->session()->write('Auth.User.provincia_id', $cliente['provincia_id']);
@@ -197,6 +198,9 @@ class UsersController extends AppController
 					} else if ($user['role'] === 'deposit') {
 
 						return $this->redirect(['controller' => 'depositos', 'action' => 'index']);
+					}else if ($user['role'] === 'farmapoint') {
+
+						return $this->redirect(['controller' => 'pedidos_fp', 'action' => 'index_admin']);
 					}
 				} else {
 					$ip = $this->request->clientIp();
@@ -232,6 +236,7 @@ class UsersController extends AppController
 							$this->request->session()->write('Auth.User.grupo', $cliente['grupo_id']);
 							$this->request->session()->write('Auth.User.pf_dcto', $cliente['preciofarmacia_descuento']);
 							$this->request->session()->write('Auth.User.comunidadsur', $cliente['comunidadsur']);
+							$this->request->session()->write('Auth.User.beneficio_comunidadsur', $cliente['beneficio_comunidadsur']);
 							$this->request->session()->write('Auth.User.farmapoint', $cliente['farmapoint']);
 							$this->request->session()->write('Auth.User.tufarmapoint', $cliente['tufarmapoint']);
 							$this->request->session()->write('Auth.User.provincia_id', $cliente['provincia_id']);
@@ -654,7 +659,7 @@ public function loginValidacion()
 	 */
 	public function index()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$this->paginate = [
 			'contain' => ['Clientes'],
 			'limit' => 500,
@@ -668,7 +673,7 @@ public function loginValidacion()
 
 	public function index_search_admin()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 
 
 		if ($this->request->is('post')) {
@@ -731,7 +736,7 @@ public function loginValidacion()
 	 */
 	public function view_admin($id = null)
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$user = $this->Users->get($id, [
 			'contain' => []
 		]);
@@ -747,7 +752,7 @@ public function loginValidacion()
 	 */
 	public function add_admin()
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$user = $this->Users->newEntity();
 		if ($this->request->is('post')) {
 			$user = $this->Users->patchEntity($user, $this->request->data);
@@ -816,7 +821,7 @@ public function loginValidacion()
 	 */
 	public function edit_admin($id = null)
 	{
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$user = $this->Users->get($id, [
 			'contain' => []
 		]);

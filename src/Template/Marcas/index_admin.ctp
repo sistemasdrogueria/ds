@@ -1,4 +1,4 @@
-<article class="module width_3_quarter">
+<article class="module width_4_quarter">
 		<header><h3 class="tabs_involved"><?= $titulo ?></h3>
 		
 		<div class="tabs_bt_nuevo">

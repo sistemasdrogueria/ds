@@ -5,7 +5,7 @@ if(isset($_SERVER['HTTP_REFERER'])) {
 $previous = $_SERVER['HTTP_REFERER'];
 }
 ?>
-<article class="module width_3_quarter">
+<article class="module width_4_quarter">
 <header><h3 class="tabs_involved"><?= $titulo ?></h3>
 <div class="volveratras"><a href="<?= $previous ?>"><?php echo $this->Html->image('icn_volver.png');?></a></div>
 <div class="tabs_bt_nuevo">
@@ -14,13 +14,10 @@ $previous = $_SERVER['HTTP_REFERER'];
 </div>
 </header>
 
+		<?php echo $this->element('fragancia_add_search_admin'); ?>
 
-	<div class="ofertas form large-10 medium-9 columns">
-		<?php echo $this->element('fraganciacreate'); ?>
-	</div>
-	<div class="ofertas form large-10 medium-9 columns">
 		<?php echo $this->element('searchfraganciaproducto'); ?>
-	</div>
+
 	
  </article> 
  

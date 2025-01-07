@@ -8,9 +8,9 @@
 <link rel="stylesheet" type="text/css" href="https://www.drogueriasur.com.ar/ds/css/stylepdf.css">
 </head>
 <body>
-<div class=cabecera>
+<div class=cabecera_r>
 <hr></hr>
-<div class=logo>
+<div class=logo_r>
 <img src="https://www.drogueriasur.com.ar/ds/img/logo.png"></img>
 <?php //echo $this->Html->image('logo.png', ['alt' => 'Drogueria Sur S.A.','fullBase' => true]);?>
 </div>

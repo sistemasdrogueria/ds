@@ -73,8 +73,8 @@ faltan();
 
 <div class="product-item-3" style="margin-bottom:15px;">
 <div id=slider_contenedor style="width:100%">
-<div id="slider2_container" style="visibility: hidden; position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1300px; height: 400px; overflow: hidden;">
-<div data-u="slides" style="position: absolute; left: 0px; top: 0px; width: 1300px; height: 400px; overflow: hidden;">
+<div id="slider2_container" style="visibility: hidden; position: relative; margin: 0 auto; top: 0px; left: 0px; width: 1860px; height: 280px; overflow: hidden;">
+<div data-u="slides" style="position: absolute; left: 0px; top: 0px; width: 1860px; height: 280px; overflow: hidden;">
 <?php foreach ($banner_slider as $slider): 
 if ($slider['url_controlador']!= "")
 {

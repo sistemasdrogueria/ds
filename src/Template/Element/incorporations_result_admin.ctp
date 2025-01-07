@@ -1,3 +1,6 @@
+<style>
+#scrollToTopBtn { display: none; position: fixed; bottom: 20px; right: 20px; font-size: 24px; padding: 10px 15px; text-align: center; cursor: pointer; z-index: 1000; text-decoration: none; }
+</style>
 <div>	
 <div id="tab1" class="tab_content">
 <?= $this->Form->create('Incorporations',['url'=>['controller'=>'Incorporations','action'=>'edit_incorporation_admin']]); ?>
@@ -52,7 +55,7 @@ switch ($incorporation['incorporations_tipos_id']) {
 }
 $filename = WWW_ROOT . 'img' . DS .$uploadPath.$incorporation['imagen'] ;						
 if (file_exists($filename))
-echo $this->Html->image($uploadPath.$incorporation['imagen'], ['alt' => str_replace('"', '', $incorporation['descripcion']),'height' => 120]);
+echo $this->Html->image($uploadPath.$incorporation['imagen'], ['class'=>'imgFoto','alt' => str_replace('"', '', $incorporation['descripcion']),'height' => 120]);
 //else
 //echo $uploadPath.$incorporation['imagen'];	
 ?> 
@@ -75,8 +78,16 @@ $habilitada = $incorporation->habilitada;
 echo $this->Form->input($encabezado.'habilitada', ['tabindex'=>$indice,'label'=>'','type'=>'checkbox','checked'=>$habilitada]); ?>
 </td>
 <td class="actions">
-<?=	$this->Html->image("admin/icn_edit.png", ["alt" => "Edit",'url' => ['controller' => 'incorporations', 'action' => 'edit_admin',  $incorporation->id]]);?>
-<a href="#" onclick="preguntarSiNo(<?php echo $incorporation->id ?>)"><?php echo $this->Html->image('admin/icn_trash.png');?></a>
+
+<?php
+echo $this->Html->image("admin/admin_edit.png", ["alt" => "Edit",'url' => ['controller' => 'incorporations', 'action' => 'edit_admin',  $incorporation->id],
+'data-static'=>'../img/admin/admin_edit.png','data-hover'=>'../img/admin/admin_edit.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+  <a href="#" onclick="preguntarSiNo(<?php echo $incorporation->id ?>)"><?php 
+  echo $this->Html->image("admin/admin_delete.png", ["alt" => "imagen_reset",'data-static'=>'../img/admin/admin_delete.png','data-hover'=>'../img/admin/admin_delete.gif','class'=>'hover-gif','style'=>'width=50px']);
+  ?>
+</a>
+
 </td>
 </tr>
 
@@ -102,7 +113,46 @@ echo $this->Paginator->next(__('Siguiente'), array('tag' => 'li','currentClass' 
 <?php echo $this->Paginator->counter('{{count}} Total'); ?>
 </div>
 </div>
-</div>		
+</div>
+<div class="modal fade" id="enlargeImageModal" tabindex="-1" role="dialog" aria-labelledby="enlargeImageModal" aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+</div>
+<div class="modal-body">       
+<img src="" class="enlargeImageModalSource" style="width: 95%;">       
+</div>
+</div>
+</div>
+</div>	
+<?php 
+echo $this->Html->image("admin/admin_up.png", ["alt" => "Edit",'id'=>'scrollToTopBtn',/*'class'=>'scroll-to-top',*/
+'data-static'=>'../img/admin/admin_up.png','data-hover'=>'../img/admin/admin_up.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+
+<script>
+let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// Muestra el botón cuando el usuario se desplaza hacia abajo
+window.onscroll = function() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// Cuando el usuario hace clic en el botón, lo lleva a la parte superior
+scrollToTopBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+</script>
+
 <script>		
 var myBaseUrlsdelete = '<?php echo \Cake\Routing\Router::url(array('controller' => 'Incorporations', 'action' => 'delete_admin')); ?>';
 function eliminarDatos(id) {
@@ -138,4 +188,24 @@ function preguntarSiNo(id) {
       alertify.error("Se cancelo la operación");
     }
   );
-}</script>
+}
+
+$(function() {
+$('.imgFoto').on('click', function() {
+var str = $(this).attr('src');
+var res = str;
+var a = new XMLHttpRequest;
+a.open("GET", res, false);
+a.send(null);
+if (a.status === 404){
+var res = $(this).attr('src');
+//var res = res.replace("foto.png", "productos/"+$(this).data("id"));
+}			
+//var res =  $(this).attr('src');
+$('.enlargeImageModalSource').attr('src',res);
+$('#enlargeImageModal').modal('show');
+});
+});
+
+</script>
+<?php echo $this->Html->script('bootstrap'); ?>

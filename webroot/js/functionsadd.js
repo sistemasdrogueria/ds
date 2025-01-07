@@ -369,7 +369,7 @@ function ajaxcart(id, quantity, pv_id, id_input) {
 			}
 		});
 	}
-function ajaxcartAgregar(id, quantity, pv_id, id_input) {
+function ajaxcartAgregar(id, quantity, pv_id, id_input,tipo_oferta) {
 
 		$.ajax({
 			//aca es type POST
@@ -379,7 +379,8 @@ function ajaxcartAgregar(id, quantity, pv_id, id_input) {
 				id: id,
 				quantity: quantity,
 				descuento_id: pv_id,
-				id_input: id_input
+				id_input: id_input,
+				 tipo_oferta:tipo_oferta
 
 			},
 			dataType: "json",

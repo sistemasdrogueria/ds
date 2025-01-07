@@ -1,3 +1,9 @@
+<style>
+.header{ text-align: center;}
+.colcenter{ text-align: center;}
+</style>
+
+
 <script>
 $(document).ready(function() {
 $(".formpublicationactive").change(function() {
@@ -55,39 +61,72 @@ error: function(textStatus) {
 <table class="tablesorter"> 
 <thead> 
 <tr>
-<th><?= $this->Paginator->sort('id','Imagen') ?></th>
-<th><?= $this->Paginator->sort('id','Nro') ?></th>
-<th><?= $this->Paginator->sort('descripcion','Descripción') ?></th>
-<th><?= $this->Paginator->sort('fecha_desde') ?></th>
-<th><?= $this->Paginator->sort('fecha_hasta') ?></th>
-<th><?= $this->Paginator->sort('ubicacion','Ubicación') ?></th>
-<th><?= $this->Paginator->sort('orden', 'Orden') ?></th>
-<th><?= $this->Paginator->sort('habilitada','Activa') ?></th>
+<th class="header"><?= $this->Paginator->sort('id','Imagen') ?></th>
+<th class="header"><?= $this->Paginator->sort('id','INFO') ?></th>
+<th class="header"><?= $this->Paginator->sort('id','Nro') ?></th>
+<th class="header"><?= $this->Paginator->sort('descripcion','Descripción') ?></th>
+<th class="header"><?= $this->Paginator->sort('fecha_desde') ?></th>
+<th class="header"><?= $this->Paginator->sort('fecha_hasta') ?></th>
+<th class="header"><?= $this->Paginator->sort('ubicacion','Ubicación') ?></th>
+<th class="header"><?= $this->Paginator->sort('orden', 'Orden') ?></th>
+<th class="header"><?= $this->Paginator->sort('habilitada','Activa') ?></th>
 <th class="actions"><?= __('') ?></th>
 </tr>
 </thead>
 <tbody>
+
+<?php 
+function formatoTamano($bytes) {
+  $unidades = ['B', 'KB', 'MB', 'GB', 'TB'];
+  $potencia = floor(($bytes ? log($bytes) : 0) / log(1024));
+  $potencia = min($potencia, count($unidades) - 1);
+  $bytes /= pow(1024, $potencia);
+
+  return round($bytes, 2) . ' ' . $unidades[$potencia];
+}
+?>
 <?php $indice=0; foreach ($publications as $publication): ?>
 <?php echo '<tr id="trBody' . $publication['id'] . '">';?> 
-<td>
+
 <?php 
 if ($publication['ubicacion']!=1 && $publication['ubicacion']!=9) $uploadPath = 'publicaciones/';
 else $uploadPath = 'inicio/';
 $filename = WWW_ROOT . 'img' . DS .$uploadPath.$publication['imagen'] ;						
+
 if (file_exists($filename))
+{
+echo "<td class=colcenter>";
 echo $this->Html->image($uploadPath.$publication['imagen'], ['alt' => str_replace('"', '', $publication['descripcion']),'class'=>'imgFoto','style'=>"height:100px; max-width:300px;"]);
+echo '</td>';
+$tamanoArchivo = filesize($filename);
+$informacionImagen = getimagesize($filename);
+echo '<td class=colcenter>'.formatoTamano($tamanoArchivo);
+if ($informacionImagen) {
+  $ancho = $informacionImagen[0];
+  $alto = $informacionImagen[1];
+  echo '<br>'; 
+  echo "{$ancho} x {$alto} PX";
+}
+
+echo '</td>';
+}
+else
+{
+  echo "<td class=colcenter></td><td></td>"; 
+}
+
 ?> 
-</td>
-<td><?= $this->Number->format($publication->id) ?></td>
+
+<td class="colcenter"><?= $this->Number->format($publication->id) ?></td>
 <td><?= $publication->descripcion ?></td>
-<td><?php echo date_format($publication->fecha_desde,'d-m-Y');?></td>
-<td><?php echo date_format($publication->fecha_hasta,'d-m-Y');?></td>
-<td><?php 
+<td class="colcenter"><?php echo date_format($publication->fecha_desde,'d-m-Y');?></td>
+<td class="colcenter"><?php echo date_format($publication->fecha_hasta,'d-m-Y');?></td>
+<td class="colcenter"><?php 
 //$ubicacion= [0=>'A determinar',1=>'SLIDER',2=>'INICIO PP',3=>'CONFIRMAR PEDIDO UP',4=>'VER CARRO PP',5=>'IMPORTAR PEDIDO PP',6=>'UNDER THE CART I',7=>'UNDER THE CART S',8=>'CUENTA CORRIENTE',9=>'EXPOSUR SLIDER',10=>'UNDER THE CART N',12=>'SUR FS'];
 echo $publicationsTipos[$publication['ubicacion']];
 ?></td>
-<td><?php echo $publication['orden'];?></td>
-<td>
+<td class="colcenter"><?php echo $publication['orden'];?></td>
+<td class="colcenter">
 <?php 
 $indice+=1;
 $encabezado = $indice.'.';
@@ -96,8 +135,14 @@ $habilitada = $publication->habilitada;
 echo $this->Form->input($encabezado.'habilitada', ['tabindex'=>$indice,'label'=>'','type'=>'checkbox','checked'=>$habilitada, 'class'=>'formpublicationactive','data-id' =>$publication->id]); ?>
 </td>
 <td class="actions">
-<?=	$this->Html->image("admin/icn_edit.png", ["alt" => "Edit",'url' => ['controller' => 'publications', 'action' => 'edit_admin',  $publication->id]]); ?>
-<a href="#" onclick="preguntarSiNo(<?php echo $publication->id ?>)"><?php echo $this->Html->image('admin/icn_trash.png');?></a>
+<?php
+echo $this->Html->image("admin/admin_edit.png", ["alt" => "Edit",'url' => ['controller' => 'publications', 'action' => 'edit_admin',  $publication->id],
+'data-static'=>'../img/admin/admin_edit.png','data-hover'=>'../img/admin/admin_edit.gif','class'=>'hover-gif','style'=>'width=50px']); 
+?>
+<a href="#" onclick="preguntarSiNo(<?php echo $publication->id ?>)">
+<?php echo $this->Html->image("admin/admin_delete.png", ["alt" => "imagen_reset",'data-static'=>'../img/admin/admin_delete.png','data-hover'=>'../img/admin/admin_delete.gif','class'=>'hover-gif','style'=>'width=50px']); ?>
+</a>
+
 </td>
 </tr>
 <?php endforeach; ?>
@@ -130,6 +175,33 @@ echo $this->Paginator->next(__('Siguiente'), array('tag' => 'li','currentClass' 
 </div>
 </div>
 </div>
+
+<?php 
+echo $this->Html->image("admin/admin_up.png", ["alt" => "Edit",'id'=>'scrollToTopBtn',/*'class'=>'scroll-to-top',*/
+'data-static'=>'../img/admin/admin_up.png','data-hover'=>'../img/admin/admin_up.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+
+<script>
+let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// Muestra el botón cuando el usuario se desplaza hacia abajo
+window.onscroll = function() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// Cuando el usuario hace clic en el botón, lo lleva a la parte superior
+scrollToTopBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+</script>
 
 <script>		
 var myBaseUrlsdelete = '<?php echo \Cake\Routing\Router::url(array('controller' => 'Publications', 'action' => 'delete_admin')); ?>';

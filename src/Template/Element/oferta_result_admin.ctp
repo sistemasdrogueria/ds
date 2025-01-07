@@ -1,11 +1,14 @@
+<style>
+#scrollToTopBtn { display: none; position: fixed; bottom: 20px; right: 20px; font-size: 24px; padding: 10px 15px; text-align: center; cursor: pointer; z-index: 1000; text-decoration: none; }
+</style>
 <div>	
 <div id="tab1" class="tab_content">
 <div class="paginationtop">
         <ul>
 		<?php
-		echo $this->Paginator->prev(__('Anterior'), array('tag' => 'li'), null, array('tag' => 'li','disabledTag' => 'a'));
+		echo $this->Paginator->prev(__('Ant'), array('tag' => 'li'), null, array('tag' => 'li','disabledTag' => 'a'));
 		echo $this->Paginator->numbers(array('separator' => '','currentTag' => 'a', 'currentClass' => 'active','tag' => 'li','first' => 1));
-		echo $this->Paginator->next(__('Siguiente'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','disabledTag' => 'a'));?>
+		echo $this->Paginator->next(__('Sig'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','disabledTag' => 'a'));?>
         </ul>
         <div class="total">
 		<?php echo $this->Paginator->counter('{{count}} Total');?>
@@ -16,6 +19,7 @@
 <thead> 
 <tr>
 <th><?= $this->Paginator->sort('id','Imagen') ?></th>
+<th><?= $this->Paginator->sort('id','INFO') ?></th>
 <th><?= $this->Paginator->sort('articulo_id','Descripción') ?></th>
 <th><?= $this->Paginator->sort('descuento_producto','Desc.') ?></th>
 <th><?= $this->Paginator->sort('unidades_minimas','U.Min') ?></th>
@@ -31,11 +35,20 @@
 </thead>
 <tbody>
 
-<?php $i=0; ?>
+<?php $i=0; 
+function formatoTamano($bytes) {
+  $unidades = ['B', 'KB', 'MB', 'GB', 'TB'];
+  $potencia = floor(($bytes ? log($bytes) : 0) / log(1024));
+  $potencia = min($potencia, count($unidades) - 1);
+  $bytes /= pow(1024, $potencia);
+
+  return round($bytes, 2) . ' ' . $unidades[$potencia];
+}
+?>
 <?php foreach ($ofertas as $oferta): ?>
 
 <?php echo '<tr id="trBody' . $oferta['id'] . '">';?>    
-<td>
+
 <?php 
 $i=$i+1;
 $encabezado = $i.".";
@@ -51,6 +64,8 @@ else
 }
 if (file_exists($filename))
 {
+  echo '<td>';
+   $tamanoArchivo = filesize($filename);
    if ($oferta->oferta_tipo_id<2)
    {
       echo $this->Html->image($uploadPath.$oferta['articulo']['imagen'], ['class'=>'imgFoto2','alt' => str_replace('"', '', $oferta['descripcion']),'height' =>100]);
@@ -60,12 +75,21 @@ if (file_exists($filename))
      echo $this->Html->image($uploadPath.$oferta['imagen'], ['class'=>'imgFoto','alt' => str_replace('"', '', $oferta['descripcion']),'height' => 100]);
   
    }
+   echo '</td>';
+   $informacionImagen = getimagesize($filename);
+   echo '<td class=colcenter>'.formatoTamano($tamanoArchivo);
+   if ($informacionImagen) {
+     $ancho = $informacionImagen[0];
+     $alto = $informacionImagen[1];
+     echo '<br>'; 
+     echo "{$ancho} x {$alto} PX";
+   }
    
+   echo '</td>';
 }
-//else
-//echo $uploadPath.$oferta['imagen'];	
+
 ?>       
-</td>
+
 <td>
 <?= $oferta->descripcion ?>
 </td>
@@ -92,9 +116,20 @@ echo $this->Form->input($encabezado.'habilitada', ['tabindex'=>$i,'label'=>'','t
 <?php echo $oferta->orden;?>
 </td>
 <td class="actions">
-<?=	$this->Html->image("admin/icn_edit.png",  ["alt" => "Edit",'url' => ['controller' => 'ofertas', 'action' => 'edit_admin',  $oferta->id]]);?>
-<?=	$this->Html->image("admin/icn_view.png",  ["alt" => "Ver", 'url' => ['controller' => 'ofertas', 'action' => 'view_admin',  $oferta->id]]);?>
-<a href="#" onclick="preguntarSiNo(<?php echo $oferta->id ?>)"><?php echo $this->Html->image('admin/icn_trash.png');?></a>
+
+<?php
+echo $this->Html->image("admin/admin_edit.png", ["alt" => "Edit",'url' => ['controller' => 'ofertas', 'action' => 'edit_admin',  $oferta->id],
+'data-static'=>'../img/admin/admin_edit.png','data-hover'=>'../img/admin/admin_edit.gif','class'=>'hover-gif','style'=>'width=50px']);
+echo $this->Html->image("admin/admin_view.png", ["alt" => "View",'url'=>['controller' => 'ofertas', 'action' => 'view_admin',  $oferta['id']],'escape' => false,'target'=>'_blank',
+'data-static'=>'../img/admin/admin_view.png','data-hover'=>'../img/admin/admin_view_i.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+  <a href="#" onclick="preguntarSiNo(<?php echo $oferta->id ?>)"><?php 
+ 
+  echo $this->Html->image("admin/admin_delete.png", ["alt" => "imagen_reset",'data-static'=>'../img/admin/admin_delete.png','data-hover'=>'../img/admin/admin_delete.gif','class'=>'hover-gif','style'=>'width=50px']);
+  ?>
+</a>
+
+
 </td>
 </tr>
 <?php endforeach; ?>
@@ -107,9 +142,9 @@ echo $this->Form->input($encabezado.'habilitada', ['tabindex'=>$i,'label'=>'','t
 <div class="pagination">
 <ul>
 <?php
-echo $this->Paginator->prev(__('Anterior'), array('tag' => 'li'), null, array('tag' => 'li','disabledTag' => 'a'));
+echo $this->Paginator->prev(__('Ant'), array('tag' => 'li'), null, array('tag' => 'li','disabledTag' => 'a'));
 echo $this->Paginator->numbers(array('separator' => '','currentTag' => 'a', 'currentClass' => 'active','tag' => 'li','first' => 1));
-echo $this->Paginator->next(__('Siguiente'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','disabledTag' => 'a'));
+echo $this->Paginator->next(__('Sig'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','disabledTag' => 'a'));
 ?>
 </ul>
 <div class="total">
@@ -143,6 +178,32 @@ echo $this->Paginator->counter('{{count}} Total');
 </div>
 </div>
 </div>
+<?php 
+echo $this->Html->image("admin/admin_up.png", ["alt" => "Edit",'id'=>'scrollToTopBtn',/*'class'=>'scroll-to-top',*/
+'data-static'=>'../img/admin/admin_up.png','data-hover'=>'../img/admin/admin_up.gif','class'=>'hover-gif','style'=>'width=50px']);
+?>
+
+<script>
+let scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// Muestra el botón cuando el usuario se desplaza hacia abajo
+window.onscroll = function() {
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// Cuando el usuario hace clic en el botón, lo lleva a la parte superior
+scrollToTopBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+});
+</script>
 
 <script>
    function seleccionar_todo(valor){

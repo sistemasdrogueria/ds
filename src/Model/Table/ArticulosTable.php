@@ -36,6 +36,9 @@ class ArticulosTable extends Table
         $this->belongsTo('Subcategorias', [
             'foreignKey' => 'subcategoria_id'
         ]);
+        $this->belongsTo('Marcas', [
+            'foreignKey' => 'marca_id'
+        ]);
         $this->hasMany('CarritosItems', [
             'foreignKey' => 'articulo_id'
         ]);

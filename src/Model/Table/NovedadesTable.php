@@ -25,6 +25,9 @@ class NovedadesTable extends Table
         $this->displayField('id');
         $this->primaryKey('id');
     
+        $this->belongsTo('CategoriasNovedades', [
+            'foreignKey' => 'categorias_novedades_id'
+        ]);
     }
     /**
      * Default validation rules.

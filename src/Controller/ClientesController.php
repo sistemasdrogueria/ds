@@ -79,9 +79,9 @@ class ClientesController extends AppController
      */
     public function index_admin()
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
         $this->paginate = [
-            'contain' => ['ClientesCreditos'],
+            'contain' => ['ClientesCreditos','Localidads'],
 			'limit' => 400,  
 			'maxLimit' => 400,         
 			'order' => ['Clientes.id' => 'DESC']
@@ -112,18 +112,18 @@ class ClientesController extends AppController
 			}	
 				
 			if (is_numeric($termsearch))
-				$result = $this->Clientes->find('all')->contain(['ClientesCreditos'])->where(['codigo ='=>$termsearch]);	
+				$result = $this->Clientes->find('all')->contain(['ClientesCreditos','Localidads'])->where(['Clientes.codigo ='=>$termsearch]);	
 			else
-				$result = $this->Clientes->find('all')->contain(['ClientesCreditos'])->where(['razon_social LIKE'=>$termsearch]);
+				$result = $this->Clientes->find('all')->contain(['ClientesCreditos','Localidads'])->where(['razon_social LIKE'=>$termsearch]);
 			
 				
 				
 				
 			$this->set('clientes', $this->paginate($result));
 			$this->set('_serialize', ['clientes']);
-	}
+		}
 		else
-			$this->set('clientes', $this->paginate($this->Clientes->find('all')->contain(['ClientesCreditos'])));
+			$this->set('clientes', $this->paginate($this->Clientes->find('all')->contain(['ClientesCreditos','Localidads'])));
 		
 		
 		
@@ -226,7 +226,7 @@ class ClientesController extends AppController
      */
     public function view_admin($id = null)
     {
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
        
 		$this->loadModel('Clientes');
 		$cliente = $this->Clientes->get($id, [
@@ -335,7 +335,7 @@ class ClientesController extends AppController
     public function edit_admin($id = null)
     {
 				
-		$this->viewBuilder()->layout('admin');
+		$this->viewBuilder()->layout('admin2');
 		$cliente = $this->Clientes->newEntity();
 		$cliente = $this->Clientes->get($id, [
             'contain' => ['Provincias','Localidads']
@@ -395,8 +395,15 @@ class ClientesController extends AppController
 			if (!empty($this->request->data['comunidadsur']))
 			$cliente['comunidadsur'] = $this->request->data['comunidadsur'];
 			
+			if (!empty($this->request->data['comunidadsur']))
+			$cliente['comunidadsur'] = $this->request->data['comunidadsur'];
+
+			if (!empty($this->request->data['beneficio_comunidadsur']))
+			$cliente['beneficio_comunidadsur'] = $this->request->data['beneficio_comunidadsur'];
+
 			if (!empty($this->request->data['farmapoint']))
 			$cliente['farmapoint'] = $this->request->data['farmapoint'];
+
 			if (!empty($this->request->data['tufarmapoint']))
 			$cliente['tufarmapoint'] = $this->request->data['tufarmapoint'];
 			

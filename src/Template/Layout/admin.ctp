@@ -14,14 +14,15 @@ echo $this->fetch('meta'); ?>
 <?php echo $this->Html->css('admin.min');
 echo $this->Html->css('jquery-ui.min'); 
 echo $this->Html->script('jquery-1.11.3.min'); 
+echo $this->Html->css('alertify/alertify');
+echo $this->Html->script('alertify/alertify');
 echo $this->Html->script('jquery-ui-1.10.4.custom.min'); 	
 echo $this->Html->script('jquery.tablesorter.min',['plugin' => false]); 
 echo $this->Html->script('jquery.equalHeight.min',['plugin' => false]); 
-echo $this->Html->script('alertify/alertify');
 echo $this->Html->css('jquery.notifyBar.min');
-echo $this->Html->css('alertify/alertify');
-echo $this->Html->script('jquery.notifyBar.min');?>
-<script type=text/javascript>$(document).ready(function(){$(".tab_content").hide();$("ul.tabs li:first").addClass("active").show();$(".tab_content:first").show();$("ul.tabs li").click(function(){$("ul.tabs li").removeClass("active");$(this).addClass("active");$(".tab_content").hide();var a=$(this).find("a").attr("href");$(a).fadeIn();return false})});$(function(){$("#fechahasta, #fechadesde, #fecha_desde,#fecha_hasta, #fecha_recepcion, #form_reclamo_fv1,#form_reclamo_fv2,#form_reclamo_fv3,#form_reclamo_fv4").datepicker({dateFormat:"dd/mm/yy",dayNames:["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"],dayNamesMin:["Do","Lu","Ma","Mi","Ju","Vi","Sa"],firstDay:1,gotoCurrent:true,monthNames:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Deciembre"]});$(".main-menu ul.menu li a").click(function(){$(this).addClass("active")})});$(function(){var c=document.getElementById("flashmensajesuccess");if(c!=null){if(c.innerHTML!=""){$.notifyBar({cssClass:"success",html:c.innerHTML,position:"bottom"})}}var b=document.getElementById("flashmensajeerror");if(b!=null){if(b.innerHTML!=""){$.notifyBar({cssClass:"error",html:b.innerHTML,close:true,closeOnClick:false})}}var a=document.getElementById("flashmensajewarning");if(a!=null){if(a.innerHTML!=""){$.notifyBar({cssClass:"warning",html:a.innerHTML})}}});</script>
+echo $this->Html->script('jquery.notifyBar.min');
+?>
+<script type=text/javascript>    var searchPedidosFp = '<?php echo \Cake\Routing\Router::url(array('controller' => 'PedidosFp', 'action' => 'search')); ?>';$(document).ready(function(){$(".tab_content").hide();$("ul.tabs li:first").addClass("active").show();$(".tab_content:first").show();$("ul.tabs li").click(function(){$("ul.tabs li").removeClass("active");$(this).addClass("active");$(".tab_content").hide();var a=$(this).find("a").attr("href");$(a).fadeIn();return false})});$(function(){$("#fechahasta, #fechadesde, #fecha_desde,#fecha_hasta, #fecha_recepcion, #form_reclamo_fv1,#form_reclamo_fv2,#form_reclamo_fv3,#form_reclamo_fv4").datepicker({dateFormat:"dd/mm/yy",dayNames:["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"],dayNamesMin:["Do","Lu","Ma","Mi","Ju","Vi","Sa"],firstDay:1,gotoCurrent:true,monthNames:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Deciembre"]});$(".main-menu ul.menu li a").click(function(){$(this).addClass("active")})});$(function(){var c=document.getElementById("flashmensajesuccess");if(c!=null){if(c.innerHTML!=""){$.notifyBar({cssClass:"success",html:c.innerHTML,position:"bottom"})}}var b=document.getElementById("flashmensajeerror");if(b!=null){if(b.innerHTML!=""){$.notifyBar({cssClass:"error",html:b.innerHTML,close:true,closeOnClick:false})}}var a=document.getElementById("flashmensajewarning");if(a!=null){if(a.innerHTML!=""){$.notifyBar({cssClass:"warning",html:a.innerHTML})}}});</script>
 </head>
 <body>
 <section id=secondary_bar>
@@ -47,6 +48,7 @@ echo $this->Html->script('jquery.notifyBar.min');?>
 <h3><?= $this->Html->link(__('Ofertas Tipos'), ['controller' => 'OfertasTipos', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Pañales Pami'), ['controller' => 'Pedidos', 'action' => 'pami_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Pedidos'), ['controller' => 'Pedidos', 'action' => 'index_admin']) ?></h3>
+<h3><?= $this->Html->link(__('Pedidos Farmapoint'), ['controller' => 'PedidosFp', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Pedidos NEW'), ['controller' => 'Pedidos', 'action' => 'index_admin_new']) ?></h3>
 <h3><?= $this->Html->link(__('Reclamos'), ['controller' => 'Tickets', 'action' => 'index_admin']) ?></h3>
 <h3><?= $this->Html->link(__('Resumenes'), ['controller' => 'CtacteResumenSemanales', 'action' => 'index_admin']) ?></h3>
@@ -81,4 +83,39 @@ echo $this->Html->script('jquery.notifyBar.min');?>
 </div>
 </section>
 </body>
+<script>
+  $(function() {
+      var c = document.getElementById("flashmensajesuccess");
+      if (c != null) {
+        if (c.innerHTML != "") {
+          $.notifyBar({
+            cssClass: "success",
+            html: c.innerHTML,
+            position: "bottom"
+          })
+        }
+      }
+      var b = document.getElementById("flashmensajeerror");
+      if (b != null) {
+        if (b.innerHTML != "") {
+          $.notifyBar({
+            cssClass: "error",
+            html: b.innerHTML,
+            close: true,
+            closeOnClick: false
+          })
+        }
+      }
+      var a = document.getElementById("flashmensajewarning");
+      if (a != null) {
+        if (a.innerHTML != "") {
+          $.notifyBar({
+            cssClass: "warning",
+            html: a.innerHTML
+          })
+        }
+      }
+    });
+</script>
+
 </html>

@@ -1,232 +1,236 @@
 <div class="articulos index large-10 medium-9 columns">
-<table class='tablasearch2' cellpadding="0" cellspacing="0">
-<thead>
-<tr>	
-<th>Cant.</th>
-<th><?= $this->Paginator->sort('descripcion_pag','Descripción') ?></th>
-<th>Laboratorio</th>
-<th>Fecha Venc.</th>
-<th>Lote</th>
-<th>Serie</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<div id="flotante"></div>
-<?php $indice=0;?>
-<?php 			
-$cat = $categorias->toArray();
-$lab = $laboratorios->toArray(); 
-$x=1;
-?>
-<?php foreach ($articulos as $art): ?>
-<tr>
-<?php $indice+=1;
-$articulo=$art['articulo'];
-?>
-<?= $this->Form->create('Tickets',['id'=>'reclamo_form_id','url'=>['controller'=>'Tickets','action'=>'add_item']]); ?>
-<td class='form_reclamo_cant_td'>
-<?php
-echo $this->Form->input('cantidad',['tabindex'=>$indice,'class'=>'formcartcanttic','style'=>'width: 40px;']);
-echo $this->Form->input('articulo_id',['type'=>'hidden','value'=>$articulo['id']]);
-echo $this->Form->input('cantidad_facturada',['type'=>'hidden','value'=> $art['cantidad_facturada']]);
+   <?php
+   $x = 1;
+   $indice = 0;
+   ?>
+   <div class="productos-container-info">
+      <div class="article-grid" id="articleGrid">
+         <?php
+         $tabIndexCounter = 1;
+         ?>
 
-echo $this->Form->input('descripcion',['type'=>'hidden','value'=>$articulo['descripcion_pag']]);
-?>
-</td>
-<td class='masinfoband'>
-<div onmouseover="showdiv(event,'<?php 
-echo $articulo['descripcion_pag'].'</br>'; 
-echo 'Laboratorio: '.$lab[$articulo['laboratorio_id']].'</br>';
-echo 'Categoría: '.$cat[$articulo['categoria_id']].'</br>';
-echo 'Troquel: '.$articulo['troquel'].'</br>';
-echo 'EAN: '.$articulo['codigo_barras'].'</br>';?>
-','<?php echo $articulo['iva'];?>'
-,'<?php echo $articulo['trazable'];?>'
-,'<?php echo $articulo['cadena_frio'];?>'
-,'<?php echo $articulo['categoria_id'];?>'
-,'<?php echo $articulo['pack'];?>
-');" onMouseOut='hiddenDiv()' style='display:table;'>
-<?php echo $articulo['descripcion_pag']; 
-if ($articulo['pack'] !=null){
-echo ' <font color="red">PACK</font>';
-}
-?>	
-</div>				
-</td>
-<td> <?php echo $lab[$articulo['laboratorio_id']];?>
-</td>
-<td class="form_reclamo_fv_td">
-<?php
-echo $this->Form->input('fecha_vencimiento',['class'=>'form_reclamo_fv','id'=>'form_reclamo_fv'.$x, 
-'pattern'=>'\d{2}/\d{4}', 'placeholder'=> "mm/yyyy"
-]);
-?>
-</td>
-<td class="form_reclamo_lote_td">
-<?php
-echo $this->Form->input('lote',['label'=>'','class'=>'form_reclamo_lote']);
-?>
-</td>
-<td class="form_reclamo_serie_td">
-<?php
-echo $this->Form->input('serie',['label'=>'','class'=>'form_reclamo_serie']);
-$x++;
-?>
-</td>
-<td>
-<?php echo $this->Form->submit('Cargar',['id'=>'btn-ingresar']); ?>
-</td>
-<?= $this->Form->end() ?>	
-</tr>
-<?php endforeach; $indice+=2; ?>
-</tbody>
-</table>
+         <?php foreach ($articulos as $art): ?>
+            <?php
+            $indice += 1;
+            $articulo = $art['articulo'];
+            $articuloData = [
+               'imagen' => $this->Url->build('/img/productos/big_' . $articulo->imagen, ['fullBase' => true]),
+               'descripcionPag' => $articulo->descripcion_pag,
+               'laboratorio' => $art->laboratorio_nombre,
+               'categoria' => $articulo->categoria_id,
+               'categorianombre' => $art->categoria_nombre,
+               'troquel' => $articulo->troquel,
+               'codigoBarras' => $articulo->codigo_barras,
+               'iva' => $articulo->iva,
+               'trazable' => $articulo->trazable,
+               'cadenaFrio' => $articulo->cadena_frio,
+               'pack' => $articulo->pack,
+            ];
+            ?>
+            <div class="article-card">
+               <div class="article-title"><?php echo $art->articulo->descripcion_pag ?></div>
+               <div id="<?= $art->id ?>" onclick="cargarArticulo(<?= htmlspecialchars(json_encode($articuloData), ENT_QUOTES, 'UTF-8') ?>)" class="info-icon">ℹ️</div>
+               <div class="article-info">Laboratorio: <?= $art->laboratorio_nombre; ?></div>
+               <div class="article-info">EAN: <?= $art->articulo->codigo_barras; ?></div>
+               <?= $this->Form->create('Tickets', ['url' => ['controller' => 'Tickets', 'action' => 'add_item']]); ?>
+               <div class="form-grid">
+                  <?php
+                  echo $this->Form->input('articulo_id', ['type' => 'hidden', 'value' => $articulo['id'], 'class' => 'input-articulo']);
+                  echo $this->Form->input('cantidad_facturada', ['type' => 'hidden', 'value' => $art['cantidad_facturada'], 'class' => 'input-articulo']);
+                  echo $this->Form->input('descripcion', ['type' => 'hidden', 'value' => $articulo['descripcion_pag'], 'class' => 'input-articulo']);
+
+                  echo $this->Form->control('cantidad', [
+                     'label' => false,
+                     'class' => 'input-articulo',
+                     'placeholder' => 'Cantidad Máxima: ' . $art->cantidad_facturada,
+                     'type' => 'number',
+                     'max' => $art->cantidad_facturada,
+                     'min' => 0,
+                     'tabindex' => $tabIndexCounter++
+                  ]);
+
+                  echo $this->Form->input('fecha_vencimiento', [
+                     'label' => false,
+                     'class' => 'input-articulo',
+                     'pattern' => '\d{2}/\d{4}',
+                     'placeholder' => "mm/yyyy",
+                     'tabindex' => $tabIndexCounter++
+                  ]);
+
+                  echo $this->Form->input('lote', [
+                     'label' => false,
+                     'class' => 'input-articulo',
+                     'placeholder' => "Lote",
+                     'tabindex' => $tabIndexCounter++
+                  ]);
+
+                  echo $this->Form->input('serie', [
+                     'label' => false,
+                     'class' => 'input-articulo',
+                     'placeholder' => "Serie",
+                     'tabindex' => $tabIndexCounter++
+                  ]);
+                  ?>
+               </div>
+               <?php echo $this->Form->submit('Cargar', ['class' => 'button-articulo', 'tabindex' => $tabIndexCounter++]); ?>
+               <?= $this->Form->end() ?>
+            </div>
+         <?php endforeach; ?>
+
+      </div>
+   </div>
 </div>
-<style>
-.ui-datepicker-calendar {display: none;}
-</style>
-<script type="text/javascript">
- /*$(document).on('ready',function(){       
-    $('#btn-ingresar').click(function(){
-        
-        $.ajax({                        
-           type: "POST",                 
-           url: '<?= $this->Url->build(['controller' => 'Tickets', 'action' => 'add_item']) ?>',
-		
-		   dataType: 'JSON',
-           data: $("#reclamo_form_id").serialize(), 
-           success: function(data)             
-           {
-              alert(data);
-			 $('#reclamo-temp-item').html(data);               
-           }
-       });
-    });
-});
-*/
 
-$("tr").not(':first').hover(
-function () {
-$(this).css("background","#8FA800");
-$(this).css("color","#000");
-$(this).css("font-weight","");
-}, 
-function () {
-$(this).css("background","");
-$(this).css("color","");
-$(this).css("font-weight","");
-}
-);
-/**
-* Funcion que muestra el div en la posicion del mouse
-*/
-function showdiv(event,text,iva,traza,frio,categ,pack)
-{
-//determina un margen de pixels del div al raton
-margin=0;
-//La variable IE determina si estamos utilizando IE
-var IE = document.all?true:false;
-var tempX = 0;
-var tempY = 0;
-//document.body.clientHeight = devuelve la altura del body
-if(IE)
-{ //para IE
-IE6=navigator.userAgent.toLowerCase().indexOf('msie 6');
-IE7=navigator.userAgent.toLowerCase().indexOf('msie 7');
-//event.y|event.clientY = devuelve la posicion en relacion a la parte superior visible del navegador
-//event.screenY = devuelve la posicion del cursor en relaciona la parte superior de la pantalla
-//event.offsetY = devuelve la posicion del mouse en relacion a la posicion superior de la caja donde se ha pulsado
-if(IE6>0 || IE7>0)
-{
-tempX = event.x
-tempY = event.y
-if(window.pageYOffset){
-tempY=(tempY+window.pageYOffset);
-tempX=(tempX+window.pageXOffset);
-}else{
-tempY=(tempY+Math.max(document.body.scrollTop,document.documentElement.scrollTop));
-tempX=(tempX+Math.max(document.body.scrollLeft,document.documentElement.scrollLeft));
-}
-}else{
-//IE8
-tempX = event.x
-tempY = event.y
-}
-}else{ //para netscape
-//window.pageYOffset = devuelve el tamaño en pixels de la parte superior no visible (scroll) de la pagina
-//document.captureEvents(Event);
-tempX = event.pageX;
-tempY = event.pageY;
-}
-if (tempX < 0){tempX = 0;}
-if (tempY < 0){tempY = 0;}
-// Modificamos el contenido de la capa  
-var trazaimg='';
-var cadenaimg='';
-var psiimg='';
-var valeoficialimg='';
-var ivaimg='';
-if (iva==1)
-{
-ivaimg = '<?php echo $this->Html->image('iva.png',['title' => 'IVA']);?>';
-}
-if (traza==1)
-{
-trazaimg = '<?php echo $this->Html->image('trazable.png',['title' => 'Trazable']);?>';
-}
-if (frio==1)
-{
-cadenaimg = '<?php echo $this->Html->image('cadenafrio.png',['title' => 'Cadena de Frio']);?>';
-}
-if (categ==7)
-{
-valeoficialimg = '<?php echo $this->Html->image('valeoficial.png',['title' => 'Vale Oficial']);?>';
-}	 
-if (categ==6)
-{
-psiimg = '<?php echo $this->Html->image('psi.png',['title' => 'Psicotropicos']);?>';
-}	 
-if (pack==1) 
-{
-psiimg = '<?php echo $this->Html->image('pack.png',['title' => 'Pack']);?>';
-}	
-document.getElementById('flotante').innerHTML=text+ivaimg+trazaimg+cadenaimg+psiimg+valeoficialimg;
-// Posicionamos la capa flotante
-document.getElementById('flotante').style.top = (tempY-120)+"px";
-document.getElementById('flotante').style.left = (tempX-10)+"px";
-document.getElementById('flotante').style.display='block';
-return;
-}
-/**
-* Funcion para esconder el div
-*/
-function hiddenDiv()
-{
-document.getElementById('flotante').style.display='none';
-}
-</script>
+<div id="articuloModal" class="modal">
+   <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 style="text-align: center;color: #2d68ab;margin-block-start: 10px;margin-block-end: 10px;">Detalle del Artículo</h2>
+      <hr class="linea-divisor">
+      <div class="modal-informacion">
+         <div>
+            <img class="imagen-modal" src="" alt="no-img">
+         </div>
+         <div>
+            <p id="descripcion-pag"><strong>Descripción Pag:</strong> <span style="display:inline;"></span></p>
+            <p id="laboratorio"><strong>Laboratorio:</strong> <span style="display:inline;"></span></p>
+            <p id="categorianombre"><strong>Categoría:</strong> <span style="display:inline;"></span></p>
+            <p id="troquel"><strong>Troquel:</strong> <span style="display:inline;"></span></p>
+            <p id="codigo-barras"><strong>EAN:</strong> <span style="display:inline;"></span></p>
+            <img style="display: none;height: 20px;width: 20px;" src=""id="tipo-product" alt="no-img">
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<!-- Script para mostrar Informacion Producto -->
 <script>
-$('table.tablasearch2').each(function() {
-var currentPage = 0;
-var numPerPage = 8;
-var $table = $(this);
-$table.bind('repaginate', function() {
-$table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
-});
-$table.trigger('repaginate');
-var numRows = $table.find('tbody tr').length;
-var numPages = Math.ceil(numRows / numPerPage);
-var $pager = $('<div class="page_cart"></div>');
-for (var page = 0; page < numPages; page++) {
-$('<div class="page-number"></div>').text(page + 1).bind('click', {
-newPage: page
-}, function(event) {
-currentPage = event.data['newPage'];
-$table.trigger('repaginate');
-$(this).addClass('active').siblings().removeClass('active');
-}).appendTo($pager).addClass('clickable');
-}
-$pager.insertAfter($table).find('div.page-number:first').addClass('active');
-});
+   function cargarArticulo(data) {
+      const modal = document.querySelector('#articuloModal');
+      if (!modal) {
+         console.error('Modal no encontrado');
+         return;
+      }
+
+      const imagenModal = modal.querySelector('.imagen-modal');
+      if (imagenModal) {
+         imagenModal.src = data.imagen;
+      }
+
+      console.log(data.categorianombre);
+
+      if (data.categoria == 6) {
+         const baseUrl = '<?php echo $this->Url->build('/img/psi.png'); ?>';
+         const imagenCategoria = modal.querySelector('#tipo-product');
+         imagenCategoria.src = baseUrl;
+         imagenCategoria.style.display = 'block';
+      } else if (data.iva) {
+         const baseUrl = '<?php echo $this->Url->build('/img/iva.png'); ?>';
+         const imagenCategoria = modal.querySelector('#tipo-product');
+         imagenCategoria.src = baseUrl;
+         imagenCategoria.style.display = 'block';
+      } else if (data.trazable) {
+         const baseUrl = '<?php echo $this->Url->build('/img/trazable.png'); ?>';
+         const imagenCategoria = modal.querySelector('#tipo-product');
+         imagenCategoria.src = baseUrl;
+         imagenCategoria.style.display = 'block';
+      } else if (data.cadenaFrio) {
+         const baseUrl = '<?php echo $this->Url->build('/img/cadenafrio.png'); ?>';
+         const imagenCategoria = modal.querySelector('#tipo-product');
+         imagenCategoria.src = baseUrl;
+         imagenCategoria.style.display = 'block';
+      } else if (data.pack) {
+         const baseUrl = '<?php echo $this->Url->build('/img/pack.png'); ?>';
+         const imagenCategoria = modal.querySelector('#tipo-product');
+         imagenCategoria.src = baseUrl;
+         imagenCategoria.style.display = 'block';
+      } else{
+         const baseUrl = '<?php echo $this->Url->build('/img/sinimagen.png'); ?>';
+         const imagenCategoria = modal.querySelector('#tipo-product');
+         imagenCategoria.src = baseUrl;
+         imagenCategoria.style.display = 'none';
+      }
+
+      const fields = ['descripcionPag', 'troquel', 'codigoBarras', 'categorianombre', 'laboratorio', 'iva', 'trazable', 'cadenaFrio', 'pack'];
+
+      fields.forEach(field => {
+         const fieldElement = modal.querySelector(`#${field.replace(/([A-Z])/g, '-$1').toLowerCase()} span`);
+         if (fieldElement) {
+            fieldElement.textContent = data[field] || 'No disponible';
+         }
+      });
+
+
+
+      modal.style.display = 'flex';
+
+      document.addEventListener('scroll', cerrarModalAlEvento);
+   }
+
+   document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.querySelector('#articuloModal');
+
+      const closeButton = modal.querySelector('.close');
+      if (closeButton) {
+         closeButton.addEventListener('click', function() {
+            cerrarModal();
+         });
+      }
+
+      modal.addEventListener('click', function(event) {
+         if (event.target === modal) {
+            cerrarModal();
+         }
+      });
+   });
+
+   function cerrarModal() {
+      const modal = document.querySelector('#articuloModal');
+      if (modal) {
+         modal.style.display = 'none';
+      }
+
+      document.removeEventListener('scroll', cerrarModalAlEvento);
+   }
+
+   function cerrarModalAlEvento() {
+      cerrarModal();
+   }
+</script>
+
+<!-- Script Paginator -->
+<script>
+   $(document).ready(function() {
+      var currentPage = 0;
+      var numPerPage = 6;
+      var $container = $('#articleGrid');
+      var $items = $container.find('.article-card');
+
+      function repaginate() {
+         $items.hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+      }
+
+      repaginate();
+
+      var numItems = $items.length;
+      var numPages = Math.ceil(numItems / numPerPage);
+
+      var $pager = $('<div class="paginator-table"></div>');
+      for (var page = 0; page < numPages; page++) {
+         $('<div class="page-number"></div>')
+            .text(page + 1)
+            .addClass('clickable')
+            .on('click', {
+               newPage: page
+            }, function(event) {
+               currentPage = event.data.newPage;
+               repaginate();
+               $(this).addClass('active').siblings().removeClass('active');
+            })
+            .appendTo($pager);
+      }
+
+      $pager.insertAfter($container).find('div.page-number:first').addClass('active');
+   });
 </script>

@@ -77,7 +77,7 @@ break;
 case 7:
 break;
 case 8:
-echo '<a href="'.$oferta['busqueda_sect'].'" target ="_blank">'.$this->Html->image('ofertas/'.$oferta['imagen'], ['alt' => 'URL']) .'</a>';
+echo '<a href="'.$oferta['busqueda_sect'].'">'.$this->Html->image('ofertas/'.$oferta['imagen'], ['alt' => 'URL']) .'</a>';
 break;
 case 9:
 echo $this->Html->image('ofertas/'.$oferta['imagen'],['url'=>['controller'=>'Tiendas','action'=>'index',$oferta['laboratorio_id'],1,$oferta['busqueda_sect']]], ['alt' => str_replace('"', '', $oferta['descripcion'])]);
@@ -88,6 +88,9 @@ break;
 case 11:
 echo $this->Html->image('ofertas/'.$oferta['imagen'],['url'=>['controller'=>'Tiendas','action'=>'index',$oferta['laboratorio_id'],3,$oferta['busqueda_sect']]], ['alt' => str_replace('"', '', $oferta['descripcion'])]);
 break;
+case 19:
+    echo $this->Html->image('ofertas/'.$oferta['imagen'],['url'=>['controller'=>'Carritos','action'=>'search_ic',$oferta['subcategoria_id'],$oferta['grupo_id'],$oferta['subgrupo_id'],$oferta['marca_id']]], ['alt' => str_replace('"', '', $oferta['descripcion'])]);
+    break;
 }
 ?> 
 </div> <!-- -->

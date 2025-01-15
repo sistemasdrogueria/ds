@@ -1990,7 +1990,7 @@ else
 			$fechadesde2->i18nFormat('yyyy-MM-dd');
 		*/
 		$pedidos = $this->Pedidos->find('all')
-				->select(['id',	'creado', 'c.codigo','c.razon_social', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','comentario','impreso','pedidos_status_id'])
+				->select(['id',	'creado', 'c.codigo','c.razon_social', 'sucursal_id', 'tipo_fact', 'forma_envio', 'estado_id','nro_pedido_ds','comentario','impreso','pedidos_status_id','cliente_id'])
 				->hydrate(false)
 				->join([
 					'c' => [

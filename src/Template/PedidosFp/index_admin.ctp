@@ -89,7 +89,8 @@
                 </a>
 			<td class="text-center">${pedido.comentario}</td>
 			<td class="text-center">
-            	${pedido.forma_envio == 98 ? "Retira Cadete" : "Envia Drogueria"}</td>   
+            	${pedido.forma_envio == 98 ? "Retira Cadete" : "Envia Drogueria"}</td> 
+                  
             </td>
             
         `;
@@ -190,5 +191,4 @@
     setTimeout(() => {
         location.reload();
     }, 300000);
-    
 </script>

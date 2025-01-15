@@ -38,7 +38,7 @@
 
 	// $this->Form->input('reclamos_tipo_id', ['label'=>'Motivo:','options' => $reclamostipos, 'empty'=>'Seleccionar motivo','id'=>'form_reclamos_tipo_id']);
 	?>
-	<?= $this->Form->input('terminobuscar', ['label' => 'Buscar', 'id' => 'terminobuscar', 'placeholder' => 'Buscar Producto', 'name' => 'terminobuscar', 'type' => 'text', 'onchange' => 'javascript:document.confirmInput.submit();']); ?>
+	<!--?= $this->Form->input('terminobuscar', ['label' => 'Buscar', 'id' => 'terminobuscar', 'placeholder' => 'Buscar Producto', 'name' => 'terminobuscar', 'type' => 'text', 'onchange' => 'javascript:document.confirmInput.submit();']); ?-->
 	<?= $this->Form->submit('Buscar', ['class' => 'mainBtn']); ?>
 	<?= $this->Form->end() ?>
 </div> <!-- /.search-form -->

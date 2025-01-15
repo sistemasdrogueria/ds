@@ -14,10 +14,10 @@
                     <th class="centrado"><?= $this->Paginator->sort('Código') ?></th>
                     <th class="centrado"><?= $this->Paginator->sort('Razón Social') ?></th>
                     <th class="centrado"><?= $this->Paginator->sort('tipo fact') ?></th>
-                    
-                   
-                    <th class="centrado"><?= $this->Paginator->sort('pedido_ds_id',' Pedido Web') ?></th>
-                    <th class="centrado"><?= $this->Paginator->sort('comentario','Comentario') ?></th>
+
+
+                    <th class="centrado"><?= $this->Paginator->sort('pedido_ds_id', ' Pedido Web') ?></th>
+                    <th class="centrado"><?= $this->Paginator->sort('comentario', 'Comentario') ?></th>
                     <th class="centrado"><?= $this->Paginator->sort('Envio') ?></th>
 
                 </tr>
@@ -32,8 +32,8 @@
                             <td class="text-center"><?= $pedido['pedidos_ds']['clientes']['codigo'] ?></td>
                             <td class="text-center"><?= $pedido['pedidos_ds']['clientes']['nombre']; ?></td>
                             <td class="text-center"><?= $pedido['tipo_fact']; ?></td>
-                            
-                            
+
+
                             <td class="text-center">
                                 <a href="javascript:void(0)" onclick="toggleAccordion(<?= $pedido['pedido_ds_id']; ?>)">
                                     <?= $pedido['pedido_ds_id']; ?>
@@ -45,6 +45,8 @@
                                 if ($pedido['forma_envio'] == 98) {
                                     echo "Retira Cadete";
                                 } elseif ($pedido['forma_envio'] == 0) {
+                                    echo "Envia Drogueria";
+                                } elseif ($pedido['forma_envio'] == 97) {
                                     echo "Envia Drogueria";
                                 }
                                 ?>
@@ -105,9 +107,9 @@
                                 <br>
                                 <br>
                                 <br>
-                                    <br>
-                                    
-                           <br>
+                                <br>
+
+                                <br>
 
                             </td>
                             <td colspan="3" style="border:1px solid;">
@@ -123,22 +125,22 @@
                                     echo "</strong>";
                                     echo "<strong><br>";
                                     echo "Descripción:";
-                                     echo "<strong>";
+                                    echo "<strong>";
                                     echo $items['articulos']['descripcion_pag'];
-                                     echo "</strong>";
+                                    echo "</strong>";
                                     echo "<br>";
                                     echo "Codigó barras";
                                     echo "<strong>";
                                     echo  $items['articulos']['codigo_barras'];
-                                    echo"</strong>";
+                                    echo "</strong>";
                                     echo "</p>";
                                 } ?>
 
                                 <br>
                                 <br>
-                           
-                               
-                            
+
+
+
 
                             </td>
                         </tr>

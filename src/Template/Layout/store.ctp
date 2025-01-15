@@ -62,7 +62,7 @@ echo $this->Html->script('sweetalert2.all.min');
 <div class=main-header>
 <div class=container>
 <div class=row>
-<?php echo $this->element('header_fiesta'); ?>
+<?php echo $this->element('header'); ?>
 </div>
 </div>
 </div>
@@ -294,6 +294,7 @@ echo '</div>';
 </style>
 
 <script>
+    /*
     const starsContainer = document.querySelector('.stars');
     const starCount = 50;
     const starIcons = ['fa-star'];
@@ -316,13 +317,15 @@ echo '</div>';
 
         starsContainer.appendChild(star);
 
-        // Establecer temporizador para eliminar la estrella después de 5 segundos
+        
         setTimeout(() => {
             star.style.opacity = '0';
-            star.style.transition = 'opacity 1s ease'; // Transición suave de opacidad
-            setTimeout(() => star.remove(), 1000); // Eliminar el elemento después de la transición
-        }, 7000); // 5 segundos
-    }
+            star.style.transition = 'opacity 1s ease'; 
+            setTimeout(() => star.remove(), 1000); 
+        }, 7000); 
+
+
+    }*/
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-54312928-1"></script>
 <script>

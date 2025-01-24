@@ -1,21 +1,9 @@
-<style>
-	.descripcionck label {
-		display: block;
-		float: none;
-		width: 200px;
-		height: 25px;
-		line-height: 25px;
-		text-shadow: 0 1px 0 #fff;
-		font-weight: 700;
-		padding-left: 10px;
-		margin: -5px 0 5px;
-		text-transform: uppercase
-	}
-</style>
+
 <?php echo $this->Html->script('ckeditor/ckeditor'); ?>
 <div class="clear"></div>
 <?php echo $this->Html->script('ckeditor/ckeditor'); ?>
-<article class="module width_4_quarter">
+<?php echo $this->Html->css('novedades/novedades_addAdmin'); ?>
+<article class="module">
 	<?= $this->Form->create($novedade, ['url' => ['controller' => 'Novedades', 'action' => 'add_admin'], 'type' => 'file']) ?>
 	<?php // $this->Form->create($novedade, array('type' => 'file')); 
 	?>
@@ -25,34 +13,44 @@
 		</legend>
 	</header>
 	<div class="module_content">
-		<?php //('Upload',array('id' => 'formulario','type' => 'file'));  
-		?>
 		<fieldset>
 			<?php echo $this->Form->input('titulo'); ?>
 		</fieldset>
 		<fieldset class=descripcionck>
 			<?php echo $this->Form->input('descripcion', ['label' => 'Descripción', 'class' => 'ckeditor', 'id' => 'descripcion']); ?>
-			<?php //echo $this->Form->input('descripcion');
-			?>
 		</fieldset>
 		<fieldset class=descripcionck>
 			<?php echo $this->Form->input('descripcion_completa', ['label' => 'Descripción Completa', 'class' => 'ckeditor', 'id' => 'descripcion_completa']); ?>
-			<?php	//echo $this->Form->input('descripcion_completa');
-			?>
 		</fieldset>
 		<fieldset>
 			<?php echo $this->Form->input('tipo'); ?>
 		</fieldset>
 		<fieldset>
-			<div class="input select">
-				<?php
-				echo $this->Form->input('file', ['type' => 'file', 'label' => 'Portada']);
-				?>
-			</div>
-			<div class="input select">
-				<?php
-				echo $this->Form->input('file2', ['type' => 'file', 'label' => 'Imagen Grande']);
-				?>
+			<div class="maincontenedorImagenes">
+				<div class="contenedorImagen">
+					<p style="font-weight: bold;">Imagen de Portada</p>
+					<div id="coverDropzone" class="dropzone">
+						<div class="dropzone-content">
+							<p>Arrastra y suelta la portada aquí</p>
+							<p>o</p>
+							<p><label for="coverInput">Selecciona un archivo</label></p>
+						</div>
+						<input type="file" id="coverInput" accept="application/pdf,image/*" style="display: none;z-index:1000">
+						<input type="file" id="realcoverInput" name="file" accept="application/pdf,image/*" style="display: none;z-index:1000">
+					</div>
+				</div>
+				<div class="contenedorImagen">
+					<p style="font-weight: bold;">Imagen Grande</p>
+					<div id="largeImageDropzone" class="dropzone">
+						<div class="dropzone-content">
+							<p>Arrastra y suelta la imagen grande aquí</p>
+							<p>o</p>
+							<p><label for="largeImageInput">Selecciona un archivo</label></p>
+						</div>
+						<input type="file" id="largeImageInput" accept="application/pdf,image/*" style="display: none;z-index:1000">
+						<input type="file" id="realimg" name="file2" accept="application/pdf,image/*" style="display: none;z-index:1000">
+					</div>
+				</div>
 			</div>
 		</fieldset>
 
@@ -70,27 +68,87 @@
 				</div>
 			</div>
 		</fieldset>
-
 		<fieldset>
-			<?= $this->Form->input('fecha', ['label' => 'fecha:', 'id' => 'fechadesde', 'name' => 'fecha', 'type' => 'text', 'placeholder' => 'Fecha']); ?>
+			<?= $this->Form->input('fecha', ['label' => 'fecha:', 'id' => 'fechadesde', 'name' => 'fecha', 'type' => 'text', 'placeholder' => 'Fecha', 'autocomplete' => 'off']); ?>
 		</fieldset>
 		<fieldset>
 			<div class="input select">
 				<label for="activo">Noticia Activa</label>
-				<?php echo $this->Form->checkbox('activo', ['hiddenField' => true]); ?>
+				<label class="neon-checkbox">
+					<?php echo $this->Form->checkbox('activo'); ?>
+					<div class="neon-checkbox__frame">
+						<div class="neon-checkbox__box">
+							<div class="neon-checkbox__check-container">
+								<svg viewBox="0 0 24 24" class="neon-checkbox__check">
+									<path d="M3,12.5l7,7L21,5"></path>
+								</svg>
+							</div>
+							<div class="neon-checkbox__glow"></div>
+							<div class="neon-checkbox__borders">
+								<span></span><span></span><span></span><span></span>
+							</div>
+						</div>
+						<div class="neon-checkbox__effects">
+							<div class="neon-checkbox__particles">
+								<span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+							</div>
+							<div class="neon-checkbox__rings">
+								<div class="ring"></div>
+								<div class="ring"></div>
+								<div class="ring"></div>
+							</div>
+							<div class="neon-checkbox__sparks">
+								<span></span><span></span><span></span><span></span>
+							</div>
+						</div>
+					</div>
+				</label>
 			</div>
 		</fieldset>
-
 		<fieldset>
 			<div class="input select">
 				<label for="activo">Noticia Pagina Interna</label>
-				<?php echo $this->Form->checkbox('interno', ['hiddenField' => true]); ?>
+				<label class="neon-checkbox">
+					<?php echo $this->Form->checkbox('interno'); ?>
+					<div class="neon-checkbox__frame">
+						<div class="neon-checkbox__box">
+							<div class="neon-checkbox__check-container">
+								<svg viewBox="0 0 24 24" class="neon-checkbox__check">
+									<path d="M3,12.5l7,7L21,5"></path>
+								</svg>
+							</div>
+							<div class="neon-checkbox__glow"></div>
+							<div class="neon-checkbox__borders">
+								<span></span><span></span><span></span><span></span>
+							</div>
+						</div>
+						<div class="neon-checkbox__effects">
+							<div class="neon-checkbox__particles">
+								<span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span> <span></span><span></span><span></span><span></span>
+							</div>
+							<div class="neon-checkbox__rings">
+								<div class="ring"></div>
+								<div class="ring"></div>
+								<div class="ring"></div>
+							</div>
+							<div class="neon-checkbox__sparks">
+								<span></span><span></span><span></span><span></span>
+							</div>
+						</div>
+					</div>
+				</label>
 			</div>
 		</fieldset>
 		<fieldset>
 			<div class="input select">
-
-				<?php echo $this->Form->input('importante', ['label' => 'Noticia Importente:', 'value' => 0]); ?>
+				<?php echo $this->Form->input('importante', [
+					'label' => 'Noticia Importante:',
+					'class' => 'inputImportante',
+					'type' => 'number',
+					'min' => '0',
+					'max' => '2',
+					'oninput' => "this.value = Math.max(0, Math.min(2, this.value));"
+				]); ?>
 				0 por defecto, 1 Importante, 2 muy importante(sección Resumen)
 			</div>
 		</fieldset>
@@ -98,59 +156,137 @@
 	<div class="clear"></div>
 	<footer>
 		<div class="submit_link">
-
-
-			<?= $this->Form->button(__('Guardar')) ?>
+			<?= $this->Form->button(__('Guardar'), ['class' => 'confirmarButton']) ?>
 			<?= $this->Form->end() ?>
 		</div>
 	</footer>
 </article><!-- end of post new article -->
 <script>
-  document.getElementById('file').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const validExtensions = ['jpg', 'jpeg', 'png', 'mp3', 'mp4'];
-            const fileExtension = file.name.split('.').pop().toLowerCase();
+	function setupDropzone(dropzoneId, inputId, realImgId) {
+		const dropzone = document.getElementById(dropzoneId);
+		const fileInput = document.getElementById(inputId);
+		const realImgInput = document.getElementById(realImgId);
+		let currentFile = null;
 
-            // Validar extensión
-            if (!validExtensions.includes(fileExtension)) {
-                 alertify.alert('Alerta archivo Incorrecto','<span style="color: orange;">El archivo debe ser una imagen (.jpg, .jpeg, .png) o un audio/video (.mp3, .mp4).</span>');
-                event.target.value = ''; // Restablecer el valor del input
-                return;
-            }
+		// Manejo de eventos de arrastre y soltado
+		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+			dropzone.addEventListener(eventName, preventDefaults, false);
+		});
 
-            // Validar tamaño
-            if (file.size > 524288) { // 1 MB en bytes
-            alertify.alert('Alerta Imagen pesada','<span style="color: red;">El archivo no debe pesar más de 500kb.</span>', function(){ //alertify.success('Ok');
-              }
-             );
-             
-                event.target.value = ''; // Restablecer el valor del input
-            }
-        }
-    });
+		// Estilización al arrastrar
+		['dragenter', 'dragover'].forEach(eventName => {
+			dropzone.addEventListener(eventName, () => highlight(dropzone), false);
+		});
 
-	  document.getElementById('file2').addEventListener('change', function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const validExtensions = ['jpg', 'jpeg', 'png', 'mp3', 'mp4'];
-            const fileExtension = file.name.split('.').pop().toLowerCase();
+		['dragleave', 'drop'].forEach(eventName => {
+			dropzone.addEventListener(eventName, () => unhighlight(dropzone), false);
+		});
 
-            // Validar extensión
-            if (!validExtensions.includes(fileExtension)) {
-                 alertify.alert('Alerta archivo Incorrecto','<span style="color: orange;">El archivo debe ser una imagen (.jpg, .jpeg, .png) o un audio/video (.mp3, .mp4).</span>');
-                event.target.value = ''; // Restablecer el valor del input
-                return;
-            }
+		dropzone.addEventListener('drop', (e) => handleDrop(e, dropzone, fileInput), false);
+		fileInput.addEventListener('change', (e) => handleFiles(e, dropzone, realImgInput), false);
 
-            // Validar tamaño
-            if (file.size > 1048576) { // 1 MB en bytes
-            alertify.alert('Alerta Imagen pesada','<span style="color: red;">El archivo no debe pesar más de 500kb.</span>', function(){ //alertify.success('Ok');
-              }
-             );
-             
-                event.target.value = ''; // Restablecer el valor del input
-            }
-        }
-    });
+		dropzone.addEventListener('click', (e) => {
+			if (!e.target.classList.contains('removeButton')) {
+				fileInput.click();
+			}
+		});
+
+		function preventDefaults(e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+
+		function highlight(element) {
+			element.classList.add('dragover');
+		}
+
+		function unhighlight(element) {
+			element.classList.remove('dragover');
+		}
+
+		function handleDrop(e, dropzone, fileInput) {
+			const dt = e.dataTransfer;
+			const files = dt.files;
+			handleFiles({
+				target: {
+					files
+				}
+			}, dropzone, realImgInput);
+		}
+
+		function handleFiles(e, dropzone, realImgInput) {
+			const file = e.target.files[0];
+			if (file) {
+				currentFile = file;
+
+				// Actualiza el input realimg programáticamente (creando un nuevo input)
+				const dataTransfer = new DataTransfer();
+				dataTransfer.items.add(file);
+				realImgInput.files = dataTransfer.files;
+
+				previewFile(file, dropzone);
+			} else {
+				console.log('No se seleccionó ningún archivo.');
+			}
+		}
+
+		function previewFile(file, dropzone) {
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+
+			reader.onloadend = function() {
+				const img = document.createElement('img');
+				// Verificar si el archivo es un PDF
+				if (reader.result.startsWith('data:application/pdf')) {
+					img.src = "<?= $this->Url->build('/img/novedades/imagen_pdf.png', ['fullBase' => true]) ?>";
+				} else {
+					img.src = reader.result; // Mostrar la imagen cargada
+				}
+				img.alt = "Vista previa de la imagen";
+
+				const oldImg = dropzone.querySelector('img');
+				if (oldImg) {
+					dropzone.removeChild(oldImg);
+				}
+
+				dropzone.appendChild(img);
+
+				const content = dropzone.querySelector('.dropzone-content');
+				content.innerHTML = `
+                			    <p>Arrastra una nueva imagen para cambiarla</p>
+                			    <button type="button" class="removeButton">Eliminar imagen</button>
+                			`;
+
+				// Configurar botón para eliminar imagen
+				dropzone.querySelector('.removeButton').addEventListener('click', (event) => {
+					event.preventDefault();
+					removeImage(dropzone, fileInput, realImgInput);
+				});
+			};
+		}
+
+		function removeImage(dropzone, fileInput, realImgInput) {
+			const img = dropzone.querySelector('img');
+			if (img) {
+				dropzone.removeChild(img);
+			}
+			currentFile = null;
+
+			// Limpiar ambos inputs
+			fileInput.value = '';
+			realImgInput.value = '';
+
+			// Restaurar contenido inicial del dropzone
+			const content = dropzone.querySelector('.dropzone-content');
+			content.innerHTML = `
+            			    <p>Arrastra y suelta una imagen aquí</p>
+            			    <p>o</p>
+            			    <p><label for="${fileInput.id}">Selecciona un archivo</label></p>
+            			`;
+		}
+	}
+
+	// Inicializar múltiples dropzones
+	setupDropzone('coverDropzone', 'coverInput', 'realcoverInput');
+	setupDropzone('largeImageDropzone', 'largeImageInput', 'realimg');
 </script>

@@ -64,7 +64,7 @@
 									?>
 								</div>
 								<div class="news-item-content">
-									<h4><?php echo $this->Html->link($secundaria->titulo, ['controller' => 'Novedades', 'action' => 'noticia', $secundaria->id, '_full' => true]); ?></h4>
+									<h4><?= $this->Html->link($secundaria->titulo, ['controller' => 'Novedades', 'action' => 'noticia', $secundaria->id, '_full' => true]); ?></h4>
 									<?= $secundaria->descripcion ?>
 								</div>
 							</div>

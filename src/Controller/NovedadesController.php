@@ -28,11 +28,6 @@ class NovedadesController extends AppController
 		$this->loadModel('Files');
 	}
 
-	public function beforeFilter(Event $event)
-	{
-		// allow all action
-		$this->Auth->allow(['exposur', 'view', 'condiciones']);
-	}
 
 	public function isAuthorized()
 	{
@@ -70,6 +65,12 @@ class NovedadesController extends AppController
 			}
 		}
 		return parent::isAuthorized($user);
+	}
+
+	public function beforeFilter(Event $event)
+	{
+		// allow all action
+		//$this->Auth->allow(['exposur', 'view', 'condiciones']);
 	}
 
 
@@ -149,8 +150,8 @@ class NovedadesController extends AppController
 		}
 
 
-		$this->loadModel('Categorias_Novedades');
-		$categorias = $this->Categorias_Novedades->find('list', [
+		$this->loadModel('CategoriasNovedades');
+		$categorias = $this->CategoriasNovedades->find('list', [
 			'keyField' => 'id',
 			'valueField' => 'nombre'
 		])->toArray();
@@ -253,8 +254,8 @@ class NovedadesController extends AppController
 
 		$notasbuscadas = $this->paginate($result);
 
-		$this->loadModel('Categorias_Novedades');
-		$categorias = $this->Categorias_Novedades->find('list', [
+		$this->loadModel('CategoriasNovedades');
+		$categorias = $this->CategoriasNovedades->find('list', [
 			'keyField' => 'id',
 			'valueField' => 'nombre'
 		])->toArray();
@@ -389,12 +390,11 @@ class NovedadesController extends AppController
 			->toArray();
 		$this->set('relacionadas', $relacionadas);
 
-		$this->loadModel('Categorias_Novedades');
-		$categorias = $this->Categorias_Novedades->find('list', [
+		$this->loadModel('CategoriasNovedades');
+		$categorias = $this->CategoriasNovedades->find('list', [
 			'keyField' => 'id',
 			'valueField' => 'nombre'
 		])->toArray();
-
 		$categorias = ['' => 'Categoría'] + $categorias;
 		$this->set(compact('categorias'));
 	}
@@ -634,8 +634,8 @@ class NovedadesController extends AppController
 			);
 		}
 
-		$this->loadModel('Categorias_Novedades');
-		$categorias = $this->Categorias_Novedades->find('list', [
+		$this->loadModel('CategoriasNovedades');
+		$categorias = $this->CategoriasNovedades->find('list', [
 			'keyField' => 'id',
 			'valueField' => 'nombre'
 		])->toArray();
@@ -758,8 +758,8 @@ class NovedadesController extends AppController
 			}
 		}
 
-		$this->loadModel('Categorias_Novedades');
-		$categorias = $this->Categorias_Novedades->find('list', [
+		$this->loadModel('CategoriasNovedades');
+		$categorias = $this->CategoriasNovedades->find('list', [
 			'keyField' => 'id',
 			'valueField' => 'nombre'
 		])->toArray();
@@ -854,8 +854,8 @@ class NovedadesController extends AppController
 			}
 		}
 
-		$this->loadModel('Categorias_Novedades');
-		$categorias = $this->Categorias_Novedades->find('list', [
+		$this->loadModel('CategoriasNovedades');
+		$categorias = $this->CategoriasNovedades->find('list', [
 			'keyField' => 'id',
 			'valueField' => 'nombre'
 		])->toArray();
